@@ -1108,6 +1108,40 @@ a {
   padding: 1.4rem;
 }
 
+.code-tools {
+  align-items: center;
+  display: flex;
+  gap: 0.7rem;
+}
+
+.copy-code-control {
+  position: relative;
+}
+
+.copy-code-control button {
+  background: transparent;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  min-height: 32px;
+  padding: 0.25rem 0.7rem;
+}
+
+.copy-code-control button:hover {
+  background: rgb(255 255 255 / 10%);
+}
+
+.copy-code-status {
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  position: absolute;
+  width: 1px;
+  clip-path: inset(50%);
+}
+
 .code-example code {
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 0.82rem;

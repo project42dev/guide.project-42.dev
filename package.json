@@ -1,6 +1,6 @@
 {
   "name": "project-42-site",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "private": true,
   "engines": {
     "node": ">=22.13.0"
@@ -14,7 +14,7 @@
     "lint": "eslint . --ignore-pattern dist --ignore-pattern .next"
   },
   "dependencies": {
-    "@project42/platform": "github:project42dev/project42-platform#v0.3.0",
+    "@project42/platform": "github:project42dev/project42-platform#v0.4.0",
     "next": "16.2.11",
     "react": "19.2.8",
     "react-dom": "19.2.8"

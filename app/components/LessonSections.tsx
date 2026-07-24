@@ -1,4 +1,5 @@
 import type { LessonSection } from "@project42/platform";
+import { CopyCodeButton } from "./CopyCodeButton";
 
 export function LessonSections({ sections }: { sections: LessonSection[] }) {
   return (
@@ -16,7 +17,10 @@ export function LessonSections({ sections }: { sections: LessonSection[] }) {
               <div className="code-example">
                 <div className="code-label">
                   <span>{section.code.label}</span>
-                  <span>{section.code.language}</span>
+                  <div className="code-tools">
+                    <span>{section.code.language}</span>
+                    <CopyCodeButton code={section.code.code} />
+                  </div>
                 </div>
                 <pre>
                   <code>{section.code.code}</code>
