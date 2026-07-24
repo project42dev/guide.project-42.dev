@@ -19,8 +19,9 @@ npm test
 
 The site consumes the versioned open-source learning core from
 [`project42dev/project42-platform`](https://github.com/project42dev/project42-platform).
-Progress is deliberately device-local in the current MVP. Account-backed learning
-records remain a later release.
+Progress is deliberately device-local in the current MVP and can be exported as a
+portable JSON record or CSV transcript. Account-backed learning records remain a later
+release.
 
 ## Repositories
 

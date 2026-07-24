@@ -1,6 +1,12 @@
 "use client";
 
-import { buildTranscript, starterCatalog } from "@project42/platform";
+import {
+  buildPortableLearnerRecord,
+  buildTranscript,
+  buildTranscriptCsv,
+  serializePortableLearnerRecord,
+  starterCatalog,
+} from "@project42/platform";
 import Link from "next/link";
 import { useMemo } from "react";
 import { useProgress } from "./ProgressProvider";
@@ -11,6 +17,24 @@ export function ProfileDashboard() {
     () => buildTranscript(starterCatalog, progress),
     [progress],
   );
+  const exportDate = new Date().toISOString().slice(0, 10);
+
+  const downloadRecord = () => {
+    const record = buildPortableLearnerRecord(starterCatalog, progress);
+    downloadTextFile(
+      `project-42-learning-record-${exportDate}.json`,
+      serializePortableLearnerRecord(record),
+      "application/json",
+    );
+  };
+
+  const downloadTranscript = () => {
+    downloadTextFile(
+      `project-42-transcript-${exportDate}.csv`,
+      buildTranscriptCsv(starterCatalog, progress),
+      "text/csv",
+    );
+  };
 
   if (!hydrated) {
     return <div className="profile-loading">Loading your device-local record…</div>;
@@ -84,12 +108,40 @@ export function ProfileDashboard() {
                     : ` · Best check ${entry.bestScorePercent}%`}
                 </p>
               </div>
-              <div className="transcript-progress">
+              <div
+                aria-label={`${entry.pathTitle} completion`}
+                aria-valuemax={100}
+                aria-valuemin={0}
+                aria-valuenow={entry.completionPercent}
+                className="transcript-progress"
+                role="progressbar"
+              >
                 <span style={{ width: `${entry.completionPercent}%` }} />
               </div>
               <strong>{entry.completionPercent}%</strong>
             </article>
           ))}
+        </div>
+        <div className="profile-export" aria-labelledby="export-heading">
+          <div>
+            <h3 id="export-heading">Take your record with you</h3>
+            <p>
+              Download a complete portable record or a spreadsheet-friendly transcript.
+              Files are created locally in this browser.
+            </p>
+          </div>
+          <div className="button-row">
+            <button className="button button-secondary" onClick={downloadRecord} type="button">
+              Download JSON record
+            </button>
+            <button
+              className="button button-secondary"
+              onClick={downloadTranscript}
+              type="button"
+            >
+              Download CSV transcript
+            </button>
+          </div>
         </div>
       </section>
 
@@ -137,4 +189,13 @@ export function ProfileDashboard() {
       ) : null}
     </div>
   );
+}
+
+function downloadTextFile(filename: string, content: string, type: string) {
+  const url = URL.createObjectURL(new Blob([content], { type: `${type};charset=utf-8` }));
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = filename;
+  link.click();
+  window.setTimeout(() => URL.revokeObjectURL(url), 0);
 }

@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import { starterCatalog } from "@project42/platform";
 
 async function render(pathname) {
   const workerUrl = new URL("../dist/server/index.js", import.meta.url);
@@ -33,12 +34,52 @@ test("renders academy and field-guide indexes", async () => {
 });
 
 test("renders stable learning and resource routes", async () => {
-  const [module, resource] = await Promise.all([
-    render("/learn/ai-foundations/what-ai-does"),
-    render("/resources/prompt-checklist"),
+  const routes = [
+    ...starterCatalog.paths.map((path) => `/learn/${path.id}`),
+    ...starterCatalog.paths.flatMap((path) =>
+      path.moduleIds.map((moduleId) => `/learn/${path.id}/${moduleId}`),
+    ),
+    ...starterCatalog.resources.map((resource) => `/resources/${resource.id}`),
+  ];
+
+  for (const route of routes) {
+    const response = await render(route);
+    assert.equal(response.status, 200, `${route} should render`);
+  }
+});
+
+test("all rendered internal navigation links resolve", async () => {
+  const entryRoutes = ["/", "/learn", "/resources", "/profile", "/about"];
+  const internalLinks = new Set(entryRoutes);
+
+  for (const route of entryRoutes) {
+    const response = await render(route);
+    const html = await response.text();
+    for (const match of html.matchAll(/<a\b[^>]*\bhref="([^"]+)"/g)) {
+      const url = new URL(match[1], "https://project-42.dev");
+      if (url.origin === "https://project-42.dev") internalLinks.add(url.pathname);
+    }
+  }
+
+  for (const route of internalLinks) {
+    const response = await render(route);
+    assert.equal(response.status, 200, `${route} linked from the site should render`);
+  }
+});
+
+test("publishes accessible document landmarks and discovery metadata", async () => {
+  const [home, sitemap, robots] = await Promise.all([
+    render("/"),
+    render("/sitemap.xml"),
+    render("/robots.txt"),
   ]);
-  assert.equal(module.status, 200);
-  assert.equal(resource.status, 200);
-  assert.match(await module.text(), /What AI Does/);
-  assert.match(await resource.text(), /Prompt Checklist/);
+  const html = await home.text();
+
+  assert.equal(home.status, 200);
+  assert.match(html, /<html lang="en">/);
+  assert.match(html, /href="#main-content"/);
+  assert.match(html, /id="main-content" tabindex="-1"/);
+  assert.match(html, /<nav aria-label="Primary navigation">/);
+  assert.equal(sitemap.status, 200);
+  assert.equal(robots.status, 200);
 });

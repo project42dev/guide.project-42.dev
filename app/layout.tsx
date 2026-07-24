@@ -55,7 +55,9 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         </a>
         <ProgressProvider>
           <SiteHeader />
-          <div id="main-content">{children}</div>
+          <div id="main-content" tabIndex={-1}>
+            {children}
+          </div>
           <SiteFooter />
         </ProgressProvider>
       </body>

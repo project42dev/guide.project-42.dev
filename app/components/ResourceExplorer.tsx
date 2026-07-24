@@ -28,6 +28,7 @@ export function ResourceExplorer({ resources }: { resources: Resource[] }) {
         <label>
           <span>Search the field guide</span>
           <input
+            aria-controls="resource-results"
             onChange={(event) => setQuery(event.target.value)}
             placeholder="Try “agents” or “prompt”"
             type="search"
@@ -44,7 +45,7 @@ export function ResourceExplorer({ resources }: { resources: Resource[] }) {
           </select>
         </label>
       </div>
-      <p className="results-count" aria-live="polite">
+      <p className="results-count" aria-live="polite" id="resource-results">
         {filtered.length} {filtered.length === 1 ? "resource" : "resources"}
       </p>
       <div className="resource-grid">
@@ -68,6 +69,16 @@ export function ResourceExplorer({ resources }: { resources: Resource[] }) {
         <div className="empty-state">
           <h2>No exact match yet.</h2>
           <p>Try a broader word or reset the level filter.</p>
+          <button
+            className="button button-secondary"
+            onClick={() => {
+              setQuery("");
+              setLevel("all");
+            }}
+            type="button"
+          >
+            Clear filters
+          </button>
         </div>
       ) : null}
     </>

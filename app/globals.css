@@ -147,9 +147,12 @@ a {
 }
 
 .site-header nav a {
+  align-items: center;
   color: var(--ink-soft);
+  display: inline-flex;
   font-size: 0.88rem;
   font-weight: 720;
+  min-height: 44px;
   text-decoration: none;
 }
 
@@ -158,11 +161,14 @@ a {
 }
 
 .header-action {
+  align-items: center;
   background: var(--navy);
   border-radius: 999px;
   color: white;
+  display: inline-flex;
   font-size: 0.82rem;
   font-weight: 800;
+  min-height: 44px;
   padding: 0.78rem 1.1rem;
   text-decoration: none;
 }
@@ -366,7 +372,7 @@ a {
 }
 
 .map-node span {
-  color: #697386;
+  color: #606979;
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 0.63rem;
 }
@@ -405,7 +411,7 @@ a {
 }
 
 .snapshot-kicker {
-  color: #737b88;
+  color: #606979;
   font-size: 0.68rem;
   font-weight: 800;
   letter-spacing: 0.09em;
@@ -748,7 +754,7 @@ a {
 }
 
 .learning-path-number {
-  color: #aaa79e;
+  color: #737b88;
   font-family: Georgia, "Times New Roman", serif;
   font-size: 3.5rem;
   font-style: italic;
@@ -767,7 +773,7 @@ a {
 }
 
 .learning-path-row small {
-  color: #707887;
+  color: #606979;
 }
 
 .learning-path-modules {
@@ -782,7 +788,7 @@ a {
 
 .breadcrumbs {
   align-items: center;
-  color: #6d7482;
+  color: #606979;
   display: flex;
   flex-wrap: wrap;
   font-size: 0.76rem;
@@ -903,7 +909,7 @@ a {
 }
 
 .module-index {
-  color: #9a9a92;
+  color: #606979;
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 0.8rem;
 }
@@ -914,7 +920,7 @@ a {
 }
 
 .module-copy small {
-  color: #6f7785;
+  color: #606979;
   font-size: 0.65rem;
   text-transform: uppercase;
 }
@@ -957,7 +963,7 @@ a {
 }
 
 .lesson-kicker {
-  color: #6d7482;
+  color: #606979;
   font-size: 0.72rem;
   font-weight: 800;
   letter-spacing: 0.08em;
@@ -1045,7 +1051,7 @@ a {
 }
 
 .lesson-block-index {
-  color: #9a9a92;
+  color: #606979;
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 0.68rem;
   padding-top: 0.45rem;
@@ -1135,7 +1141,7 @@ a {
 }
 
 .sources li span {
-  color: #717988;
+  color: #606979;
   font-size: 0.68rem;
 }
 
@@ -1153,7 +1159,7 @@ a {
 }
 
 .lesson-rail small {
-  color: #707887;
+  color: #606979;
   font-size: 0.68rem;
 }
 
@@ -1189,7 +1195,7 @@ a {
 }
 
 .lesson-rail a span {
-  color: #97978f;
+  color: #606979;
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 0.62rem;
 }
@@ -1373,7 +1379,7 @@ a {
 }
 
 .resource-controls label > span {
-  color: #6d7482;
+  color: #606979;
   font-size: 0.69rem;
   font-weight: 800;
   letter-spacing: 0.07em;
@@ -1392,7 +1398,7 @@ a {
 }
 
 .results-count {
-  color: #727986;
+  color: #606979;
   font-size: 0.72rem;
   margin: 1.5rem 0;
 }
@@ -1414,7 +1420,7 @@ a {
 }
 
 .resource-meta {
-  color: #737b88;
+  color: #606979;
   display: flex;
   font-size: 0.65rem;
   font-weight: 780;
@@ -1448,7 +1454,7 @@ a {
 }
 
 .resource-foot small {
-  color: #737b88;
+  color: #606979;
   font-size: 0.63rem;
 }
 
@@ -1517,7 +1523,7 @@ a {
 }
 
 .source-panel span {
-  color: #737b88;
+  color: #606979;
   font-size: 0.67rem;
 }
 
@@ -1568,7 +1574,7 @@ a {
 }
 
 .profile-identity form > label {
-  color: #6d7482;
+  color: #606979;
   display: block;
   font-size: 0.68rem;
   font-weight: 800;
@@ -1638,7 +1644,7 @@ a {
 }
 
 .transcript-list p {
-  color: #717988;
+  color: #606979;
   font-size: 0.73rem;
   margin: 0.3rem 0 0;
 }
@@ -1647,6 +1653,31 @@ a {
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 0.73rem;
   text-align: right;
+}
+
+.profile-export {
+  align-items: center;
+  background: var(--paper-strong);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-small);
+  display: flex;
+  gap: 1.5rem;
+  justify-content: space-between;
+  margin-top: 1.5rem;
+  padding: 1.25rem;
+}
+
+.profile-export h3 {
+  font-size: 1rem;
+  margin: 0;
+}
+
+.profile-export p {
+  color: var(--ink-soft);
+  font-size: 0.75rem;
+  line-height: 1.55;
+  margin: 0.35rem 0 0;
+  max-width: 620px;
 }
 
 .badge-grid {
@@ -1673,7 +1704,7 @@ a {
 }
 
 .badge-grid small {
-  color: #737b88;
+  color: #606979;
   font-size: 0.65rem;
 }
 
@@ -1712,7 +1743,7 @@ a {
 }
 
 .about-number {
-  color: #aaa79e;
+  color: #737b88;
   font-family: Georgia, "Times New Roman", serif;
   font-size: 3rem;
   font-style: italic;
@@ -1926,6 +1957,11 @@ a {
     align-items: start;
     flex-direction: column;
     gap: 1rem;
+  }
+
+  .profile-export {
+    align-items: flex-start;
+    flex-direction: column;
   }
 
   .learning-path-row {
