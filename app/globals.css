@@ -1763,6 +1763,76 @@ a {
   color: #78281e;
 }
 
+.attempt-section {
+  min-width: 0;
+}
+
+.attempt-count {
+  color: var(--ink-soft);
+  font-size: 0.72rem;
+  font-weight: 760;
+}
+
+.attempt-table-wrap {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-small);
+  overflow-x: auto;
+}
+
+.attempt-table {
+  border-collapse: collapse;
+  min-width: 720px;
+  width: 100%;
+}
+
+.attempt-table th,
+.attempt-table td {
+  border-bottom: 1px solid var(--line);
+  font-size: 0.74rem;
+  padding: 0.9rem 1rem;
+  text-align: left;
+}
+
+.attempt-table thead th {
+  background: var(--paper-strong);
+  color: #606979;
+  font-size: 0.64rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.attempt-table tbody th {
+  font-weight: 780;
+}
+
+.attempt-table tbody tr:last-child th,
+.attempt-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.attempt-passed,
+.attempt-not-passed {
+  border-radius: 999px;
+  display: inline-block;
+  font-size: 0.65rem;
+  font-weight: 800;
+  padding: 0.25rem 0.55rem;
+}
+
+.attempt-passed {
+  background: #e9f7ed;
+  color: #194d28;
+}
+
+.attempt-not-passed {
+  background: #fff2d8;
+  color: #714a00;
+}
+
+.attempt-empty {
+  margin-top: 0;
+}
+
 .badge-grid {
   display: grid;
   gap: 1rem;

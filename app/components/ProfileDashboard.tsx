@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  buildAssessmentHistory,
   buildPortableLearnerRecord,
   buildTranscript,
   buildTranscriptCsv,
@@ -20,6 +21,10 @@ export function ProfileDashboard() {
   } | null>(null);
   const transcript = useMemo(
     () => buildTranscript(starterCatalog, progress),
+    [progress],
+  );
+  const assessmentHistory = useMemo(
+    () => buildAssessmentHistory(starterCatalog, progress),
     [progress],
   );
   const exportDate = new Date().toISOString().slice(0, 10);
@@ -217,6 +222,61 @@ export function ProfileDashboard() {
             {importStatus.message}
           </p>
         ) : null}
+      </section>
+
+      <section className="attempt-section" aria-labelledby="attempt-history-heading">
+        <div className="section-heading section-heading-inline">
+          <div>
+            <p className="eyebrow">Assessment history</p>
+            <h2 id="attempt-history-heading">Your scores</h2>
+          </div>
+          <span className="attempt-count">
+            {assessmentHistory.length}{" "}
+            {assessmentHistory.length === 1 ? "attempt" : "attempts"}
+          </span>
+        </div>
+        {assessmentHistory.length > 0 ? (
+          <div className="attempt-table-wrap">
+            <table className="attempt-table">
+              <thead>
+                <tr>
+                  <th scope="col">Module</th>
+                  <th scope="col">Path</th>
+                  <th scope="col">Score</th>
+                  <th scope="col">Result</th>
+                  <th scope="col">Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                {assessmentHistory.map((attempt) => (
+                  <tr key={attempt.attemptId}>
+                    <th scope="row">{attempt.moduleTitle}</th>
+                    <td>{attempt.pathTitle}</td>
+                    <td>{attempt.scorePercent}%</td>
+                    <td>
+                      <span
+                        className={
+                          attempt.passed ? "attempt-passed" : "attempt-not-passed"
+                        }
+                      >
+                        {attempt.passed ? "Passed" : "Try again"}
+                      </span>
+                    </td>
+                    <td>{new Date(attempt.completedAt).toLocaleDateString()}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          <div className="empty-state attempt-empty">
+            <h3>No scores yet.</h3>
+            <p>Complete a module knowledge check and every attempt will appear here.</p>
+            <Link className="button button-primary" href="/learn">
+              Choose a learning path
+            </Link>
+          </div>
+        )}
       </section>
 
       <section className="badge-section">
