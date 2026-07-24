@@ -14,7 +14,14 @@ import { useMemo, useState, type ChangeEvent } from "react";
 import { useProgress } from "./ProgressProvider";
 
 export function ProfileDashboard() {
-  const { progress, hydrated, replaceProgress, rename, reset } = useProgress();
+  const {
+    progress,
+    hydrated,
+    storageStatus,
+    replaceProgress,
+    rename,
+    reset,
+  } = useProgress();
   const [importStatus, setImportStatus] = useState<{
     kind: "error" | "success";
     message: string;
@@ -95,6 +102,17 @@ export function ProfileDashboard() {
 
   return (
     <div className="profile-dashboard">
+      {storageStatus !== "ready" ? (
+        <aside className="storage-warning" role="alert">
+          <strong>Progress storage needs attention.</strong>
+          <p>
+            This browser is not reliably saving Project 42 progress. Your work remains
+            available in this tab, but it may be lost when the tab closes. Download a
+            JSON record after completing a module.
+          </p>
+        </aside>
+      ) : null}
+
       <section className="profile-card profile-identity">
         <p className="eyebrow">Learner profile</p>
         <h2>{progress.displayName}</h2>

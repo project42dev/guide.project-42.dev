@@ -1570,6 +1570,26 @@ a {
   gap: 4rem;
 }
 
+.storage-warning {
+  background: #fff2d8;
+  border: 1px solid #d8b566;
+  border-radius: var(--radius-small);
+  color: #5e3d00;
+  padding: 1rem 1.2rem;
+}
+
+.storage-warning strong {
+  display: block;
+  font-size: 0.82rem;
+}
+
+.storage-warning p {
+  font-size: 0.75rem;
+  line-height: 1.55;
+  margin: 0.35rem 0 0;
+  max-width: 760px;
+}
+
 .profile-card {
   background: var(--paper-strong);
   border: 1px solid var(--line);

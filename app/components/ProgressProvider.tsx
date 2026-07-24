@@ -18,10 +18,12 @@ import {
 } from "react";
 
 const storageKey = "project42.progress.v1";
+type StorageStatus = "ready" | "unavailable" | "write-error";
 
 interface ProgressContextValue {
   progress: LearnerProgress;
   hydrated: boolean;
+  storageStatus: StorageStatus;
   recordResult: (pathId: string, moduleId: string, result: AssessmentResult) => void;
   replaceProgress: (progress: LearnerProgress) => void;
   rename: (displayName: string) => void;
@@ -30,36 +32,48 @@ interface ProgressContextValue {
 
 const ProgressContext = createContext<ProgressContextValue | null>(null);
 
-function safeReadProgress(): LearnerProgress {
+function safeReadProgress(): {
+  progress: LearnerProgress;
+  storageStatus: StorageStatus;
+} {
   try {
     const raw = window.localStorage.getItem(storageKey);
-    if (!raw) return createEmptyProgress();
+    if (!raw) return { progress: createEmptyProgress(), storageStatus: "ready" };
     const parsed = JSON.parse(raw) as Partial<LearnerProgress>;
     if (parsed.schemaVersion !== 1 || !Array.isArray(parsed.attempts)) {
-      return createEmptyProgress();
+      return { progress: createEmptyProgress(), storageStatus: "unavailable" };
     }
-    return parsed as LearnerProgress;
+    return { progress: parsed as LearnerProgress, storageStatus: "ready" };
   } catch {
-    return createEmptyProgress();
+    return { progress: createEmptyProgress(), storageStatus: "unavailable" };
   }
 }
 
 export function ProgressProvider({ children }: { children: ReactNode }) {
   const [progress, setProgress] = useState<LearnerProgress>(() => createEmptyProgress());
   const [hydrated, setHydrated] = useState(false);
+  const [storageStatus, setStorageStatus] = useState<StorageStatus>("ready");
 
   useEffect(() => {
     const hydrationTimer = window.setTimeout(() => {
-      setProgress(safeReadProgress());
+      const stored = safeReadProgress();
+      setProgress(stored.progress);
+      setStorageStatus(stored.storageStatus);
       setHydrated(true);
     }, 0);
     return () => window.clearTimeout(hydrationTimer);
   }, []);
 
   useEffect(() => {
-    if (hydrated) {
+    if (!hydrated) return;
+    let nextStatus: StorageStatus = "ready";
+    try {
       window.localStorage.setItem(storageKey, JSON.stringify(progress));
+    } catch {
+      nextStatus = "write-error";
     }
+    const statusTimer = window.setTimeout(() => setStorageStatus(nextStatus), 0);
+    return () => window.clearTimeout(statusTimer);
   }, [hydrated, progress]);
 
   const recordResult = useCallback(
@@ -99,8 +113,24 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const value = useMemo(
-    () => ({ progress, hydrated, recordResult, replaceProgress, rename, reset }),
-    [progress, hydrated, recordResult, replaceProgress, rename, reset],
+    () => ({
+      progress,
+      hydrated,
+      storageStatus,
+      recordResult,
+      replaceProgress,
+      rename,
+      reset,
+    }),
+    [
+      progress,
+      hydrated,
+      storageStatus,
+      recordResult,
+      replaceProgress,
+      rename,
+      reset,
+    ],
   );
 
   return <ProgressContext.Provider value={value}>{children}</ProgressContext.Provider>;
