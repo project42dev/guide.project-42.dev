@@ -4,15 +4,20 @@ import {
   buildPortableLearnerRecord,
   buildTranscript,
   buildTranscriptCsv,
+  restorePortableLearnerRecord,
   serializePortableLearnerRecord,
   starterCatalog,
 } from "@project42/platform";
 import Link from "next/link";
-import { useMemo } from "react";
+import { useMemo, useState, type ChangeEvent } from "react";
 import { useProgress } from "./ProgressProvider";
 
 export function ProfileDashboard() {
-  const { progress, hydrated, rename, reset } = useProgress();
+  const { progress, hydrated, replaceProgress, rename, reset } = useProgress();
+  const [importStatus, setImportStatus] = useState<{
+    kind: "error" | "success";
+    message: string;
+  } | null>(null);
   const transcript = useMemo(
     () => buildTranscript(starterCatalog, progress),
     [progress],
@@ -34,6 +39,49 @@ export function ProfileDashboard() {
       buildTranscriptCsv(starterCatalog, progress),
       "text/csv",
     );
+  };
+
+  const importRecord = async (event: ChangeEvent<HTMLInputElement>) => {
+    const input = event.currentTarget;
+    const file = input.files?.[0];
+    input.value = "";
+    if (!file) return;
+    if (file.size > 1_000_000) {
+      setImportStatus({
+        kind: "error",
+        message: "That file is too large. Project 42 records must be under 1 MB.",
+      });
+      return;
+    }
+
+    try {
+      const parsed: unknown = JSON.parse(await file.text());
+      const restored = restorePortableLearnerRecord(parsed, starterCatalog);
+      if (!restored.valid) {
+        setImportStatus({
+          kind: "error",
+          message: `This record cannot be restored: ${restored.errors.join("; ")}`,
+        });
+        return;
+      }
+      if (
+        !window.confirm(
+          "Replace the progress currently stored in this browser with this record?",
+        )
+      ) {
+        return;
+      }
+      replaceProgress(restored.progress);
+      setImportStatus({
+        kind: "success",
+        message: `Restored ${restored.progress.completedModuleIds.length} completed modules and ${restored.progress.attempts.length} knowledge checks.`,
+      });
+    } catch {
+      setImportStatus({
+        kind: "error",
+        message: "This file is not a valid Project 42 JSON learning record.",
+      });
+    }
   };
 
   if (!hydrated) {
@@ -124,25 +172,51 @@ export function ProfileDashboard() {
         </div>
         <div className="profile-export" aria-labelledby="export-heading">
           <div>
-            <h3 id="export-heading">Take your record with you</h3>
+            <h3 id="export-heading">Back up or move your progress</h3>
             <p>
-              Download a complete portable record or a spreadsheet-friendly transcript.
-              Files are created locally in this browser.
+              Download a complete record, restore one on another device, or save a
+              spreadsheet-friendly transcript. Files stay on your device.
             </p>
           </div>
-          <div className="button-row">
-            <button className="button button-secondary" onClick={downloadRecord} type="button">
-              Download JSON record
-            </button>
-            <button
-              className="button button-secondary"
-              onClick={downloadTranscript}
-              type="button"
-            >
-              Download CSV transcript
-            </button>
+          <div className="profile-transfer">
+            <div className="button-row">
+              <button
+                className="button button-secondary"
+                onClick={downloadRecord}
+                type="button"
+              >
+                Download JSON record
+              </button>
+              <button
+                className="button button-secondary"
+                onClick={downloadTranscript}
+                type="button"
+              >
+                Download CSV transcript
+              </button>
+            </div>
+            <label className="record-import">
+              <span>Restore a JSON record</span>
+              <input
+                accept="application/json,.json"
+                aria-describedby="record-import-help"
+                onChange={importRecord}
+                type="file"
+              />
+            </label>
+            <small id="record-import-help">
+              Restoring replaces the progress in this browser after confirmation.
+            </small>
           </div>
         </div>
+        {importStatus ? (
+          <p
+            className={`import-status import-status-${importStatus.kind}`}
+            role={importStatus.kind === "error" ? "alert" : "status"}
+          >
+            {importStatus.message}
+          </p>
+        ) : null}
       </section>
 
       <section className="badge-section">

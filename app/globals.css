@@ -1680,6 +1680,55 @@ a {
   max-width: 620px;
 }
 
+.profile-transfer {
+  display: grid;
+  gap: 0.7rem;
+  justify-items: end;
+}
+
+.record-import {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 0.72rem;
+  font-weight: 760;
+  gap: 0.6rem;
+  justify-content: flex-end;
+}
+
+.record-import input {
+  color: var(--ink-soft);
+  font: inherit;
+  max-width: 250px;
+}
+
+.profile-transfer > small {
+  color: #606979;
+  font-size: 0.65rem;
+  text-align: right;
+}
+
+.import-status {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-small);
+  font-size: 0.75rem;
+  line-height: 1.5;
+  margin: 0.75rem 0 0;
+  padding: 0.8rem 1rem;
+}
+
+.import-status-success {
+  background: #e9f7ed;
+  border-color: #8dbd9a;
+  color: #194d28;
+}
+
+.import-status-error {
+  background: #fff0ed;
+  border-color: #d5a097;
+  color: #78281e;
+}
+
 .badge-grid {
   display: grid;
   gap: 1rem;
@@ -1725,6 +1774,30 @@ a {
   color: var(--ink-soft);
   min-height: 280px;
   padding: 4rem 0;
+}
+
+.prerequisite-note {
+  background: #f4f8e8;
+  border: 1px solid #bfca92;
+  border-radius: var(--radius-small);
+  margin-bottom: 2rem;
+  padding: 1.25rem 1.4rem;
+}
+
+.prerequisite-note h2 {
+  font-size: 1.05rem;
+  margin: 0.3rem 0 0.65rem;
+}
+
+.prerequisite-note ul {
+  margin: 0;
+  padding-left: 1.1rem;
+}
+
+.prerequisite-note a {
+  color: var(--ink);
+  font-size: 0.78rem;
+  font-weight: 760;
 }
 
 .about-grid {
@@ -1962,6 +2035,19 @@ a {
   .profile-export {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .profile-transfer {
+    justify-items: start;
+    width: 100%;
+  }
+
+  .record-import {
+    justify-content: flex-start;
+  }
+
+  .profile-transfer > small {
+    text-align: left;
   }
 
   .learning-path-row {

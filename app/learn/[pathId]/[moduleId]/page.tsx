@@ -36,6 +36,20 @@ export default async function ModulePage({ params }: ModulePageProps) {
   const position = path.moduleIds.indexOf(lessonModule.id);
   const nextModuleId = path.moduleIds[position + 1];
   const nextHref = nextModuleId ? `/learn/${path.id}/${nextModuleId}` : undefined;
+  const prerequisites = lessonModule.prerequisites.flatMap((prerequisiteId) => {
+    const prerequisite = getLearningModule(prerequisiteId);
+    const prerequisitePath = starterCatalog.paths.find((candidate) =>
+      candidate.moduleIds.includes(prerequisiteId),
+    );
+    return prerequisite && prerequisitePath
+      ? [
+          {
+            href: `/learn/${prerequisitePath.id}/${prerequisite.id}`,
+            title: prerequisite.title,
+          },
+        ]
+      : [];
+  });
 
   return (
     <main className="lesson-page shell">
@@ -58,6 +72,20 @@ export default async function ModulePage({ params }: ModulePageProps) {
             <p>{lessonModule.summary}</p>
             <ProviderPills providers={lessonModule.providers} />
           </header>
+
+          {prerequisites.length > 0 ? (
+            <aside className="prerequisite-note" aria-labelledby="prerequisite-title">
+              <p className="eyebrow">Recommended first</p>
+              <h2 id="prerequisite-title">Build on the earlier lesson</h2>
+              <ul>
+                {prerequisites.map((prerequisite) => (
+                  <li key={prerequisite.href}>
+                    <Link href={prerequisite.href}>{prerequisite.title}</Link>
+                  </li>
+                ))}
+              </ul>
+            </aside>
+          ) : null}
 
           <section className="objectives" aria-labelledby="objectives-title">
             <p className="eyebrow">By the end</p>

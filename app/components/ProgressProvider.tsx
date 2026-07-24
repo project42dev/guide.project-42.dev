@@ -23,6 +23,7 @@ interface ProgressContextValue {
   progress: LearnerProgress;
   hydrated: boolean;
   recordResult: (pathId: string, moduleId: string, result: AssessmentResult) => void;
+  replaceProgress: (progress: LearnerProgress) => void;
   rename: (displayName: string) => void;
   reset: () => void;
 }
@@ -89,13 +90,17 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
     }));
   }, []);
 
+  const replaceProgress = useCallback((replacement: LearnerProgress) => {
+    setProgress(structuredClone(replacement));
+  }, []);
+
   const reset = useCallback(() => {
     setProgress(createEmptyProgress());
   }, []);
 
   const value = useMemo(
-    () => ({ progress, hydrated, recordResult, rename, reset }),
-    [progress, hydrated, recordResult, rename, reset],
+    () => ({ progress, hydrated, recordResult, replaceProgress, rename, reset }),
+    [progress, hydrated, recordResult, replaceProgress, rename, reset],
   );
 
   return <ProgressContext.Provider value={value}>{children}</ProgressContext.Provider>;
