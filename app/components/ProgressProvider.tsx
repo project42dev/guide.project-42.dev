@@ -3,6 +3,7 @@
 import {
   createEmptyProgress,
   recordAssessmentAttempt,
+  recordModuleVisit,
   starterCatalog,
   type AssessmentResult,
   type LearnerProgress,
@@ -25,6 +26,7 @@ interface ProgressContextValue {
   hydrated: boolean;
   storageStatus: StorageStatus;
   recordResult: (pathId: string, moduleId: string, result: AssessmentResult) => void;
+  recordVisit: (pathId: string, moduleId: string) => void;
   replaceProgress: (progress: LearnerProgress) => void;
   rename: (displayName: string) => void;
   reset: () => void;
@@ -96,6 +98,17 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
     [],
   );
 
+  const recordVisit = useCallback((pathId: string, moduleId: string) => {
+    const visitedAt = new Date().toISOString();
+    setProgress((current) =>
+      recordModuleVisit(current, starterCatalog, {
+        pathId,
+        moduleId,
+        visitedAt,
+      }),
+    );
+  }, []);
+
   const rename = useCallback((displayName: string) => {
     setProgress((current) => ({
       ...current,
@@ -118,6 +131,7 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
       hydrated,
       storageStatus,
       recordResult,
+      recordVisit,
       replaceProgress,
       rename,
       reset,
@@ -127,6 +141,7 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
       hydrated,
       storageStatus,
       recordResult,
+      recordVisit,
       replaceProgress,
       rename,
       reset,

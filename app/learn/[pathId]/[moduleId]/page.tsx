@@ -8,6 +8,7 @@ import {
 } from "@project42/platform";
 import { KnowledgeCheck } from "../../../components/KnowledgeCheck";
 import { LessonSections } from "../../../components/LessonSections";
+import { ModuleVisitTracker } from "../../../components/ModuleVisitTracker";
 import { ProviderPills } from "../../../components/ProviderPills";
 
 interface ModulePageProps {
@@ -53,6 +54,7 @@ export default async function ModulePage({ params }: ModulePageProps) {
 
   return (
     <main className="lesson-page shell">
+      <ModuleVisitTracker moduleId={lessonModule.id} pathId={path.id} />
       <nav className="breadcrumbs" aria-label="Breadcrumb">
         <Link href="/learn">Learning paths</Link>
         <span>/</span>

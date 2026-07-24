@@ -8,8 +8,13 @@ export function ProgressSnapshot() {
   const { progress, hydrated } = useProgress();
   const completed = progress.completedModuleIds.length;
   const total = starterCatalog.modules.length;
+  const recentModule = progress.recentModule
+    ? starterCatalog.modules.find(
+        (module) => module.id === progress.recentModule?.moduleId,
+      )
+    : undefined;
 
-  if (!hydrated || completed === 0) {
+  if (!hydrated || (completed === 0 && !recentModule)) {
     return (
       <section className="progress-snapshot shell" aria-label="Learning progress">
         <div>
@@ -40,7 +45,15 @@ export function ProgressSnapshot() {
       >
         <span style={{ width: `${Math.round((completed / total) * 100)}%` }} />
       </div>
-      <Link href="/profile">View transcript →</Link>
+      {recentModule && progress.recentModule ? (
+        <Link
+          href={`/learn/${progress.recentModule.pathId}/${progress.recentModule.moduleId}`}
+        >
+          Continue {recentModule.title} →
+        </Link>
+      ) : (
+        <Link href="/profile">View transcript →</Link>
+      )}
     </section>
   );
 }
