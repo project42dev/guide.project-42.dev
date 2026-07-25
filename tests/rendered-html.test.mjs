@@ -48,21 +48,33 @@ test("renders stable learning and resource routes", async () => {
   }
 });
 
-test("renders evidence-producing activities for substantive modules", async () => {
-  const response = await render(
-    "/learn/ai-foundations/ai-systems-and-use-cases",
+test("renders evidence-producing activities for every substantive module", async () => {
+  const activityModules = starterCatalog.modules.filter(
+    (learningModule) => learningModule.activity,
   );
-  assert.equal(response.status, 200);
-  const html = await response.text();
-  assert.match(html, /Practice activity/);
-  assert.match(html, /Triage four possible AI use cases/);
-  assert.match(html, /What to produce/);
-  assert.match(html, /Reflect before continuing/);
-  assert.match(
-    html,
-    /aria-labelledby="activity-ai-use-case-triage-title"/,
-  );
-  assert.match(html, /id="activity-ai-use-case-triage-title"/);
+  assert.equal(activityModules.length, 8);
+
+  for (const learningModule of activityModules) {
+    const path = starterCatalog.paths.find((candidate) =>
+      candidate.moduleIds.includes(learningModule.id),
+    );
+    assert.ok(path);
+    const response = await render(`/learn/${path.id}/${learningModule.id}`);
+    assert.equal(response.status, 200);
+    const html = await response.text();
+    assert.match(html, /Practice activity/);
+    assert.ok(html.includes(learningModule.activity.title));
+    assert.match(html, /What to produce/);
+    assert.match(html, /Reflect before continuing/);
+    assert.ok(
+      html.includes(`aria-labelledby="${learningModule.activity.id}-title"`),
+      `${learningModule.id} activity needs an accessible label relationship`,
+    );
+    assert.ok(
+      html.includes(`id="${learningModule.activity.id}-title"`),
+      `${learningModule.id} activity needs a matching heading id`,
+    );
+  }
 
   const legacyResponse = await render("/learn/ai-foundations/what-ai-does");
   assert.equal(legacyResponse.status, 200);
