@@ -65,6 +65,7 @@ jobs:
         if: github.event.action == 'opened' || (github.event.action == 'reopened' && !contains(github.event.issue.labels.*.name, 'ado-tracked'))
         env:
           GH_TOKEN: "${{ github.token }}"
+          REPOSITORY: "${{ github.repository }}"
           ISSUE_NUMBER: "${{ github.event.issue.number }}"
           WORK_ITEM_ID: "${{ steps.sync.outputs.id }}"
           ADO_ORG: "${{ secrets.ADO_ORG }}"
@@ -72,7 +73,7 @@ jobs:
         run: |
           work_item_id="$WORK_ITEM_ID"
           if [ -z "$work_item_id" ]; then
-            work_item_id=$(gh issue view "$ISSUE_NUMBER" --json body \
+            work_item_id=$(gh issue view "$ISSUE_NUMBER" --repo "$REPOSITORY" --json body \
               --jq '.body | capture("AB#(?<id>[0-9]+)").id')
           fi
           if [ -z "$work_item_id" ]; then
@@ -81,5 +82,6 @@ jobs:
           fi
           project_encoded=$(node -p "encodeURIComponent(process.env.ADO_PROJECT)")
           ado_url="https://dev.azure.com/${ADO_ORG}/${project_encoded}/_workitems/edit/${work_item_id}"
-          gh issue edit "$ISSUE_NUMBER" --add-label "ado-tracked"
-          gh issue comment "$ISSUE_NUMBER" --body "Tracked in Azure DevOps: ${ado_url}"
+          gh issue edit "$ISSUE_NUMBER" --repo "$REPOSITORY" --add-label "ado-tracked"
+          gh issue comment "$ISSUE_NUMBER" --repo "$REPOSITORY" \
+            --body "Tracked in Azure DevOps: ${ado_url}"
