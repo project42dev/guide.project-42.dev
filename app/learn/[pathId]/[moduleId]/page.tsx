@@ -7,6 +7,7 @@ import {
   starterCatalog,
 } from "@project42/platform";
 import { KnowledgeCheck } from "../../../components/KnowledgeCheck";
+import { LearningActivity } from "../../../components/LearningActivity";
 import { LessonSections } from "../../../components/LessonSections";
 import { ModuleVisitTracker } from "../../../components/ModuleVisitTracker";
 import { ProviderPills } from "../../../components/ProviderPills";
@@ -100,6 +101,10 @@ export default async function ModulePage({ params }: ModulePageProps) {
           </section>
 
           <LessonSections sections={lessonModule.sections} />
+
+          {lessonModule.activity ? (
+            <LearningActivity activity={lessonModule.activity} />
+          ) : null}
 
           <section className="sources" aria-labelledby="sources-title">
             <p className="eyebrow">Evidence</p>

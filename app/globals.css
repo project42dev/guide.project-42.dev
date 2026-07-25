@@ -1070,6 +1070,54 @@ a {
   max-width: 780px;
 }
 
+.learning-activity {
+  margin-top: 2.5rem;
+  padding: clamp(1.4rem, 3vw, 2.25rem);
+  border: 1px solid color-mix(in srgb, var(--orange) 42%, var(--line));
+  border-radius: var(--radius);
+  background:
+    linear-gradient(
+      145deg,
+      color-mix(in srgb, var(--orange) 10%, transparent),
+      color-mix(in srgb, white 96%, transparent)
+    );
+}
+
+.learning-activity h2 {
+  margin: 0.25rem 0 1rem;
+  font-size: clamp(1.55rem, 3vw, 2.15rem);
+}
+
+.learning-activity ol,
+.learning-activity ul {
+  display: grid;
+  gap: 0.75rem;
+  margin: 0;
+  padding-left: 1.35rem;
+  color: #374155;
+  line-height: 1.65;
+}
+
+.activity-evidence,
+.activity-reflection {
+  margin-top: 1.4rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--line);
+}
+
+.activity-evidence h3,
+.activity-reflection h3 {
+  margin: 0 0 0.7rem;
+  font-size: 1rem;
+  color: var(--navy);
+}
+
+.activity-reflection p {
+  margin: 0;
+  color: #374155;
+  line-height: 1.65;
+}
+
 .lesson-callout {
   background: #e7f7f8;
   border-left: 5px solid var(--cyan);

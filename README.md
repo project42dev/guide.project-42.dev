@@ -19,6 +19,8 @@ npm test
 
 The site consumes the versioned open-source learning core from
 [`project42dev/project42-platform`](https://github.com/project42dev/project42-platform).
+Release `0.7.0` renders the expanded seven-module AI Foundations path and its
+evidence-producing practice activities.
 Progress is deliberately device-local in the current MVP and can be exported as a
 portable JSON record or CSV transcript. Account-backed learning records remain a later
 release.
