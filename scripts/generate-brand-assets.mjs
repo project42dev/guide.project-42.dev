@@ -2,6 +2,10 @@ import { createHash } from "node:crypto";
 import { readFile, stat, writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import sharp from "sharp";
+import {
+  canonicalizeSvgSource,
+  sourceSha256,
+} from "./brand-source-integrity.mjs";
 
 const root = resolve(import.meta.dirname, "..");
 const checkOnly = process.argv.includes("--check");
@@ -13,9 +17,9 @@ const maskableIconPath = resolve(
 const socialPath = resolve(root, "public/brand/project-42-social.svg");
 const manifestPath = resolve(root, "public/brand/asset-manifest.json");
 
-const appIcon = await readFile(appIconPath);
-const maskableIcon = await readFile(maskableIconPath);
-const social = await readFile(socialPath);
+const appIcon = canonicalizeSvgSource(await readFile(appIconPath));
+const maskableIcon = canonicalizeSvgSource(await readFile(maskableIconPath));
+const social = canonicalizeSvgSource(await readFile(socialPath));
 const rasterAssets = [
   ["favicon-16x16.png", 16, 16, appIcon],
   ["favicon-32x32.png", 32, 32, appIcon],
@@ -58,9 +62,9 @@ if (checkOnly) {
   const manifest = {
     schemaVersion: "1.0",
     sources: {
-      "project-42-app-icon.svg": sha256(appIcon),
-      "project-42-maskable-icon.svg": sha256(maskableIcon),
-      "project-42-social.svg": sha256(social),
+      "project-42-app-icon.svg": sourceSha256(appIcon),
+      "project-42-maskable-icon.svg": sourceSha256(maskableIcon),
+      "project-42-social.svg": sourceSha256(social),
     },
     generated: Object.fromEntries(
       [...generated].map(([filename, buffer]) => [
@@ -79,13 +83,16 @@ async function validateCommittedAssets() {
   if (manifest.schemaVersion !== "1.0") {
     throw new Error("Unsupported brand asset manifest");
   }
-  if (manifest.sources["project-42-app-icon.svg"] !== sha256(appIcon)) {
+  if (manifest.sources["project-42-app-icon.svg"] !== sourceSha256(appIcon)) {
     throw new Error("Application icon source changed without regenerating assets");
   }
-  if (manifest.sources["project-42-social.svg"] !== sha256(social)) {
+  if (manifest.sources["project-42-social.svg"] !== sourceSha256(social)) {
     throw new Error("Social source changed without regenerating assets");
   }
-  if (manifest.sources["project-42-maskable-icon.svg"] !== sha256(maskableIcon)) {
+  if (
+    manifest.sources["project-42-maskable-icon.svg"] !==
+    sourceSha256(maskableIcon)
+  ) {
     throw new Error("Maskable icon source changed without regenerating assets");
   }
 

@@ -1,0 +1,15 @@
+{
+  "$schemaVersion": 1,
+  "exceptions": [
+    {
+      "targetPattern": "https://help.openai.com/en/articles/10169521-using-projects-in-chatgpt",
+      "expectedStatuses": [
+        403
+      ],
+      "reason": "The article is public in a normal browser but the help center consistently returns an automated-client 403 to the bounded Project 42 link checker.",
+      "owner": "Project 42 maintainers",
+      "verifiedOn": "2026-07-25",
+      "expires": "2026-10-31"
+    }
+  ]
+}

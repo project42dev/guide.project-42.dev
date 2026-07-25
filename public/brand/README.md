@@ -31,6 +31,11 @@ Run `npm run brand:generate` after changing either raster master. CI runs
 `npm run brand:check` to verify source hashes, image dimensions, file integrity, and
 the multi-size ICO directory.
 
+SVG sources are canonicalized to UTF-8 without a byte-order mark and with LF
+line endings before hashing and raster generation. This keeps the integrity
+manifest stable across normal Windows and Linux Git checkouts without ignoring
+substantive SVG changes.
+
 ## Usage
 
 - Keep clear space around the mark equal to at least one quarter of its height.
