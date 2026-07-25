@@ -14,6 +14,7 @@ export function SiteHeader() {
         <nav aria-label="Primary navigation">
           <Link href="/learn">Learn</Link>
           <Link href="/resources">Resources</Link>
+          <Link href="/diagrams">Visual guides</Link>
           <Link href="/profile">My progress</Link>
           <Link href="/about">About</Link>
         </nav>

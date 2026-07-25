@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { starterCatalog } from "@project42/platform";
 import { ProgressSnapshot } from "./components/ProgressSnapshot";
+import { diagramCatalog } from "./lib/diagrams";
 
 export default function Home() {
   const beginnerPath = starterCatalog.paths.find((path) => path.id === "ai-foundations");
@@ -28,6 +29,9 @@ export default function Home() {
             </Link>
             <Link className="button button-secondary" href="/resources">
               Browse the field guide
+            </Link>
+            <Link className="button button-secondary" href="/diagrams">
+              See visual guides
             </Link>
           </div>
           <ul className="trust-list" aria-label="Project 42 promises">
@@ -94,6 +98,7 @@ export default function Home() {
             </p>
             <ul>
               <li>{starterCatalog.resources.length} starter resources</li>
+              <li>{diagramCatalog.length} source-first visual guides</li>
               <li>Anthropic, OpenAI, and Google coverage</li>
               <li>Provider-neutral core concepts</li>
             </ul>

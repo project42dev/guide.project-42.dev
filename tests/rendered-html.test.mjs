@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { starterCatalog } from "@project42/platform";
+import diagramConfig from "../config/diagrams.json" with { type: "json" };
 
 async function render(pathname) {
   const workerUrl = new URL("../dist/server/index.js", import.meta.url);
@@ -36,6 +37,28 @@ test("renders academy and field-guide indexes", async () => {
   assert.equal(resources.status, 200);
   assert.match(await learn.text(), /Learning paths with a clear next step/);
   assert.match(await resources.text(), /Answers for the work in front of you/);
+});
+
+test("renders the complete accessible diagram library", async () => {
+  const diagramCatalog = diagramConfig.diagrams;
+  const index = await render("/diagrams");
+  const indexHtml = await index.text();
+  assert.equal(index.status, 200);
+  assert.equal(diagramCatalog.length, 8);
+  assert.equal((indexHtml.match(/class="diagram-card"/g) ?? []).length, 8);
+  assert.match(indexHtml, /See the system, not just the steps/);
+
+  for (const diagram of diagramCatalog) {
+    const response = await render(`/diagrams/${diagram.id}`);
+    const html = await response.text();
+    assert.equal(response.status, 200, `${diagram.id} should render`);
+    assert.ok(html.includes(diagram.title));
+    assert.ok(html.includes(diagram.altText));
+    assert.ok(html.includes(diagram.caption));
+    assert.ok(html.includes(`/diagrams/${diagram.source}`));
+    assert.match(html, /What this shows/);
+    assert.match(html, /Key takeaways/);
+  }
 });
 
 test("renders the complete searchable resource catalog and discovery metadata", async () => {

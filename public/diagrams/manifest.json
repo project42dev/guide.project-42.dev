@@ -1,0 +1,62 @@
+{
+  "$schemaVersion": 1,
+  "renderer": "@mermaid-js/mermaid-cli@11.15.0",
+  "entries": [
+    {
+      "id": "learning-evidence-loop",
+      "source": "learning-evidence-loop.mmd",
+      "sourceSha256": "bb7320b9964e2fac205eb30ebda50d9078a9abdfda571e41c7775f9b7088c63c",
+      "svg": "learning-evidence-loop.svg",
+      "svgSha256": "9deef39c9b734f2b185f35057e3350022b708b2e3c0f61cde279f8bcc9fc28a8"
+    },
+    {
+      "id": "grounded-answer-workflow",
+      "source": "grounded-answer-workflow.mmd",
+      "sourceSha256": "695373c14bff83c3868c7a5de4bf01ac7526fbf638add2cbc194e95913f7a65f",
+      "svg": "grounded-answer-workflow.svg",
+      "svgSha256": "73da0c13dd58134690322b80c4fc980e860845a7bd7b1c0699aae6f42cc1b49c"
+    },
+    {
+      "id": "safe-agent-loop",
+      "source": "safe-agent-loop.mmd",
+      "sourceSha256": "3b1a5b83b184a9ff4ce362ef7d253f7f13bb7ee9fc3d668c686bac7e0fe6728d",
+      "svg": "safe-agent-loop.svg",
+      "svgSha256": "bdcc79cdfbf3393c3e6ceca9d183018cacbadbd0a040074e1dead5d5dd7ae8dc"
+    },
+    {
+      "id": "prompt-contract",
+      "source": "prompt-contract.mmd",
+      "sourceSha256": "b9363b897918e4dbf1754d38ce7d190f719a7a74cade87d3e4dc6fe7c141b9bd",
+      "svg": "prompt-contract.svg",
+      "svgSha256": "65ec83bfff217df4b9d5930c69e1aedcbd0ca0ff801baf863e72baad0aedd200"
+    },
+    {
+      "id": "provider-selection",
+      "source": "provider-selection.mmd",
+      "sourceSha256": "1699442d4a4b5e31636d95eab8800fb3f83ce0ca499ebb7cbd6cfe1552e58779",
+      "svg": "provider-selection.svg",
+      "svgSha256": "9e73535c6e012a79e9bf647b55a192d45d43d6784fa6b520edfcb8b4ffc6b845"
+    },
+    {
+      "id": "tool-trust-boundaries",
+      "source": "tool-trust-boundaries.mmd",
+      "sourceSha256": "a3401e369dcd11f479b6cc04f3580e3d44b0c08542fca9596f2858013c1887be",
+      "svg": "tool-trust-boundaries.svg",
+      "svgSha256": "2a6b6418721fa885d7877d83924a37db96147996d124ecdce5ee7507f66ffa82"
+    },
+    {
+      "id": "multi-agent-handoff",
+      "source": "multi-agent-handoff.mmd",
+      "sourceSha256": "4656b3b0f5a5e871cd1c944a180c57caef1da8f5764c93556d47776759504eb8",
+      "svg": "multi-agent-handoff.svg",
+      "svgSha256": "bc3b66703e0becacb9c314e8a3c48ada68100d7fbfe820ea7395afa6a643fd71"
+    },
+    {
+      "id": "content-freshness-release",
+      "source": "content-freshness-release.mmd",
+      "sourceSha256": "ffb2aff71895146063311eae9803cc915127234ce83b70417cdd91d90e9864db",
+      "svg": "content-freshness-release.svg",
+      "svgSha256": "e342eca5cc23430fa39870cd63fd3d416643ceda1fa7a6dc6402ee79310d9e91"
+    }
+  ]
+}
