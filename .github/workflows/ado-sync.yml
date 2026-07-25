@@ -24,6 +24,10 @@ on:
 permissions:
   issues: write
 
+concurrency:
+  group: ado-intake-${{ github.repository_id }}-${{ github.event.issue.number }}
+  cancel-in-progress: false
+
 jobs:
   mirror-to-ado:
     # Flow 1 handles only user-submitted native Bug/Feature intake. Flow 2 projections carry
@@ -38,13 +42,14 @@ jobs:
           case "${{ github.event.issue.type.name }}" in
             Bug) echo "ado_wit=Bug" >> "$GITHUB_OUTPUT" ;;
             Feature) echo "ado_wit=Feature" >> "$GITHUB_OUTPUT" ;;
-            *) echo "ado_wit=User Story" >> "$GITHUB_OUTPUT" ;;
+            *) echo "Unsupported issue type" >&2; exit 1 ;;
           esac
 
       # Pinned to the v2.5 release commit, not @master (mutable ref) — this action receives
       # ADO_PAT and github_token secrets, so it must not silently pick up unreviewed changes.
       # Re-pin deliberately (and re-review the diff) when bumping to a newer release.
-      - uses: danhellem/github-actions-issue-to-work-item@8d0ead9b49a65aa66dac6949b1ff149d7ef8b4de # v2.5
+      - id: sync
+        uses: danhellem/github-actions-issue-to-work-item@8d0ead9b49a65aa66dac6949b1ff149d7ef8b4de # v2.5
         env:
           ado_token: "${{ secrets.ADO_PAT }}"
           ado_organization: "${{ secrets.ADO_ORG }}"
@@ -55,3 +60,21 @@ jobs:
           ado_bypassrules: "true"
           github_token: "${{ github.token }}"
           log_level: "100"
+
+      - name: Mark new intake as ADO tracked
+        if: github.event.action == 'opened'
+        env:
+          GH_TOKEN: "${{ github.token }}"
+          ISSUE_NUMBER: "${{ github.event.issue.number }}"
+          WORK_ITEM_ID: "${{ steps.sync.outputs.id }}"
+          ADO_ORG: "${{ secrets.ADO_ORG }}"
+          ADO_PROJECT: "${{ secrets.ADO_PROJECT }}"
+        run: |
+          if [ -z "$WORK_ITEM_ID" ]; then
+            echo "The sync action did not return an ADO work item ID." >&2
+            exit 1
+          fi
+          project_encoded=$(node -p "encodeURIComponent(process.env.ADO_PROJECT)")
+          ado_url="https://dev.azure.com/${ADO_ORG}/${project_encoded}/_workitems/edit/${WORK_ITEM_ID}"
+          gh issue edit "$ISSUE_NUMBER" --add-label "ado-tracked"
+          gh issue comment "$ISSUE_NUMBER" --body "Tracked in Azure DevOps: ${ado_url}"
