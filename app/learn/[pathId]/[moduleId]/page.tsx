@@ -133,6 +133,7 @@ export default async function ModulePage({ params }: ModulePageProps) {
           </section>
 
           <KnowledgeCheck
+            key={lessonModule.id}
             moduleId={lessonModule.id}
             nextHref={nextHref}
             passPercent={lessonModule.knowledgeCheck.passPercent}

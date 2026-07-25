@@ -1628,6 +1628,12 @@ a {
   margin: 0.25rem 0 0;
 }
 
+.check-result .button-secondary {
+  background: white;
+  border-color: white;
+  color: var(--navy);
+}
+
 .result-retry > div:first-child > span {
   color: var(--orange);
 }
