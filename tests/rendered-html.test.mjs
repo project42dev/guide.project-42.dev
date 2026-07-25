@@ -38,6 +38,60 @@ test("renders academy and field-guide indexes", async () => {
   assert.match(await resources.text(), /Answers for the work in front of you/);
 });
 
+test("renders the complete searchable resource catalog and discovery metadata", async () => {
+  const response = await render("/resources");
+  const html = await response.text();
+  const normalizedHtml = html.replaceAll("<!-- -->", "");
+
+  assert.equal(response.status, 200);
+  assert.equal(starterCatalog.resources.length, 50);
+  assert.equal((html.match(/data-resource-id=/g) ?? []).length, 50);
+  for (const label of [
+    "Search the field guide",
+    "Topic",
+    "Provider",
+    "Level",
+    "Format",
+    "Freshness",
+  ]) {
+    assert.ok(html.includes(label));
+  }
+  assert.match(normalizedHtml, /Showing 50 of 50 resources/);
+  assert.match(html, /Audience/);
+  assert.match(html, /Prerequisites/);
+  assert.match(html, /Owner/);
+  assert.match(html, /Reviewed/);
+  assert.match(html, /Current|Review due|Stale/);
+});
+
+test("renders complete resource detail metadata and source provenance", async () => {
+  const resource = starterCatalog.resources.find(
+    (candidate) => candidate.id === "human-controlled-ai-release-gate",
+  );
+  assert.ok(resource);
+  const response = await render(`/resources/${resource.id}`);
+  const html = await response.text();
+
+  assert.equal(response.status, 200);
+  assert.ok(html.includes(resource.title));
+  assert.match(html, /Resource details/);
+  assert.match(html, /Review cadence/);
+  assert.match(html, /Next review due/);
+  assert.match(html, /Primary sources/);
+  assert.match(html, /Source reviewed/);
+  for (const audience of resource.audience) {
+    assert.ok(html.toLowerCase().includes(audience.toLowerCase()));
+  }
+  for (const prerequisite of resource.prerequisites) {
+    assert.ok(html.includes(prerequisite));
+  }
+  for (const source of resource.sources) {
+    assert.ok(html.includes(source.title));
+    assert.ok(html.includes(source.publisher));
+    assert.ok(html.includes(source.lastVerified));
+  }
+});
+
 test("renders stable learning and resource routes", async () => {
   const routes = [
     ...starterCatalog.paths.map((path) => `/learn/${path.id}`),

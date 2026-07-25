@@ -16,7 +16,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...starterCatalog.resources.map((resource) => `/resources/${resource.id}`),
   ].map((path) => ({
     url: `${base}${path}`,
-    lastModified: new Date("2026-07-23"),
+    lastModified: new Date("2026-07-25"),
     changeFrequency: path.startsWith("/resources") ? "weekly" : "monthly",
     priority: path === "" ? 1 : path.split("/").length <= 2 ? 0.8 : 0.6,
   }));
