@@ -2003,13 +2003,14 @@ a {
   align-items: end;
   display: grid;
   gap: 1rem;
-  grid-template-columns: 1fr 200px;
-  margin-bottom: 1rem;
+  grid-template-columns: minmax(260px, 2fr) repeat(3, minmax(145px, 1fr));
+  margin-bottom: 1.25rem;
 }
 
 .resource-controls label {
   display: grid;
   gap: 0.5rem;
+  min-width: 0;
 }
 
 .resource-controls label > span {
@@ -2034,7 +2035,27 @@ a {
 .results-count {
   color: #606979;
   font-size: 0.72rem;
+  margin: 0;
+}
+
+.resource-results-summary {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
   margin: 1.5rem 0;
+  min-height: 34px;
+}
+
+.clear-filter-button {
+  background: transparent;
+  border: 0;
+  color: var(--ink);
+  cursor: pointer;
+  font-size: 0.72rem;
+  font-weight: 820;
+  padding: 0.5rem;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
 }
 
 .resource-grid {
@@ -2049,7 +2070,7 @@ a {
   border-radius: var(--radius);
   display: flex;
   flex-direction: column;
-  min-height: 330px;
+  min-height: 470px;
   padding: 2rem;
 }
 
@@ -2075,7 +2096,62 @@ a {
 }
 
 .resource-card .provider-pills {
-  margin-top: auto;
+  margin-top: 1rem;
+}
+
+.resource-card-facts {
+  border-top: 1px solid var(--line);
+  display: grid;
+  gap: 0.8rem 1rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin: auto 0 0;
+  padding-top: 1rem;
+}
+
+.resource-card-facts div {
+  min-width: 0;
+}
+
+.resource-card-facts dt,
+.resource-detail-facts dt {
+  color: #606979;
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.resource-card-facts dd,
+.resource-detail-facts dd {
+  font-size: 0.72rem;
+  line-height: 1.45;
+  margin: 0.25rem 0 0;
+}
+
+.freshness-badge {
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  display: inline-flex;
+  font-size: 0.62rem;
+  font-weight: 850;
+  letter-spacing: 0.04em;
+  padding: 0.25rem 0.5rem;
+  text-transform: uppercase;
+}
+
+.freshness-current {
+  background: #edf7e5;
+  color: #315f1c;
+}
+
+.freshness-review-due {
+  background: #fff1ca;
+  color: #765300;
+}
+
+.freshness-stale {
+  background: #ffe2df;
+  color: #902d2d;
 }
 
 .resource-foot {
@@ -2084,7 +2160,15 @@ a {
   display: flex;
   justify-content: space-between;
   margin-top: 1.2rem;
+  gap: 1rem;
   padding-top: 1rem;
+}
+
+.resource-foot > div {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
 }
 
 .resource-foot small {
@@ -2122,15 +2206,41 @@ a {
   text-align: left;
 }
 
-.verification-card span,
 .verification-card small {
   color: #aeb7c9;
   font-size: 0.68rem;
 }
 
+.verification-card .freshness-badge {
+  color: var(--navy);
+}
+
 .verification-card strong {
   font-size: 1.5rem;
-  margin: 0.5rem 0 1.5rem;
+  margin: 1rem 0 0.4rem;
+}
+
+.verification-card small + small {
+  margin-top: 0.35rem;
+}
+
+.resource-detail-facts {
+  background: var(--paper-strong);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-small);
+  display: grid;
+  gap: 1.2rem;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  margin: -1.5rem 0 4rem;
+  padding: 1.4rem;
+}
+
+.resource-detail-facts div:last-child {
+  grid-column: span 2;
+}
+
+.resource-detail-facts dd {
+  text-transform: capitalize;
 }
 
 .resource-body {
@@ -2159,6 +2269,11 @@ a {
 .source-panel span {
   color: #606979;
   font-size: 0.67rem;
+}
+
+.source-panel small {
+  color: #606979;
+  font-size: 0.62rem;
 }
 
 .profile-hero {
@@ -2690,9 +2805,20 @@ a {
     grid-template-columns: 1fr;
   }
 
-  .lesson-rail,
-  .source-panel {
+  .lesson-rail {
     display: none;
+  }
+
+  .source-panel {
+    position: static;
+  }
+
+  .resource-controls {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .resource-detail-facts {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
@@ -2838,6 +2964,25 @@ a {
 
   .resource-controls {
     grid-template-columns: 1fr;
+  }
+
+  .resource-results-summary {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .clear-filter-button {
+    padding-left: 0;
+  }
+
+  .resource-card-facts,
+  .resource-detail-facts {
+    grid-template-columns: 1fr;
+  }
+
+  .resource-detail-facts div:last-child {
+    grid-column: auto;
   }
 
   .profile-identity form {

@@ -8,6 +8,7 @@ export const metadata: Metadata = {
 };
 
 export default function ResourcesPage() {
+  const asOf = new Date().toISOString().slice(0, 10);
   return (
     <main className="page-shell shell">
       <header className="page-hero">
@@ -19,7 +20,7 @@ export default function ResourcesPage() {
           full course.
         </p>
       </header>
-      <ResourceExplorer resources={starterCatalog.resources} />
+      <ResourceExplorer asOf={asOf} resources={starterCatalog.resources} />
     </main>
   );
 }

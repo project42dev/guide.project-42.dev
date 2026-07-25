@@ -4,6 +4,10 @@ import { notFound } from "next/navigation";
 import { getResource, starterCatalog } from "@project42/platform";
 import { LessonSections } from "../../components/LessonSections";
 import { ProviderPills } from "../../components/ProviderPills";
+import {
+  displayEditorialValue,
+  getResourceFreshnessView,
+} from "../../lib/resourceFreshness";
 
 interface ResourcePageProps {
   params: Promise<{ resourceId: string }>;
@@ -25,6 +29,10 @@ export default async function ResourcePage({ params }: ResourcePageProps) {
   const { resourceId } = await params;
   const resource = getResource(resourceId);
   if (!resource) notFound();
+  const freshness = getResourceFreshnessView(
+    resource,
+    new Date().toISOString().slice(0, 10),
+  );
 
   return (
     <main className="resource-detail shell">
@@ -41,11 +49,48 @@ export default async function ResourcePage({ params }: ResourcePageProps) {
           <ProviderPills providers={resource.providers} />
         </div>
         <div className="verification-card">
-          <span>Last verified</span>
-          <strong>{resource.lastVerified}</strong>
+          <span
+            className={`freshness-badge ${freshness.className}`}
+          >
+            {freshness.label}
+          </span>
+          <strong>
+            <time dateTime={resource.lastVerified}>{resource.lastVerified}</time>
+          </strong>
+          <small>Next review due {freshness.dueOn}</small>
           <small>Content version {starterCatalog.contentVersion}</small>
         </div>
       </header>
+      <dl className="resource-detail-facts" aria-label="Resource details">
+        <div>
+          <dt>Format</dt>
+          <dd>{displayEditorialValue(resource.format)}</dd>
+        </div>
+        <div>
+          <dt>Level</dt>
+          <dd>{displayEditorialValue(resource.level)}</dd>
+        </div>
+        <div>
+          <dt>Audience</dt>
+          <dd>{resource.audience.map(displayEditorialValue).join(", ")}</dd>
+        </div>
+        <div>
+          <dt>Owner</dt>
+          <dd>{displayEditorialValue(resource.owner)}</dd>
+        </div>
+        <div>
+          <dt>Review cadence</dt>
+          <dd>Every {resource.reviewCadenceDays} days</dd>
+        </div>
+        <div>
+          <dt>Prerequisites</dt>
+          <dd>
+            {resource.prerequisites.length === 0
+              ? "None"
+              : resource.prerequisites.join("; ")}
+          </dd>
+        </div>
+      </dl>
       <div className="resource-body">
         <LessonSections sections={resource.sections} />
         <aside className="source-panel">
@@ -54,6 +99,10 @@ export default async function ResourcePage({ params }: ResourcePageProps) {
             <a href={source.url} key={source.url} rel="noreferrer" target="_blank">
               <strong>{source.title}</strong>
               <span>{source.publisher} ↗</span>
+              <small>
+                Source reviewed{" "}
+                <time dateTime={source.lastVerified}>{source.lastVerified}</time>
+              </small>
             </a>
           ))}
         </aside>
