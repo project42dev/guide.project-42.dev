@@ -6,6 +6,7 @@ import {
   getLearningPath,
   starterCatalog,
 } from "@project42/platform";
+import { CapstoneSubmission } from "../../../components/CapstoneSubmission";
 import { KnowledgeCheck } from "../../../components/KnowledgeCheck";
 import { LearningActivity } from "../../../components/LearningActivity";
 import { LessonSections } from "../../../components/LessonSections";
@@ -106,6 +107,14 @@ export default async function ModulePage({ params }: ModulePageProps) {
             <LearningActivity activity={lessonModule.activity} />
           ) : null}
 
+          {lessonModule.capstone ? (
+            <CapstoneSubmission
+              capstone={lessonModule.capstone}
+              moduleId={lessonModule.id}
+              pathId={path.id}
+            />
+          ) : null}
+
           <section className="sources" aria-labelledby="sources-title">
             <p className="eyebrow">Evidence</p>
             <h2 id="sources-title">Sources and verification</h2>
@@ -129,6 +138,7 @@ export default async function ModulePage({ params }: ModulePageProps) {
             passPercent={lessonModule.knowledgeCheck.passPercent}
             pathId={path.id}
             questions={lessonModule.knowledgeCheck.questions}
+            requiresCapstone={Boolean(lessonModule.capstone)}
           />
         </article>
 

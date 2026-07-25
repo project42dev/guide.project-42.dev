@@ -2,6 +2,7 @@
 
 import {
   buildAssessmentHistory,
+  buildCapstoneHistory,
   buildPortableLearnerRecord,
   buildTranscript,
   buildTranscriptCsv,
@@ -32,6 +33,10 @@ export function ProfileDashboard() {
   );
   const assessmentHistory = useMemo(
     () => buildAssessmentHistory(starterCatalog, progress),
+    [progress],
+  );
+  const capstoneHistory = useMemo(
+    () => buildCapstoneHistory(starterCatalog, progress),
     [progress],
   );
   const exportDate = new Date().toISOString().slice(0, 10);
@@ -86,7 +91,7 @@ export function ProfileDashboard() {
       replaceProgress(restored.progress);
       setImportStatus({
         kind: "success",
-        message: `Restored ${restored.progress.completedModuleIds.length} completed modules and ${restored.progress.attempts.length} knowledge checks.`,
+        message: `Restored ${restored.progress.completedModuleIds.length} completed modules, ${restored.progress.attempts.length} knowledge checks, and ${restored.progress.capstoneSubmissions?.length ?? 0} capstone submissions.`,
       });
     } catch {
       setImportStatus({
@@ -117,7 +122,7 @@ export function ProfileDashboard() {
         <p className="eyebrow">Learner profile</p>
         <h2>{progress.displayName}</h2>
         <p>
-          This MVP stores your record in this browser. Account-based, cross-device
+          This release stores your record in this browser. Account-based, cross-device
           progress is planned for a later release.
         </p>
         <form
@@ -154,6 +159,10 @@ export function ProfileDashboard() {
         <div>
           <span>{progress.badges.length}</span>
           <small>Badges earned</small>
+        </div>
+        <div>
+          <span>{progress.capstoneSubmissions?.length ?? 0}</span>
+          <small>Capstone submissions</small>
         </div>
       </section>
 
@@ -297,6 +306,71 @@ export function ProfileDashboard() {
         )}
       </section>
 
+      <section className="attempt-section" aria-labelledby="capstone-history-heading">
+        <div className="section-heading section-heading-inline">
+          <div>
+            <p className="eyebrow">Applied evidence</p>
+            <h2 id="capstone-history-heading">Capstone history</h2>
+          </div>
+          <span className="attempt-count">
+            {capstoneHistory.length}{" "}
+            {capstoneHistory.length === 1 ? "submission" : "submissions"}
+          </span>
+        </div>
+        {capstoneHistory.length > 0 ? (
+          <div className="attempt-table-wrap">
+            <table className="attempt-table">
+              <thead>
+                <tr>
+                  <th scope="col">Capstone</th>
+                  <th scope="col">Path</th>
+                  <th scope="col">Score</th>
+                  <th scope="col">Result</th>
+                  <th scope="col">Artifacts</th>
+                  <th scope="col">Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                {capstoneHistory.map((submission) => (
+                  <tr key={submission.id}>
+                    <th scope="row">{submission.capstoneTitle}</th>
+                    <td>{submission.pathTitle}</td>
+                    <td>{submission.scorePercent}%</td>
+                    <td>
+                      <span
+                        className={
+                          submission.passed
+                            ? "attempt-passed"
+                            : "attempt-not-passed"
+                        }
+                      >
+                        {submission.passed ? "Passed" : "Revise"}
+                      </span>
+                    </td>
+                    <td>{submission.artifactRefs.length}</td>
+                    <td>{new Date(submission.submittedAt).toLocaleDateString()}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          <div className="empty-state attempt-empty">
+            <h3>No capstone evidence yet.</h3>
+            <p>
+              Complete the AI Foundations capstone to add applied evidence to your
+              portable record and transcript.
+            </p>
+            <Link
+              className="button button-primary"
+              href="/learn/ai-foundations/ai-foundations-capstone"
+            >
+              Open the capstone
+            </Link>
+          </div>
+        )}
+      </section>
+
       <section className="badge-section">
         <div className="section-heading">
           <p className="eyebrow">Badges</p>
@@ -316,7 +390,10 @@ export function ProfileDashboard() {
         ) : (
           <div className="empty-state">
             <h3>Your first badge is waiting.</h3>
-            <p>Pass every knowledge check in a path to earn its mastery badge.</p>
+            <p>
+              Complete every required check and capstone in a path to earn its
+              mastery badge.
+            </p>
             <Link className="button button-primary" href="/learn/ai-foundations">
               Start AI Foundations
             </Link>
@@ -324,7 +401,7 @@ export function ProfileDashboard() {
         )}
       </section>
 
-      {progress.attempts.length ? (
+      {progress.attempts.length || (progress.capstoneSubmissions?.length ?? 0) > 0 ? (
         <details className="reset-panel">
           <summary>Manage local learning data</summary>
           <p>Resetting removes progress, scores, and badges from this browser.</p>
