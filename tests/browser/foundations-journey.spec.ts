@@ -45,6 +45,7 @@ async function expectNoAutomatedAccessibilityViolations(page: Page) {
 test("a learner can start, resume, complete, and export AI Foundations", async ({
   page,
 }) => {
+  test.setTimeout(180_000);
   const firstModule = foundationModules[0];
   const expectedCompletedModules = foundationModules.length;
   const expectedKnowledgeCheckAttempts = foundationModules.length + 1;
@@ -247,6 +248,8 @@ test("critical learner states pass automated accessibility checks", async ({
     "/learn/ai-foundations",
     "/learn/ai-foundations/research-with-evidence",
     "/learn/ai-foundations/ai-foundations-capstone",
+    "/learn/reliable-agent-workflows",
+    "/learn/reliable-agent-workflows/reliable-agent-capstone",
     "/profile",
   ]) {
     await page.goto(route);

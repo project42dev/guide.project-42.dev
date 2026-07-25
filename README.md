@@ -19,12 +19,14 @@ npm test
 
 The site consumes the versioned open-source learning core from
 [`project42dev/project42-platform`](https://github.com/project42dev/project42-platform).
-Release `0.9.0` renders the complete sixteen-module AI Foundations path, including
-evidence-based research, writing, coding and analysis, safe tool use, and a scored
-practical capstone. Learners can submit the required capstone artifacts, score the
-evidence rubric, resume locally, and export the result in a portable JSON record or
-CSV transcript. Account-backed cross-device learning records remain active
-implementation work.
+Release `0.10.0` adds the complete twelve-module Reliable Agent Workflows path to
+the sixteen-module AI Foundations path. Its practical capstone includes complete
+and deliberately flawed calibration packages, eight required operating artifacts,
+criterion-level evidence mapping, failed-submission revision, a 100-point rubric,
+and the Reliable Agent Operator badge. Profiles preserve attempts, capstone
+revisions, evidence links, badges, and portable JSON/CSV exports in device-local
+storage. Account-backed cross-device learning records remain active implementation
+work.
 
 ## Repositories
 
@@ -38,8 +40,8 @@ implementation work.
 The application builds to a Cloudflare Worker-compatible output through vinext and the
 Sites build adapter. Production configuration and learner secrets never belong in git.
 
-The platform dependency is pinned to an audited commit. npm `allowScripts` permits
-only that exact Git dependency to run its `prepare` script, which generates the
-published `dist` entrypoint by running the catalog generator and TypeScript compiler.
-Changing the platform commit requires reviewing its package scripts and updating the
-allow-list entry in the same change.
+The platform dependency uses a reviewed release tag and the lockfile resolves that
+tag to an exact commit. npm `allowScripts` permits only that release dependency to
+run its `prepare` script, which generates the published `dist` entrypoint by running
+the catalog generator and TypeScript compiler. Changing the platform release requires
+reviewing its package scripts and updating the allow-list entry in the same change.

@@ -1,6 +1,6 @@
 {
   "name": "project-42-site",
-  "version": "0.9.1",
+  "version": "0.10.0",
   "private": true,
   "engines": {
     "node": ">=22.13.0"
@@ -17,7 +17,7 @@
     "lint": "eslint . --ignore-pattern dist --ignore-pattern .next"
   },
   "dependencies": {
-    "@project42/platform": "github:project42dev/project42-platform#c84b9165078540076a11eb1b19bae5c5111139fe",
+    "@project42/platform": "github:project42dev/project42-platform#v0.13.0",
     "next": "16.2.11",
     "react": "19.2.8",
     "react-dom": "19.2.8"
@@ -48,6 +48,6 @@
   },
   "type": "module",
   "allowScripts": {
-    "github:project42dev/project42-platform#c84b9165078540076a11eb1b19bae5c5111139fe": true
+    "github:project42dev/project42-platform#v0.13.0": true
   }
 }
