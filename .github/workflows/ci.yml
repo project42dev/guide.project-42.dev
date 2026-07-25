@@ -18,5 +18,6 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      - run: npm run lint
-      - run: npm test
+      # Playwright's headless Chromium launch uses the smaller headless shell.
+      - run: npx playwright install --with-deps chromium --only-shell
+      - run: npm run check

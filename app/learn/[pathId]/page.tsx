@@ -24,7 +24,10 @@ export default async function PathPage({ params }: PathPageProps) {
   const { pathId } = await params;
   const path = getLearningPath(pathId);
   if (!path) notFound();
-  const modules = path.moduleIds.map(getLearningModule).filter(Boolean);
+  const modules = path.moduleIds.flatMap((moduleId) => {
+    const learningModule = getLearningModule(moduleId);
+    return learningModule ? [learningModule] : [];
+  });
   const totalMinutes = modules.reduce(
     (total, module) => total + (module?.estimatedMinutes ?? 0),
     0,

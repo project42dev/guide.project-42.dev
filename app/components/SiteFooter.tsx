@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { starterCatalog } from "@project42/platform";
 
 export function SiteFooter() {
   return (
@@ -25,7 +26,7 @@ export function SiteFooter() {
         </div>
       </div>
       <div className="shell footer-bottom">
-        <span>Project 42 · Content v0.1.0</span>
+        <span>Project 42 · Content v{starterCatalog.contentVersion}</span>
         <span>Code Apache-2.0 · Curriculum CC BY 4.0</span>
       </div>
     </footer>

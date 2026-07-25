@@ -23,6 +23,11 @@ test("renders the Project 42 home page", async () => {
   assert.match(html, /Start curious/);
   assert.match(html, /Self-paced learning/);
   assert.doesNotMatch(html, /codex-preview|Your site is taking shape/);
+  assert.ok(
+    html
+      .replaceAll("<!-- -->", "")
+      .includes(`Project 42 · Content v${starterCatalog.contentVersion}`),
+  );
 });
 
 test("renders academy and field-guide indexes", async () => {
