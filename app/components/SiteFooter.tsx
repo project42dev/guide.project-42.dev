@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { starterCatalog } from "@project42/platform";
+import { BrandMark } from "./BrandMark";
 
 export function SiteFooter() {
   return (
@@ -7,7 +8,7 @@ export function SiteFooter() {
       <div className="shell footer-grid">
         <div>
           <div className="brand footer-brand">
-            <span className="brand-mark">42</span>
+            <BrandMark />
             <span>Project 42</span>
           </div>
           <p>Free, open AI learning for curious people and capable teams.</p>

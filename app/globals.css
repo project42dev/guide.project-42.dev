@@ -125,19 +125,35 @@ a {
 }
 
 .brand-mark {
-  align-items: center;
-  background: var(--navy);
-  border-radius: 10px;
-  color: var(--lime);
-  display: inline-flex;
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 0.78rem;
-  font-weight: 900;
+  display: block;
+  flex: 0 0 auto;
   height: 34px;
-  justify-content: center;
-  letter-spacing: -0.06em;
-  transform: rotate(-3deg);
   width: 34px;
+}
+
+.brand-mark-background {
+  fill: var(--navy);
+}
+
+.brand-mark-four {
+  fill: var(--lime);
+}
+
+.brand-mark-two {
+  fill: var(--cyan);
+}
+
+@media (forced-colors: active) {
+  .brand-mark-background {
+    fill: Canvas;
+    stroke: CanvasText;
+    stroke-width: 3px;
+  }
+
+  .brand-mark-four,
+  .brand-mark-two {
+    fill: CanvasText;
+  }
 }
 
 .site-header nav {
@@ -698,6 +714,10 @@ a {
   margin-bottom: 8rem;
   padding: 5rem 2rem;
   text-align: center;
+}
+
+.cta > .eyebrow {
+  color: var(--navy);
 }
 
 .cta h2 {

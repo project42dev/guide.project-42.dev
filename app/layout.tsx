@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { SiteFooter } from "./components/SiteFooter";
 import { SiteHeader } from "./components/SiteHeader";
@@ -13,6 +13,40 @@ export const metadata: Metadata = {
   description:
     "Free, open, provider-neutral AI learning paths, knowledge checks, and practical field guides.",
   applicationName: "Project 42",
+  manifest: "/manifest.webmanifest",
+  icons: {
+    icon: [
+      {
+        url: "/brand/project-42-mark.svg",
+        type: "image/svg+xml",
+      },
+      {
+        url: "/favicon-32x32.png",
+        sizes: "32x32",
+        type: "image/png",
+      },
+      {
+        url: "/favicon-16x16.png",
+        sizes: "16x16",
+        type: "image/png",
+      },
+    ],
+    shortcut: "/favicon.ico",
+    apple: [
+      {
+        url: "/apple-touch-icon.png",
+        sizes: "180x180",
+        type: "image/png",
+      },
+    ],
+    other: [
+      {
+        rel: "mask-icon",
+        url: "/brand/project-42-mark-mono.svg",
+        color: "#0b1225",
+      },
+    ],
+  },
   keywords: [
     "AI learning",
     "agentic AI",
@@ -31,8 +65,8 @@ export const metadata: Metadata = {
     images: [
       {
         url: "/og.png",
-        width: 1743,
-        height: 909,
+        width: 1200,
+        height: 630,
         alt: "Project 42 — Start curious. Become capable.",
       },
     ],
@@ -44,6 +78,11 @@ export const metadata: Metadata = {
       "Free learning paths and practical resources from first principles to reliable agents.",
     images: ["/og.png"],
   },
+};
+
+export const viewport: Viewport = {
+  colorScheme: "light",
+  themeColor: "#0b1225",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

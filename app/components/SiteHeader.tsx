@@ -1,11 +1,12 @@
 import Link from "next/link";
+import { BrandMark } from "./BrandMark";
 
 export function SiteHeader() {
   return (
     <header className="site-header">
       <div className="shell header-inner">
         <Link className="brand" href="/" aria-label="Project 42 home">
-          <span className="brand-mark">42</span>
+          <BrandMark />
           <span>
             Project <strong>42</strong>
           </span>
