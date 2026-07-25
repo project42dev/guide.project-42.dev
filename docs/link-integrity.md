@@ -55,10 +55,12 @@ An exception must include:
 - an accountable owner; and
 - an ISO expiry date.
 
-Exceptions are not permanent allowlists. A successful response makes the
-exception unused and fails the gate so it can be removed. An expired exception
-also fails. Timeouts, DNS failures, and unexpected statuses cannot be hidden
-by a status exception.
+Exceptions are not permanent allowlists. A successful response always passes,
+including when another network or CI runner receives the documented blocking
+status. The exception remains in use while its narrow pattern matches a
+crawled site target, and its expiry forces periodic review. A pattern matching
+no current target fails as unused. Timeouts, DNS failures, expired exceptions,
+and unexpected statuses cannot be hidden by a status exception.
 
 Link reachability does not prove that a source is factually current. Content
 verification dates and freshness governance remain separate release evidence.

@@ -396,7 +396,15 @@ export async function checkExternalReferences({
   }
   const targets = [...byTarget.keys()].sort();
   const failures = validateExceptionPolicy(exceptions, targets, today);
-  const usedExceptions = new Set();
+  const activeExceptions = new Set(
+    exceptions.filter(
+      (exception) =>
+        typeof exception.targetPattern === "string" &&
+        targets.some((target) =>
+          patternMatches(exception.targetPattern, target),
+        ),
+    ),
+  );
   const results = await mapLimit(targets, concurrency, async (target) => {
     const result = await fetchExternal(target, {
       fetchImpl,
@@ -415,7 +423,6 @@ export async function checkExternalReferences({
       Array.isArray(matchingException.expectedStatuses) &&
       matchingException.expectedStatuses.includes(result.status)
     ) {
-      usedExceptions.add(matchingException);
       return { target, ...result, excepted: true };
     }
     if (!result.ok) {
@@ -431,23 +438,11 @@ export async function checkExternalReferences({
     return { target, ...result, excepted: false };
   });
 
-  for (const exception of exceptions) {
-    if (
-      typeof exception.targetPattern === "string" &&
-      targets.some((target) => patternMatches(exception.targetPattern, target)) &&
-      !usedExceptions.has(exception)
-    ) {
-      failures.push(
-        `Exception no longer needed: ${exception.targetPattern}; remove or update it`,
-      );
-    }
-  }
-
   return {
     failures: [...new Set(failures)],
     results,
     uniqueTargetCount: targets.length,
-    usedExceptionCount: usedExceptions.size,
+    usedExceptionCount: activeExceptions.size,
   };
 }
 

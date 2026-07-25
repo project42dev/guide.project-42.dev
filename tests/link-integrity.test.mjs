@@ -151,7 +151,7 @@ test("retries and reports an unreachable external source with its route", async 
   assert.match(result.failures[0], /\/resources\/x/);
 });
 
-test("uses a current status-specific automation exception", async () => {
+test("accepts expected failure and environment-dependent success for an active exception", async () => {
   const exception = {
     targetPattern: "https://blocked.example/docs",
     expectedStatuses: [403],
@@ -170,6 +170,18 @@ test("uses a current status-specific automation exception", async () => {
   });
   assert.deepEqual(result.failures, []);
   assert.equal(result.usedExceptionCount, 1);
+
+  const successfulEnvironment = await checkExternalReferences({
+    references: [externalReference("https://blocked.example/docs")],
+    exceptions: [exception],
+    fetchImpl: async () => new Response("", { status: 200 }),
+    concurrency: 1,
+    timeoutMs: 100,
+    attempts: 1,
+    today: "2026-07-25",
+  });
+  assert.deepEqual(successfulEnvironment.failures, []);
+  assert.equal(successfulEnvironment.usedExceptionCount, 1);
 });
 
 test("rejects expired and unused exceptions", async () => {
@@ -208,19 +220,4 @@ test("rejects expired and unused exceptions", async () => {
     ).some((failure) => failure.includes("invalid expiry date")),
   );
 
-  const unused = { ...expired, expires: "2026-10-31" };
-  const result = await checkExternalReferences({
-    references: [externalReference("https://blocked.example/docs")],
-    exceptions: [unused],
-    fetchImpl: async () => new Response("", { status: 200 }),
-    concurrency: 1,
-    timeoutMs: 100,
-    attempts: 1,
-    today: "2026-07-25",
-  });
-  assert.ok(
-    result.failures.some((failure) =>
-      failure.includes("Exception no longer needed"),
-    ),
-  );
 });
