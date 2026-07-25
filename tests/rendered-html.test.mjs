@@ -48,6 +48,27 @@ test("renders stable learning and resource routes", async () => {
   }
 });
 
+test("renders evidence-producing activities for substantive modules", async () => {
+  const response = await render(
+    "/learn/ai-foundations/ai-systems-and-use-cases",
+  );
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  assert.match(html, /Practice activity/);
+  assert.match(html, /Triage four possible AI use cases/);
+  assert.match(html, /What to produce/);
+  assert.match(html, /Reflect before continuing/);
+  assert.match(
+    html,
+    /aria-labelledby="activity-ai-use-case-triage-title"/,
+  );
+  assert.match(html, /id="activity-ai-use-case-triage-title"/);
+
+  const legacyResponse = await render("/learn/ai-foundations/what-ai-does");
+  assert.equal(legacyResponse.status, 200);
+  assert.doesNotMatch(await legacyResponse.text(), /Practice activity/);
+});
+
 test("all rendered internal navigation links resolve", async () => {
   const entryRoutes = ["/", "/learn", "/resources", "/profile", "/about"];
   const internalLinks = new Set(entryRoutes);
