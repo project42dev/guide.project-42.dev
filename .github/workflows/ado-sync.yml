@@ -62,7 +62,7 @@ jobs:
           log_level: "100"
 
       - name: Mark new intake as ADO tracked
-        if: github.event.action == 'opened'
+        if: github.event.action == 'opened' || (github.event.action == 'reopened' && !contains(github.event.issue.labels.*.name, 'ado-tracked'))
         env:
           GH_TOKEN: "${{ github.token }}"
           ISSUE_NUMBER: "${{ github.event.issue.number }}"
@@ -70,11 +70,16 @@ jobs:
           ADO_ORG: "${{ secrets.ADO_ORG }}"
           ADO_PROJECT: "${{ secrets.ADO_PROJECT }}"
         run: |
-          if [ -z "$WORK_ITEM_ID" ]; then
-            echo "The sync action did not return an ADO work item ID." >&2
+          work_item_id="$WORK_ITEM_ID"
+          if [ -z "$work_item_id" ]; then
+            work_item_id=$(gh issue view "$ISSUE_NUMBER" --json body \
+              --jq '.body | capture("AB#(?<id>[0-9]+)").id')
+          fi
+          if [ -z "$work_item_id" ]; then
+            echo "No ADO work item ID was returned or linked in the issue body." >&2
             exit 1
           fi
           project_encoded=$(node -p "encodeURIComponent(process.env.ADO_PROJECT)")
-          ado_url="https://dev.azure.com/${ADO_ORG}/${project_encoded}/_workitems/edit/${WORK_ITEM_ID}"
+          ado_url="https://dev.azure.com/${ADO_ORG}/${project_encoded}/_workitems/edit/${work_item_id}"
           gh issue edit "$ISSUE_NUMBER" --add-label "ado-tracked"
           gh issue comment "$ISSUE_NUMBER" --body "Tracked in Azure DevOps: ${ado_url}"
