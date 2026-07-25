@@ -1,10 +1,12 @@
 name: ADO sync (Flow 1 intake)
 
-# Mirrors native Bug/Feature GitHub issues up into Azure DevOps for rollup/reporting, using
-# the official Microsoft-documented GitHub Action (listed at
+# Mirrors native Bug/Feature GitHub issues up into Azure DevOps for rollup/reporting. Initial
+# creation uses the official Microsoft-documented GitHub Action (listed at
 # https://learn.microsoft.com/azure/devops/cross-service/github-integration#integrate-azure-boards-with-github)
-# instead of a hand-rolled script. GitHub stays the master record — see
-# docs/standards/work-item-sync.md (Flow 1) and docs/standards/github-issues.md.
+# and later events update the exact immutable AB# link through the ADO REST API. The split
+# prevents the action from creating duplicates after title changes. GitHub stays the master
+# record — see docs/standards/work-item-sync.md (Flow 1) and
+# docs/standards/github-issues.md.
 #
 # The REVERSE direction (AB# mention -> ADO link/state-transition, e.g. "Fixes AB#123" in a
 # PR) is handled by the native "Azure Boards" GitHub Marketplace app + the ADO project's
@@ -33,9 +35,20 @@ jobs:
     # Flow 1 handles only user-submitted native Bug/Feature intake. Flow 2 projections carry
     # `ado-managed` and must never re-enter ADO as new work items, or the two flows form a
     # feedback loop. Task, untyped, and bot-managed roadmap issues are intentionally ignored.
-    if: ${{ !contains(github.event.issue.labels.*.name, 'ado-managed') && (github.event.issue.type.name == 'Bug' || github.event.issue.type.name == 'Feature') }}
+    if: ${{ github.event.sender.login != 'azure-boards[bot]' && !contains(github.event.issue.labels.*.name, 'ado-managed') && (github.event.issue.type.name == 'Bug' || github.event.issue.type.name == 'Feature') }}
     runs-on: ubuntu-latest
     steps:
+      - name: Read linked ADO work item
+        id: linked
+        env:
+          ISSUE_BODY: "${{ github.event.issue.body }}"
+        run: |
+          work_item_id=$(printf '%s' "$ISSUE_BODY" \
+            | grep -oE 'AB#[0-9]+' \
+            | tail -n 1 \
+            | sed 's/AB#//' || true)
+          echo "id=${work_item_id}" >> "$GITHUB_OUTPUT"
+
       - name: Determine ADO work item type
         id: type
         run: |
@@ -49,17 +62,54 @@ jobs:
       # ADO_PAT and github_token secrets, so it must not silently pick up unreviewed changes.
       # Re-pin deliberately (and re-review the diff) when bumping to a newer release.
       - id: sync
+        if: github.event.action == 'opened' && steps.linked.outputs.id == ''
         uses: danhellem/github-actions-issue-to-work-item@8d0ead9b49a65aa66dac6949b1ff149d7ef8b4de # v2.5
         env:
           ado_token: "${{ secrets.ADO_PAT }}"
           ado_organization: "${{ secrets.ADO_ORG }}"
           ado_project: "${{ secrets.ADO_PROJECT }}"
+          ado_area_path: "Project 42\\Product and UX"
           ado_wit: "${{ steps.type.outputs.ado_wit }}"
           ado_new_state: "New"
           ado_close_state: "Closed"
           ado_bypassrules: "true"
           github_token: "${{ github.token }}"
           log_level: "100"
+
+      - name: Update the exact linked ADO work item
+        if: github.event.action != 'opened' && steps.linked.outputs.id != ''
+        env:
+          ADO_PAT: "${{ secrets.ADO_PAT }}"
+          ADO_ORG: "${{ secrets.ADO_ORG }}"
+          ADO_PROJECT: "${{ secrets.ADO_PROJECT }}"
+          WORK_ITEM_ID: "${{ steps.linked.outputs.id }}"
+          ISSUE_TITLE: "${{ github.event.issue.title }}"
+          ISSUE_BODY: "${{ github.event.issue.body }}"
+          ISSUE_STATE: "${{ github.event.issue.state }}"
+        run: |
+          if [ "$ISSUE_STATE" = "closed" ]; then
+            ado_state="Closed"
+          else
+            ado_state="New"
+          fi
+          project_encoded=$(node -p "encodeURIComponent(process.env.ADO_PROJECT)")
+          ado_url="https://dev.azure.com/${ADO_ORG}/${project_encoded}/_apis/wit/workitems/${WORK_ITEM_ID}?api-version=7.1"
+          ado_auth=$(printf ':%s' "$ADO_PAT" | base64 -w0)
+          patch=$(jq -n \
+            --arg title "$ISSUE_TITLE" \
+            --arg description "$ISSUE_BODY" \
+            --arg state "$ado_state" \
+            '[
+              {"op":"add","path":"/fields/System.Title","value":$title},
+              {"op":"add","path":"/fields/System.Description","value":$description},
+              {"op":"add","path":"/fields/System.State","value":$state}
+            ]')
+          curl --silent --show-error --fail-with-body \
+            --request PATCH \
+            --header "Authorization: Basic ${ado_auth}" \
+            --header "Content-Type: application/json-patch+json" \
+            --data "$patch" \
+            "$ado_url" > /dev/null
 
       - name: Mark new intake as ADO tracked
         if: github.event.action == 'opened' || (github.event.action == 'reopened' && !contains(github.event.issue.labels.*.name, 'ado-tracked'))
@@ -70,6 +120,7 @@ jobs:
           WORK_ITEM_ID: "${{ steps.sync.outputs.id }}"
           ADO_ORG: "${{ secrets.ADO_ORG }}"
           ADO_PROJECT: "${{ secrets.ADO_PROJECT }}"
+          ADO_PAT: "${{ secrets.ADO_PAT }}"
         run: |
           work_item_id="$WORK_ITEM_ID"
           if [ -z "$work_item_id" ]; then
@@ -82,6 +133,18 @@ jobs:
           fi
           project_encoded=$(node -p "encodeURIComponent(process.env.ADO_PROJECT)")
           ado_url="https://dev.azure.com/${ADO_ORG}/${project_encoded}/_workitems/edit/${work_item_id}"
+          ado_api="https://dev.azure.com/${ADO_ORG}/${project_encoded}/_apis/wit/workitems/${work_item_id}?api-version=7.1"
+          ado_auth=$(printf ':%s' "$ADO_PAT" | base64 -w0)
+          patch=$(jq -n '[
+            {"op":"add","path":"/fields/System.Tags","value":"web-portal"},
+            {"op":"add","path":"/fields/Microsoft.VSTS.Common.Priority","value":3}
+          ]')
+          curl --silent --show-error --fail-with-body \
+            --request PATCH \
+            --header "Authorization: Basic ${ado_auth}" \
+            --header "Content-Type: application/json-patch+json" \
+            --data "$patch" \
+            "$ado_api" > /dev/null
           gh issue edit "$ISSUE_NUMBER" --repo "$REPOSITORY" --add-label "ado-tracked"
           gh issue comment "$ISSUE_NUMBER" --repo "$REPOSITORY" \
             --body "Tracked in Azure DevOps: ${ado_url}"
