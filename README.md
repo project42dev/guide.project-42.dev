@@ -28,6 +28,14 @@ revisions, evidence links, badges, and portable JSON/CSV exports in device-local
 storage. Account-backed cross-device learning records remain active implementation
 work.
 
+Release `0.15.0` adds eight accessible visual guides for learning evidence,
+grounded research, prompting, provider selection, safe tools, bounded agents,
+multi-agent handoffs, and human-gated content freshness. Mermaid files under
+`diagrams/` are the editable source of truth; reviewed SVG and public source
+artifacts are generated ahead of deployment. See
+[`docs/diagram-authoring.md`](docs/diagram-authoring.md) for the validation,
+accessibility, and security contract.
+
 ## Repositories
 
 - `project-42.dev` — hosted public experience and brand

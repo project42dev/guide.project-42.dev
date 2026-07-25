@@ -18,6 +18,9 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+        env:
+          # Mermaid generation reuses Playwright; Puppeteer's separate browser is unused.
+          PUPPETEER_SKIP_DOWNLOAD: "true"
       # Playwright's headless Chromium launch uses the smaller headless shell.
       - run: npx playwright install --with-deps chromium --only-shell
       - run: npm run check

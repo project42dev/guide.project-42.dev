@@ -3,6 +3,7 @@ import path from "node:path";
 import process from "node:process";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { starterCatalog } from "@project42/platform";
+import diagramConfig from "../config/diagrams.json" with { type: "json" };
 
 const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const defaultBaseUrl = "https://project-42.dev";
@@ -45,8 +46,18 @@ function sourceLabel(reference) {
   return `${reference.sourceRoute} -> ${reference.target}`;
 }
 
-export function buildRouteInventory(catalog = starterCatalog) {
-  const htmlRoutes = new Set(["/", "/about", "/learn", "/profile", "/resources"]);
+export function buildRouteInventory(
+  catalog = starterCatalog,
+  diagrams = diagramConfig.diagrams,
+) {
+  const htmlRoutes = new Set([
+    "/",
+    "/about",
+    "/diagrams",
+    "/learn",
+    "/profile",
+    "/resources",
+  ]);
   for (const learningPath of catalog.paths) {
     htmlRoutes.add(`/learn/${learningPath.id}`);
     for (const moduleId of learningPath.moduleIds) {
@@ -55,6 +66,9 @@ export function buildRouteInventory(catalog = starterCatalog) {
   }
   for (const resource of catalog.resources) {
     htmlRoutes.add(`/resources/${resource.id}`);
+  }
+  for (const diagram of diagrams) {
+    htmlRoutes.add(`/diagrams/${diagram.id}`);
   }
   return {
     htmlRoutes: [...htmlRoutes].sort(),
