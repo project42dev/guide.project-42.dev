@@ -339,10 +339,11 @@ test("all rendered internal navigation links resolve", async () => {
 });
 
 test("publishes accessible document landmarks and discovery metadata", async () => {
-  const [home, sitemap, robots] = await Promise.all([
+  const [home, sitemap, robots, manifest] = await Promise.all([
     render("/"),
     render("/sitemap.xml"),
     render("/robots.txt"),
+    render("/manifest.webmanifest"),
   ]);
   const html = await home.text();
 
@@ -351,8 +352,46 @@ test("publishes accessible document landmarks and discovery metadata", async () 
   assert.match(html, /href="#main-content"/);
   assert.match(html, /id="main-content" tabindex="-1"/);
   assert.match(html, /<nav aria-label="Primary navigation">/);
+  assert.match(html, /class="brand-mark"/);
+  assert.match(html, /class="brand-mark-four"/);
+  assert.match(html, /class="brand-mark-two"/);
+  assert.match(html, /href="\/brand\/project-42-mark\.svg"/);
+  assert.match(html, /href="\/favicon-32x32\.png"/);
+  assert.match(html, /href="\/favicon-16x16\.png"/);
+  assert.match(html, /href="\/favicon\.ico"/);
+  assert.match(html, /href="\/apple-touch-icon\.png"/);
+  assert.match(html, /href="\/manifest\.webmanifest"/);
+  assert.match(html, /name="theme-color" content="#0b1225"/);
   assert.equal(sitemap.status, 200);
   assert.equal(robots.status, 200);
+  assert.equal(manifest.status, 200);
+  const webManifest = await manifest.json();
+  assert.equal(webManifest.short_name, "Project 42");
+  assert.equal(webManifest.theme_color, "#0b1225");
+  assert.deepEqual(
+    webManifest.icons.map(({ src, sizes, purpose }) => ({
+      src,
+      sizes,
+      purpose,
+    })),
+    [
+      {
+        src: "/icon-192x192.png",
+        sizes: "192x192",
+        purpose: "any",
+      },
+      {
+        src: "/icon-512x512.png",
+        sizes: "512x512",
+        purpose: "any",
+      },
+      {
+        src: "/icon-maskable-512x512.png",
+        sizes: "512x512",
+        purpose: "maskable",
+      },
+    ],
+  );
 });
 
 test("keeps labelled relationships valid on learner-journey pages", async () => {
