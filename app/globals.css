@@ -1173,6 +1173,123 @@ a {
   margin: 0.35rem 0 0;
 }
 
+.capstone-exemplars {
+  background: #eef7f7;
+  border: 1px solid #9bc9cc;
+  border-radius: var(--radius-small);
+  margin: 1.5rem 0;
+  padding: 1.2rem;
+}
+
+.capstone-exemplars h3 {
+  font-size: 1.25rem;
+  margin: 0;
+}
+
+.capstone-exemplars > p:not(.eyebrow) {
+  color: var(--ink-soft);
+  font-size: 0.78rem;
+  line-height: 1.55;
+}
+
+.capstone-exemplar-grid {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.capstone-exemplar {
+  background: white;
+  border: 1px solid #aebdc1;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.capstone-exemplar-flawed {
+  border-color: #d8b566;
+}
+
+.capstone-exemplar summary {
+  cursor: pointer;
+  display: grid;
+  gap: 0.25rem;
+  list-style-position: inside;
+  padding: 1rem;
+}
+
+.capstone-exemplar summary span {
+  color: #566274;
+  font-size: 0.66rem;
+  font-weight: 850;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+
+.capstone-exemplar summary strong {
+  font-size: 0.92rem;
+}
+
+.capstone-exemplar summary small {
+  color: var(--ink-soft);
+  font-size: 0.7rem;
+}
+
+.capstone-exemplar[open] summary {
+  border-bottom: 1px solid var(--line);
+}
+
+.capstone-exemplar > p,
+.capstone-exemplar > h4,
+.capstone-exemplar > ul {
+  margin-inline: 1rem;
+}
+
+.capstone-exemplar > p,
+.exemplar-artifacts p,
+.exemplar-score-list span {
+  color: var(--ink-soft);
+  font-size: 0.74rem;
+  line-height: 1.55;
+}
+
+.exemplar-artifacts {
+  display: grid;
+  gap: 0.65rem;
+  padding: 0 1rem 1rem;
+}
+
+.exemplar-artifacts article {
+  background: var(--paper);
+  border-radius: 10px;
+  padding: 0.85rem;
+}
+
+.exemplar-artifacts h4 {
+  font-size: 0.78rem;
+  margin: 0;
+}
+
+.exemplar-artifacts p {
+  margin: 0.35rem 0 0.6rem;
+}
+
+.exemplar-artifacts code {
+  font-size: 0.66rem;
+  overflow-wrap: anywhere;
+}
+
+.exemplar-score-list {
+  display: grid;
+  gap: 0.6rem;
+  list-style: none;
+  padding: 0 0 1rem;
+}
+
+.exemplar-score-list li,
+.capstone-latest-evidence li {
+  display: grid;
+  gap: 0.2rem;
+}
+
 .capstone-submission form {
   display: grid;
   gap: 1.5rem;
@@ -1262,6 +1379,57 @@ a {
   font-size: 0.66rem;
 }
 
+.criterion-evidence-map {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  grid-column: 1 / -1;
+  margin: 0;
+  padding: 0.85rem;
+}
+
+.criterion-evidence-map legend {
+  font-size: 0.76rem;
+  font-weight: 850;
+  padding: 0 0.35rem;
+}
+
+.criterion-evidence-map > p {
+  color: var(--ink-soft);
+  font-size: 0.7rem;
+  margin: 0 0 0.65rem;
+}
+
+.criterion-evidence-map > div {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.criterion-evidence-map label {
+  align-items: start;
+  background: #f7f8f5;
+  border: 1px solid #d6d8d1;
+  border-radius: 8px;
+  display: grid;
+  font-size: 0.7rem;
+  gap: 0.5rem;
+  grid-template-columns: 18px 1fr;
+  padding: 0.55rem 0.65rem;
+  text-transform: none;
+}
+
+.criterion-evidence-map input {
+  height: 16px;
+  margin: 0.05rem 0 0;
+  padding: 0;
+  width: 16px;
+}
+
+.criterion-evidence-map label span {
+  font-size: 0.7rem;
+  overflow-wrap: anywhere;
+  text-transform: none;
+}
+
 .capstone-reflection textarea {
   line-height: 1.5;
   resize: vertical;
@@ -1291,6 +1459,27 @@ a {
   background: #fff2d8;
   border-color: #d8b566;
   color: #714a00;
+}
+
+.capstone-latest-evidence {
+  margin-top: 0.8rem;
+}
+
+.capstone-latest-evidence summary {
+  cursor: pointer;
+  font-size: 0.74rem;
+  font-weight: 800;
+}
+
+.capstone-latest-evidence ul {
+  display: grid;
+  gap: 0.55rem;
+  padding-left: 1.1rem;
+}
+
+.capstone-latest-evidence span {
+  font-size: 0.68rem;
+  overflow-wrap: anywhere;
 }
 
 .capstone-form-error {

@@ -327,6 +327,7 @@ export function ProfileDashboard() {
                   <th scope="col">Score</th>
                   <th scope="col">Result</th>
                   <th scope="col">Artifacts</th>
+                  <th scope="col">Evidence links</th>
                   <th scope="col">Date</th>
                 </tr>
               </thead>
@@ -348,6 +349,13 @@ export function ProfileDashboard() {
                       </span>
                     </td>
                     <td>{submission.artifactRefs.length}</td>
+                    <td>
+                      {submission.criterionScores.reduce(
+                        (total, score) =>
+                          total + (score.evidenceRefs?.length ?? 0),
+                        0,
+                      )}
+                    </td>
                     <td>{new Date(submission.submittedAt).toLocaleDateString()}</td>
                   </tr>
                 ))}
@@ -358,14 +366,14 @@ export function ProfileDashboard() {
           <div className="empty-state attempt-empty">
             <h3>No capstone evidence yet.</h3>
             <p>
-              Complete the AI Foundations capstone to add applied evidence to your
-              portable record and transcript.
+              Complete a path capstone to add applied evidence, revisions, and
+              criterion scores to your portable record and transcript.
             </p>
             <Link
               className="button button-primary"
-              href="/learn/ai-foundations/ai-foundations-capstone"
+              href="/learn"
             >
-              Open the capstone
+              Choose a learning path
             </Link>
           </div>
         )}

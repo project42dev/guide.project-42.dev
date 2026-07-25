@@ -60,7 +60,7 @@ test("renders evidence-producing activities for every substantive module", async
   const activityModules = starterCatalog.modules.filter(
     (learningModule) => learningModule.activity,
   );
-  assert.equal(activityModules.length, 13);
+  assert.equal(activityModules.length, 25);
 
   for (const learningModule of activityModules) {
     const path = starterCatalog.paths.find((candidate) =>
@@ -95,7 +95,7 @@ test("renders the complete AI Foundations curriculum and source provenance", asy
   );
   assert.ok(path);
   assert.equal(path.moduleIds.length, 16);
-  assert.equal(starterCatalog.modules.length, 22);
+  assert.equal(starterCatalog.modules.length, 31);
 
   for (const moduleId of path.moduleIds) {
     const learningModule = starterCatalog.modules.find(
@@ -157,6 +157,38 @@ test("renders an accessible scored capstone evidence form", async () => {
     for (const evidence of criterion.evidenceRequired) {
       assert.ok(html.includes(evidence));
     }
+  }
+});
+
+test("renders the complete reliable-agent capstone calibration and evidence map", async () => {
+  const path = starterCatalog.paths.find(
+    (candidate) => candidate.id === "reliable-agent-workflows",
+  );
+  const learningModule = starterCatalog.modules.find(
+    (candidate) => candidate.id === "reliable-agent-capstone",
+  );
+  assert.ok(path);
+  assert.ok(learningModule?.capstone);
+  assert.equal(path.moduleIds.length, 12);
+  assert.equal(path.moduleIds.at(-1), learningModule.id);
+
+  const response = await render(
+    `/learn/${path.id}/${learningModule.id}`,
+  );
+  const html = await response.text();
+  assert.equal(response.status, 200);
+  assert.match(html, /Compare evidence before you score/);
+  assert.match(html, /Complete exemplar: bounded support-triage agent/);
+  assert.match(html, /Flawed exemplar: autonomous support agent/);
+  assert.match(html, /Map this score to evidence/);
+  assert.equal(learningModule.capstone.requiredArtifacts.length, 8);
+  assert.equal(learningModule.capstone.rubric.criteria.length, 6);
+  assert.equal(learningModule.capstone.exemplars?.length, 2);
+  for (const artifact of learningModule.capstone.requiredArtifacts) {
+    assert.ok(html.includes(artifact));
+  }
+  for (const criterion of learningModule.capstone.rubric.criteria) {
+    assert.ok(html.includes(criterion.title));
   }
 });
 
