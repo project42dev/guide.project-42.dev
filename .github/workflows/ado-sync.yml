@@ -26,11 +26,10 @@ permissions:
 
 jobs:
   mirror-to-ado:
-    # Only native Bug/Feature issue types are mirrored (Flow 1). Task and unlabeled issues
-    # are left alone — see the type table in docs/standards/github-issues.md. Feature issues
-    # land as a candidate work item; promotion to a roadmap-tracked Feature (Delivery Stage:
-    # Approved) is a human decision, not automated here (see work-item-sync.md Flow 2).
-    if: github.event.issue.type == null || github.event.issue.type.name == 'Bug' || github.event.issue.type.name == 'Feature'
+    # Flow 1 handles only user-submitted native Bug/Feature intake. Flow 2 projections carry
+    # `ado-managed` and must never re-enter ADO as new work items, or the two flows form a
+    # feedback loop. Task, untyped, and bot-managed roadmap issues are intentionally ignored.
+    if: ${{ !contains(github.event.issue.labels.*.name, 'ado-managed') && (github.event.issue.type.name == 'Bug' || github.event.issue.type.name == 'Feature') }}
     runs-on: ubuntu-latest
     steps:
       - name: Determine ADO work item type
