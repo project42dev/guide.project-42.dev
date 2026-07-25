@@ -3,9 +3,11 @@
 import {
   createEmptyProgress,
   recordAssessmentAttempt,
+  recordCapstoneSubmission,
   recordModuleVisit,
   starterCatalog,
   type AssessmentResult,
+  type CapstoneCriterionScore,
   type LearnerProgress,
 } from "@project42/platform";
 import {
@@ -26,6 +28,13 @@ interface ProgressContextValue {
   hydrated: boolean;
   storageStatus: StorageStatus;
   recordResult: (pathId: string, moduleId: string, result: AssessmentResult) => void;
+  recordCapstone: (
+    pathId: string,
+    moduleId: string,
+    artifactRefs: string[],
+    criterionScores: CapstoneCriterionScore[],
+    reflection: string,
+  ) => void;
   recordVisit: (pathId: string, moduleId: string) => void;
   replaceProgress: (progress: LearnerProgress) => void;
   rename: (displayName: string) => void;
@@ -45,7 +54,13 @@ function safeReadProgress(): {
     if (parsed.schemaVersion !== 1 || !Array.isArray(parsed.attempts)) {
       return { progress: createEmptyProgress(), storageStatus: "unavailable" };
     }
-    return { progress: parsed as LearnerProgress, storageStatus: "ready" };
+    return {
+      progress: {
+        ...(parsed as LearnerProgress),
+        capstoneSubmissions: parsed.capstoneSubmissions ?? [],
+      },
+      storageStatus: "ready",
+    };
   } catch {
     return { progress: createEmptyProgress(), storageStatus: "unavailable" };
   }
@@ -109,6 +124,34 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
     );
   }, []);
 
+  const recordCapstone = useCallback(
+    (
+      pathId: string,
+      moduleId: string,
+      artifactRefs: string[],
+      criterionScores: CapstoneCriterionScore[],
+      reflection: string,
+    ) => {
+      const submittedAt = new Date().toISOString();
+      const submissionId =
+        typeof crypto.randomUUID === "function"
+          ? crypto.randomUUID()
+          : `${moduleId}-capstone-${Date.now()}`;
+      setProgress((current) =>
+        recordCapstoneSubmission(current, starterCatalog, {
+          submissionId,
+          pathId,
+          moduleId,
+          submittedAt,
+          artifactRefs,
+          criterionScores,
+          reflection,
+        }),
+      );
+    },
+    [],
+  );
+
   const rename = useCallback((displayName: string) => {
     setProgress((current) => ({
       ...current,
@@ -131,6 +174,7 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
       hydrated,
       storageStatus,
       recordResult,
+      recordCapstone,
       recordVisit,
       replaceProgress,
       rename,
@@ -141,6 +185,7 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
       hydrated,
       storageStatus,
       recordResult,
+      recordCapstone,
       recordVisit,
       replaceProgress,
       rename,

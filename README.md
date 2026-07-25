@@ -19,12 +19,12 @@ npm test
 
 The site consumes the versioned open-source learning core from
 [`project42dev/project42-platform`](https://github.com/project42dev/project42-platform).
-Release `0.8.0` renders the expanded eleven-module AI Foundations path, including
-prompt anatomy, context and evidence construction, examples and output contracts,
-verification, reusable templates, and evidence-producing practice activities.
-Progress is deliberately device-local in the current product foundation and can be
-exported as a portable JSON record or CSV transcript. Account-backed cross-device
-learning records remain active implementation work.
+Release `0.9.0` renders the complete sixteen-module AI Foundations path, including
+evidence-based research, writing, coding and analysis, safe tool use, and a scored
+practical capstone. Learners can submit the required capstone artifacts, score the
+evidence rubric, resume locally, and export the result in a portable JSON record or
+CSV transcript. Account-backed cross-device learning records remain active
+implementation work.
 
 ## Repositories
 
@@ -37,3 +37,9 @@ learning records remain active implementation work.
 
 The application builds to a Cloudflare Worker-compatible output through vinext and the
 Sites build adapter. Production configuration and learner secrets never belong in git.
+
+The platform dependency is pinned to an audited commit. npm `allowScripts` permits
+only that exact Git dependency to run its `prepare` script, which generates the
+published `dist` entrypoint by running the catalog generator and TypeScript compiler.
+Changing the platform commit requires reviewing its package scripts and updating the
+allow-list entry in the same change.

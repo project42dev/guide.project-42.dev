@@ -11,6 +11,7 @@ interface KnowledgeCheckProps {
   passPercent: number;
   questions: KnowledgeQuestion[];
   nextHref?: string;
+  requiresCapstone?: boolean;
 }
 
 export function KnowledgeCheck({
@@ -19,6 +20,7 @@ export function KnowledgeCheck({
   passPercent,
   questions,
   nextHref,
+  requiresCapstone = false,
 }: KnowledgeCheckProps) {
   const [answers, setAnswers] = useState<Record<string, number>>({});
   const [submitted, setSubmitted] = useState(false);
@@ -118,7 +120,11 @@ export function KnowledgeCheck({
               <strong>{result.passed ? "Checkpoint passed" : "Not quite yet"}</strong>
               <p>
                 {result.correct} of {result.total} correct
-                {completed ? " · Saved to your transcript" : ""}
+                {completed
+                  ? " · Saved to your transcript"
+                  : result.passed && requiresCapstone
+                    ? " · Capstone evidence is also required"
+                    : ""}
               </p>
             </div>
           </div>
@@ -133,7 +139,12 @@ export function KnowledgeCheck({
                 Continue
               </Link>
             ) : null}
-            {result.passed && !nextHref ? (
+            {result.passed && requiresCapstone && !completed ? (
+              <a className="button button-primary" href="#capstone-evidence">
+                Complete capstone evidence
+              </a>
+            ) : null}
+            {result.passed && !nextHref && (!requiresCapstone || completed) ? (
               <Link className="button button-primary" href="/profile">
                 View transcript
               </Link>
