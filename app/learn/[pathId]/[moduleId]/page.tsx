@@ -11,6 +11,7 @@ import { KnowledgeCheck } from "../../../components/KnowledgeCheck";
 import { LearningActivity } from "../../../components/LearningActivity";
 import { LessonSections } from "../../../components/LessonSections";
 import { ModuleVisitTracker } from "../../../components/ModuleVisitTracker";
+import { ProviderComparisonMatrix } from "../../../components/ProviderComparisonMatrix";
 import { ProviderPills } from "../../../components/ProviderPills";
 
 interface ModulePageProps {
@@ -102,6 +103,13 @@ export default async function ModulePage({ params }: ModulePageProps) {
           </section>
 
           <LessonSections sections={lessonModule.sections} />
+
+          {lessonModule.comparisonMatrix ? (
+            <ProviderComparisonMatrix
+              matrix={lessonModule.comparisonMatrix}
+              sources={lessonModule.sources}
+            />
+          ) : null}
 
           {lessonModule.activity ? (
             <LearningActivity activity={lessonModule.activity} />

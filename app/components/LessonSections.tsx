@@ -22,7 +22,10 @@ export function LessonSections({ sections }: { sections: LessonSection[] }) {
                     <CopyCodeButton code={section.code.code} />
                   </div>
                 </div>
-                <pre>
+                <pre
+                  aria-label={`${section.code.label} code example`}
+                  tabIndex={0}
+                >
                   <code>{section.code.code}</code>
                 </pre>
               </div>

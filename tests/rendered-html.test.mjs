@@ -56,11 +56,84 @@ test("renders stable learning and resource routes", async () => {
   }
 });
 
+test("renders complete provider paths plus comparison and migration guidance", async () => {
+  for (const pathId of [
+    "anthropic-claude-practice",
+    "openai-practice",
+    "google-gemini-practice",
+  ]) {
+    const path = starterCatalog.paths.find((candidate) => candidate.id === pathId);
+    assert.ok(path);
+    assert.ok(path.moduleIds.length >= 7, `${pathId} needs at least seven modules`);
+    const response = await render(`/learn/${path.id}`);
+    const html = await response.text();
+    assert.equal(response.status, 200);
+    assert.ok(html.includes(path.title));
+    for (const moduleId of path.moduleIds) {
+      const learningModule = starterCatalog.modules.find(
+        (candidate) => candidate.id === moduleId,
+      );
+      assert.ok(learningModule);
+      assert.ok(html.includes(learningModule.title));
+    }
+  }
+
+  const comparisonPath = starterCatalog.paths.find(
+    (candidate) => candidate.id === "providers-in-practice",
+  );
+  assert.ok(comparisonPath);
+  assert.deepEqual(comparisonPath.moduleIds.slice(-3), [
+    "compare-provider-capabilities",
+    "plan-cross-provider-migration",
+    "execute-cross-provider-cutover",
+  ]);
+
+  const comparisonModule = starterCatalog.modules.find(
+    (candidate) => candidate.id === "compare-provider-capabilities",
+  );
+  assert.ok(comparisonModule?.comparisonMatrix);
+  const comparisonResponse = await render(
+    `/learn/${comparisonPath.id}/${comparisonModule.id}`,
+  );
+  const comparisonHtml = await comparisonResponse.text();
+  assert.equal(comparisonResponse.status, 200);
+  assert.match(comparisonHtml, /Provider comparison matrix/);
+  assert.match(comparisonHtml, /<table class="comparison-table">/);
+  assert.match(comparisonHtml, /Documented/);
+  assert.match(comparisonHtml, /Changing/);
+  assert.match(comparisonHtml, /Non-equivalent/);
+  assert.match(comparisonHtml, /Unknown/);
+  for (const dimension of comparisonModule.comparisonMatrix.dimensions) {
+    assert.ok(comparisonHtml.includes(dimension.title));
+  }
+
+  for (const moduleId of comparisonPath.moduleIds.slice(-2)) {
+    const learningModule = starterCatalog.modules.find(
+      (candidate) => candidate.id === moduleId,
+    );
+    assert.ok(learningModule);
+    const response = await render(`/learn/${comparisonPath.id}/${moduleId}`);
+    const html = await response.text();
+    assert.equal(response.status, 200);
+    assert.ok(html.includes(learningModule.title));
+    assert.match(html, /Practice activity/);
+    assert.match(html, /Knowledge check/);
+    assert.match(html, /Sources and verification/);
+    for (const section of learningModule.sections.filter((item) => item.code)) {
+      assert.ok(
+        html.includes(`aria-label="${section.code.label} code example"`),
+        `${moduleId} code example needs an accessible name`,
+      );
+      assert.match(html, /<pre[^>]*tabindex="0"/);
+    }
+  }
+});
+
 test("renders evidence-producing activities for every substantive module", async () => {
   const activityModules = starterCatalog.modules.filter(
     (learningModule) => learningModule.activity,
   );
-  assert.equal(activityModules.length, 25);
+  assert.equal(activityModules.length, 49);
 
   for (const learningModule of activityModules) {
     const path = starterCatalog.paths.find((candidate) =>
@@ -95,7 +168,7 @@ test("renders the complete AI Foundations curriculum and source provenance", asy
   );
   assert.ok(path);
   assert.equal(path.moduleIds.length, 16);
-  assert.equal(starterCatalog.modules.length, 31);
+  assert.equal(starterCatalog.modules.length, 55);
 
   for (const moduleId of path.moduleIds) {
     const learningModule = starterCatalog.modules.find(
@@ -234,6 +307,12 @@ test("keeps labelled relationships valid on learner-journey pages", async () => 
     "/learn/ai-foundations",
     "/learn/ai-foundations/research-with-evidence",
     "/learn/ai-foundations/ai-foundations-capstone",
+    "/learn/anthropic-claude-practice",
+    "/learn/openai-practice",
+    "/learn/google-gemini-practice",
+    "/learn/providers-in-practice/compare-provider-capabilities",
+    "/learn/providers-in-practice/plan-cross-provider-migration",
+    "/learn/providers-in-practice/execute-cross-provider-cutover",
     "/profile",
   ];
 
