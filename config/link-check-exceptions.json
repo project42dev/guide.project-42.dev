@@ -2,14 +2,14 @@
   "$schemaVersion": 1,
   "exceptions": [
     {
-      "targetPattern": "https://help.openai.com/en/articles/10169521-using-projects-in-chatgpt",
+      "targetPattern": "https://learn.project-42.dev/*",
       "expectedStatuses": [
-        403
+        404
       ],
-      "reason": "The article is public in a normal browser but the help center consistently returns an automated-client 403 to the bounded Project 42 link checker.",
+      "reason": "The Learn sibling site is being provisioned immediately after the Field Guide during the three-site cutover; remove this bounded exception after Learn is live.",
       "owner": "Project 42 maintainers",
-      "verifiedOn": "2026-07-25",
-      "expires": "2026-10-31"
+      "verifiedOn": "2026-07-26",
+      "expires": "2026-07-27"
     }
   ]
 }
