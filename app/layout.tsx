@@ -2,17 +2,16 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { SiteFooter } from "./components/SiteFooter";
 import { SiteHeader } from "./components/SiteHeader";
-import { ProgressProvider } from "./components/ProgressProvider";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://project-42.dev"),
+  metadataBase: new URL("https://guide.project-42.dev"),
   title: {
-    default: "Project 42 — Learn AI with confidence",
-    template: "%s · Project 42",
+    default: "Project 42 Field Guide — Practical AI answers",
+    template: "%s · Project 42 Field Guide",
   },
   description:
-    "Free, open, provider-neutral AI learning paths, knowledge checks, and practical field guides.",
-  applicationName: "Project 42",
+    "Free, open, provider-neutral AI references, workflows, commands, and decision guides.",
+  applicationName: "Project 42 Field Guide",
   manifest: "/manifest.webmanifest",
   icons: {
     icon: [
@@ -48,7 +47,7 @@ export const metadata: Metadata = {
     ],
   },
   keywords: [
-    "AI learning",
+    "AI field guide",
     "agentic AI",
     "Anthropic",
     "OpenAI",
@@ -58,10 +57,10 @@ export const metadata: Metadata = {
   ],
   openGraph: {
     type: "website",
-    siteName: "Project 42",
-    title: "Project 42 — Learn AI with confidence",
+    siteName: "Project 42 Field Guide",
+    title: "Project 42 Field Guide — Practical AI answers",
     description:
-      "Free learning paths and practical resources from first principles to reliable agents.",
+      "Practical AI references, workflows, and decision support.",
     images: [
       {
         url: "/og.png",
@@ -73,9 +72,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Project 42 — Learn AI with confidence",
+    title: "Project 42 Field Guide — Practical AI answers",
     description:
-      "Free learning paths and practical resources from first principles to reliable agents.",
+      "Practical AI references, workflows, and decision support.",
     images: ["/og.png"],
   },
 };
@@ -92,13 +91,11 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <a className="skip-link" href="#main-content">
           Skip to content
         </a>
-        <ProgressProvider>
-          <SiteHeader />
-          <div id="main-content" tabIndex={-1}>
-            {children}
-          </div>
-          <SiteFooter />
-        </ProgressProvider>
+        <SiteHeader />
+        <div id="main-content" tabIndex={-1}>
+          {children}
+        </div>
+        <SiteFooter />
       </body>
     </html>
   );

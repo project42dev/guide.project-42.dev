@@ -1,10 +1,6 @@
 import assert from "node:assert/strict";
 import { readFile, writeFile } from "node:fs/promises";
-import {
-  defaultLearnerDataPolicy,
-  starterCatalog,
-  validateLearnerDataPolicy,
-} from "@project42/platform";
+import { starterCatalog } from "@project42/platform";
 import { assertReleaseFactsMatch } from "./release-facts-validation.mjs";
 
 const root = new URL("../", import.meta.url);
@@ -69,25 +65,16 @@ assert.deepEqual(
   "Provider coverage changed; review and update project metadata intentionally.",
 );
 assert.equal(new Set(providers.map((provider) => provider.id)).size, providers.length);
-assert.deepEqual(validateLearnerDataPolicy(defaultLearnerDataPolicy), {
-  valid: true,
-  errors: [],
-});
-
 const facts = {
   $schemaVersion: 1,
   siteVersion: packageMetadata.version,
   platformVersion: installedPlatform.version,
   contentVersion: starterCatalog.contentVersion,
   counts: {
-    learningPaths: starterCatalog.paths.length,
-    assessedModules: starterCatalog.modules.length,
-    evidenceActivities: starterCatalog.modules.filter((module) => module.activity)
-      .length,
-    reviewedQuestions: starterCatalog.modules.reduce(
-      (total, module) => total + (module.knowledgeCheck?.questions.length ?? 0),
-      0,
-    ),
+    learningPaths: 0,
+    assessedModules: 0,
+    evidenceActivities: 0,
+    reviewedQuestions: 0,
     resources: starterCatalog.resources.length,
     providerScopes: providers.length,
     providerImplementations: providers.filter(
@@ -95,14 +82,6 @@ const facts = {
     ).length,
   },
   providers,
-  learnerDataPolicy: {
-    schemaVersion: defaultLearnerDataPolicy.schemaVersion,
-    policyId: defaultLearnerDataPolicy.policyId,
-    policyVersion: defaultLearnerDataPolicy.policyVersion,
-    accountBackedRecords: defaultLearnerDataPolicy.accountBackedRecords,
-    hostedRecordStore: defaultLearnerDataPolicy.adapters.hostedRecordStore,
-    referenceRecordStore: defaultLearnerDataPolicy.adapters.referenceRecordStore,
-  },
   homepage: projectMetadata.homepage,
   repositories: projectMetadata.repositories,
   licenses: projectMetadata.licenses,
@@ -113,10 +92,7 @@ for (const requiredFact of [
   `Site release \`${facts.siteVersion}\``,
   `Platform package \`${facts.platformVersion}\``,
   `Content release \`${facts.contentVersion}\``,
-  `${facts.counts.learningPaths} learning paths`,
-  `${facts.counts.assessedModules} assessed modules`,
-  `${facts.counts.evidenceActivities} evidence activities`,
-  `${facts.counts.reviewedQuestions} reviewed questions`,
+  `${facts.counts.resources} Field Guide resources`,
   `${facts.counts.resources} practical resources`,
   `${facts.counts.providerScopes} provider scopes`,
 ]) {

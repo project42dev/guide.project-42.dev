@@ -6,7 +6,7 @@ import { starterCatalog } from "@project42/platform";
 import diagramConfig from "../config/diagrams.json" with { type: "json" };
 
 const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const defaultBaseUrl = "https://project-42.dev";
+const defaultBaseUrl = "https://guide.project-42.dev";
 const defaultExceptionsPath = path.join(
   projectRoot,
   "config",
@@ -16,7 +16,6 @@ const defaultStaticRoot = path.join(projectRoot, "dist", "client");
 const defaultWorkerPath = path.join(projectRoot, "dist", "server", "index.js");
 const ignoredProtocols = new Set(["mailto:", "tel:"]);
 const dynamicEndpointPaths = new Set([
-  "/learner-data/policy",
   "/manifest.webmanifest",
   "/robots.txt",
   "/sitemap.xml",
@@ -53,19 +52,9 @@ export function buildRouteInventory(
 ) {
   const htmlRoutes = new Set([
     "/",
-    "/about",
     "/diagrams",
-    "/learn",
-    "/learner-data",
-    "/profile",
     "/resources",
   ]);
-  for (const learningPath of catalog.paths) {
-    htmlRoutes.add(`/learn/${learningPath.id}`);
-    for (const moduleId of learningPath.moduleIds) {
-      htmlRoutes.add(`/learn/${learningPath.id}/${moduleId}`);
-    }
-  }
   for (const resource of catalog.resources) {
     htmlRoutes.add(`/resources/${resource.id}`);
   }
@@ -75,7 +64,6 @@ export function buildRouteInventory(
   return {
     htmlRoutes: [...htmlRoutes].sort(),
     endpointRoutes: [
-      "/learner-data/policy",
       "/manifest.webmanifest",
       "/robots.txt",
       "/sitemap.xml",
@@ -362,7 +350,7 @@ async function fetchExternal(
           accept: "text/html,application/xhtml+xml,application/json;q=0.9,*/*;q=0.1",
           range: "bytes=0-2047",
           "user-agent":
-            "Project42-LinkChecker/0.1 (+https://github.com/project42dev/project-42.dev)",
+            "Project42-Guide-LinkChecker/0.1 (+https://github.com/project42dev/guide.project-42.dev)",
         },
       });
       try {

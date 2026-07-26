@@ -8,7 +8,7 @@ const projectRoot = path.resolve(import.meta.dirname, "..");
 const clientRoot = path.join(projectRoot, "dist", "client");
 const workerPath = path.join(projectRoot, "dist", "server", "index.js");
 const outputRoot = path.join(projectRoot, "dist", "pages");
-const canonicalDomain = "project-42.dev";
+const canonicalDomain = "guide.project-42.dev";
 
 const endpointFiles = new Map([
   ["/manifest.webmanifest", "manifest.webmanifest"],
@@ -44,9 +44,7 @@ document.addEventListener("click",function(event){
   window.location.assign(url.href);
 },true);
 </script>`;
-  return html
-    .replaceAll('href="/learner-data/policy"', 'href="/learner-data/policy.json"')
-    .replace("</head>", `${navigation}</head>`);
+  return html.replace("</head>", `${navigation}</head>`);
 }
 
 async function writeRoute(route, content) {
@@ -99,17 +97,6 @@ async function main() {
     await writeFile(path.join(outputRoot, target), await response.text());
   }
 
-  const policyResponse = await fetchRoute("/learner-data/policy");
-  if (!policyResponse.ok) {
-    throw new Error(
-      `Cannot export /learner-data/policy: HTTP ${policyResponse.status}`,
-    );
-  }
-  const policy = await policyResponse.text();
-  JSON.parse(policy);
-  await mkdir(path.join(outputRoot, "learner-data"), { recursive: true });
-  await writeFile(path.join(outputRoot, "learner-data", "policy.json"), policy);
-
   const notFoundResponse = await fetchRoute("/__project42_not_found__");
   const notFoundHtml = addStaticNavigation(await notFoundResponse.text());
   await writeFile(path.join(outputRoot, "404.html"), notFoundHtml);
@@ -124,7 +111,6 @@ async function main() {
         htmlRoutes: inventory.htmlRoutes,
         endpoints: [
           ...endpointFiles.keys(),
-          "/learner-data/policy.json",
         ],
       },
       null,
@@ -134,7 +120,7 @@ async function main() {
 
   console.log(
     `GitHub Pages export ready: ${inventory.htmlRoutes.length} HTML routes and ` +
-      `${endpointFiles.size + 1} endpoints in ${outputRoot}.`,
+      `${endpointFiles.size} endpoints in ${outputRoot}.`,
   );
 }
 

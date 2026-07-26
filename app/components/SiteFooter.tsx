@@ -11,22 +11,22 @@ export function SiteFooter() {
             <BrandMark />
             <span>Project 42</span>
           </div>
-          <p>Free, open AI learning for curious people and capable teams.</p>
+          <p>Free, open AI guidance for curious people and capable teams.</p>
         </div>
         <div>
           <strong>Explore</strong>
-          <Link href="/learn">Learning paths</Link>
+          <a href="https://learn.project-42.dev">Learning paths</a>
           <Link href="/resources">Field guide</Link>
           <Link href="/diagrams">Visual guides</Link>
-          <Link href="/profile">Your transcript</Link>
-          <Link href="/learner-data">Learner data</Link>
+          <a href="https://learn.project-42.dev/profile">Your transcript</a>
+          <a href="https://learn.project-42.dev/learner-data">Learner data</a>
         </div>
         <div>
           <strong>Project</strong>
-          <Link href="/about">About</Link>
+          <a href="https://project-42.dev/about">About</a>
           <a href={siteFacts.repositories.roadmap}>Public roadmap and issues</a>
           <a href={siteFacts.repositories.platform}>Open-source platform</a>
-          <a href={siteFacts.repositories.site}>Public site source</a>
+          <a href={siteFacts.repositories.site}>Field Guide source</a>
         </div>
       </div>
       <div className="shell footer-bottom">
