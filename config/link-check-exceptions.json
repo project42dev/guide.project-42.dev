@@ -1,15 +1,4 @@
 {
   "$schemaVersion": 1,
-  "exceptions": [
-    {
-      "targetPattern": "https://learn.project-42.dev/*",
-      "expectedStatuses": [
-        404
-      ],
-      "reason": "The Learn sibling site is being provisioned immediately after the Field Guide during the three-site cutover; remove this bounded exception after Learn is live.",
-      "owner": "Project 42 maintainers",
-      "verifiedOn": "2026-07-26",
-      "expires": "2026-07-27"
-    }
-  ]
+  "exceptions": []
 }
