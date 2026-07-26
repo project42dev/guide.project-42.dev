@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { siteFacts } from "../lib/siteFacts";
 
 export const metadata: Metadata = {
   title: "About",
@@ -56,19 +57,107 @@ export default function AboutPage() {
         </section>
       </div>
 
+      <section className="release-facts" aria-labelledby="release-facts-title">
+        <div className="release-facts-heading">
+          <div>
+            <p className="eyebrow">Release facts</p>
+            <h2 id="release-facts-title">One source, no mystery numbers.</h2>
+          </div>
+          <p>
+            Versions, catalog totals, provider coverage, licenses, and project links
+            come from the tagged software and curriculum packages—not hand-maintained
+            marketing copy.
+          </p>
+        </div>
+
+        <dl className="version-fact-grid" aria-label="Current Project 42 versions">
+          <div>
+            <dt>Hosted site</dt>
+            <dd>v{siteFacts.siteVersion}</dd>
+          </div>
+          <div>
+            <dt>Open-source platform</dt>
+            <dd>v{siteFacts.platformVersion}</dd>
+          </div>
+          <div>
+            <dt>Curriculum content</dt>
+            <dd>v{siteFacts.contentVersion}</dd>
+          </div>
+        </dl>
+
+        <dl className="catalog-fact-grid" aria-label="Current curriculum totals">
+          <div>
+            <dt>Learning paths</dt>
+            <dd>{siteFacts.counts.learningPaths}</dd>
+          </div>
+          <div>
+            <dt>Assessed modules</dt>
+            <dd>{siteFacts.counts.assessedModules}</dd>
+          </div>
+          <div>
+            <dt>Evidence activities</dt>
+            <dd>{siteFacts.counts.evidenceActivities}</dd>
+          </div>
+          <div>
+            <dt>Reviewed questions</dt>
+            <dd>{siteFacts.counts.reviewedQuestions}</dd>
+          </div>
+          <div>
+            <dt>Practical resources</dt>
+            <dd>{siteFacts.counts.resources}</dd>
+          </div>
+          <div>
+            <dt>Provider scopes</dt>
+            <dd>{siteFacts.counts.providerScopes}</dd>
+          </div>
+        </dl>
+
+        <div className="provider-fact-section">
+          <div>
+            <p className="eyebrow">Coverage without tunnel vision</p>
+            <h3>Core ideas first, implementations second.</h3>
+            <p className="provider-fact-summary">
+              {siteFacts.counts.providerImplementations} named provider implementations
+              sit beside a provider-neutral core.
+            </p>
+          </div>
+          <ul aria-label="Current provider coverage">
+            {siteFacts.providers.map((provider) => (
+              <li key={provider.id}>
+                <strong>{provider.name}</strong>
+                <span>{provider.description}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="release-fact-links">
+          <a href={siteFacts.licenses.software.url}>
+            Software: {siteFacts.licenses.software.label}
+          </a>
+          <a href={siteFacts.licenses.curriculum.url}>
+            Curriculum: {siteFacts.licenses.curriculum.label}
+          </a>
+          <a href={siteFacts.repositories.site}>Hosted site source</a>
+          <a href={siteFacts.repositories.platform}>Reusable platform source</a>
+          <a href={siteFacts.repositories.issues}>Report or follow an issue</a>
+        </div>
+      </section>
+
       <section className="open-source-banner">
         <div>
           <p className="eyebrow">Built in public</p>
           <h2>Use it. Improve it. Teach with it.</h2>
           <p>
-            Software is Apache-2.0. Project 42 curriculum is CC BY 4.0. Private learner
-            data and internal operations are never part of the public repositories.
+            Software uses {siteFacts.licenses.software.spdx}. Project 42 curriculum uses{" "}
+            {siteFacts.licenses.curriculum.spdx}. Private learner data and internal
+            operations are never part of the public repositories.
           </p>
         </div>
         <div className="button-row">
           <a
             className="button button-primary"
-            href="https://github.com/project42dev/project42-platform"
+            href={siteFacts.repositories.platform}
           >
             Platform source
           </a>
