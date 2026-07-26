@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { readFile, writeFile } from "node:fs/promises";
 import { starterCatalog } from "@project42/platform";
+import { assertReleaseFactsMatch } from "./release-facts-validation.mjs";
 
 const root = new URL("../", import.meta.url);
 const packagePath = new URL("package.json", root);
@@ -112,11 +113,7 @@ for (const requiredFact of [
 const serialized = `${JSON.stringify(facts, null, 2)}\n`;
 if (process.argv.includes("--check")) {
   const existing = await readFile(outputPath, "utf8");
-  assert.equal(
-    existing,
-    serialized,
-    "public/release-facts.json is stale; run npm run facts:generate.",
-  );
+  assertReleaseFactsMatch(existing, facts);
   console.log(
     `Release facts verified: site ${facts.siteVersion}, platform ${facts.platformVersion}, content ${facts.contentVersion}, ${facts.counts.learningPaths} paths, ${facts.counts.assessedModules} modules, ${facts.counts.resources} resources, ${facts.counts.providerScopes} provider scopes.`,
   );
