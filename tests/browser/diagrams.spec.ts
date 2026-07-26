@@ -7,7 +7,7 @@ test("discovers and reads accessible source-first visual guides", async ({
 }) => {
   await page.goto("/");
   await page.getByRole("link", { name: "Visual guides", exact: true }).first().click();
-  await expect(page).toHaveURL(/\/diagrams$/);
+  await expect(page).toHaveURL(/\/diagrams\/?$/);
   await expect(
     page.getByRole("heading", { name: "See the system, not just the steps." }),
   ).toBeVisible();
