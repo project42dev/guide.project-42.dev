@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { starterCatalog } from "@project42/platform";
+import { siteFacts } from "../lib/siteFacts";
 import { BrandMark } from "./BrandMark";
 
 export function SiteFooter() {
@@ -22,14 +22,24 @@ export function SiteFooter() {
         </div>
         <div>
           <strong>Project</strong>
-          <Link href="/about">About and roadmap</Link>
-          <a href="https://github.com/project42dev/project42-platform">Open-source platform</a>
-          <a href="https://github.com/project42dev/project-42.dev">Public site source</a>
+          <Link href="/about">About</Link>
+          <a href={siteFacts.repositories.roadmap}>Public roadmap and issues</a>
+          <a href={siteFacts.repositories.platform}>Open-source platform</a>
+          <a href={siteFacts.repositories.site}>Public site source</a>
         </div>
       </div>
       <div className="shell footer-bottom">
-        <span>Project 42 · Content v{starterCatalog.contentVersion}</span>
-        <span>Code Apache-2.0 · Curriculum CC BY 4.0</span>
+        <span>
+          Site v{siteFacts.siteVersion} · Platform v{siteFacts.platformVersion} · Content v
+          {siteFacts.contentVersion}
+        </span>
+        <span>
+          <a href={siteFacts.licenses.software.url}>Code {siteFacts.licenses.software.spdx}</a>
+          {" · "}
+          <a href={siteFacts.licenses.curriculum.url}>
+            Curriculum {siteFacts.licenses.curriculum.spdx}
+          </a>
+        </span>
       </div>
     </footer>
   );

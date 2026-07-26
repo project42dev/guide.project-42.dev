@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { starterCatalog } from "@project42/platform";
 import diagramConfig from "../config/diagrams.json" with { type: "json" };
+import releaseFacts from "../public/release-facts.json" with { type: "json" };
 
 async function render(pathname) {
   const workerUrl = new URL("../dist/server/index.js", import.meta.url);
@@ -27,8 +28,52 @@ test("renders the Project 42 home page", async () => {
   assert.ok(
     html
       .replaceAll("<!-- -->", "")
-      .includes(`Project 42 · Content v${starterCatalog.contentVersion}`),
+      .includes(
+        `Site v${releaseFacts.siteVersion} · Platform v${releaseFacts.platformVersion} · Content v${releaseFacts.contentVersion}`,
+      ),
   );
+});
+
+test("renders canonical versions, counts, providers, licenses, and project links", async () => {
+  const response = await render("/about");
+  const html = (await response.text()).replaceAll("<!-- -->", "");
+
+  assert.equal(response.status, 200);
+  for (const version of [
+    releaseFacts.siteVersion,
+    releaseFacts.platformVersion,
+    releaseFacts.contentVersion,
+  ]) {
+    assert.ok(html.includes(`v${version}`));
+  }
+  for (const count of [
+    releaseFacts.counts.learningPaths,
+    releaseFacts.counts.assessedModules,
+    releaseFacts.counts.evidenceActivities,
+    releaseFacts.counts.reviewedQuestions,
+    releaseFacts.counts.resources,
+    releaseFacts.counts.providerScopes,
+  ]) {
+    assert.ok(html.includes(`>${count}<`), `About page is missing count ${count}`);
+  }
+  assert.ok(
+    html.includes(
+      `${releaseFacts.counts.providerImplementations} named provider implementations`,
+    ),
+  );
+  for (const provider of releaseFacts.providers) {
+    assert.ok(html.includes(provider.name));
+    assert.ok(html.includes(provider.description));
+  }
+  for (const url of [
+    releaseFacts.repositories.site,
+    releaseFacts.repositories.platform,
+    releaseFacts.repositories.issues,
+    releaseFacts.licenses.software.url,
+    releaseFacts.licenses.curriculum.url,
+  ]) {
+    assert.ok(html.includes(url));
+  }
 });
 
 test("renders academy and field-guide indexes", async () => {
