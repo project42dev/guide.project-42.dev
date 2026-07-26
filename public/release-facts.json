@@ -1,7 +1,7 @@
 {
   "$schemaVersion": 1,
-  "siteVersion": "0.16.1",
-  "platformVersion": "0.37.0",
+  "siteVersion": "0.17.0",
+  "platformVersion": "0.38.0",
   "contentVersion": "0.30.0",
   "counts": {
     "learningPaths": 6,
@@ -34,6 +34,14 @@
       "description": "Gemini products and cross-provider comparisons."
     }
   ],
+  "learnerDataPolicy": {
+    "schemaVersion": 1,
+    "policyId": "project42-learner-data",
+    "policyVersion": "2026-07-25",
+    "accountBackedRecords": "planned",
+    "hostedRecordStore": "sites-d1",
+    "referenceRecordStore": "postgresql"
+  },
   "homepage": "https://project-42.dev",
   "repositories": {
     "site": "https://github.com/project42dev/project-42.dev",

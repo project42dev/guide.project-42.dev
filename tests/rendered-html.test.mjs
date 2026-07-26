@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { starterCatalog } from "@project42/platform";
+import { defaultLearnerDataPolicy, starterCatalog } from "@project42/platform";
 import diagramConfig from "../config/diagrams.json" with { type: "json" };
 import releaseFacts from "../public/release-facts.json" with { type: "json" };
 
@@ -43,8 +43,12 @@ test("renders canonical versions, counts, providers, licenses, and project links
     releaseFacts.siteVersion,
     releaseFacts.platformVersion,
     releaseFacts.contentVersion,
+    releaseFacts.learnerDataPolicy.policyVersion,
   ]) {
-    assert.ok(html.includes(`v${version}`));
+    assert.ok(
+      html.includes(`v${version}`) || html.includes(version),
+      `About page is missing version ${version}`,
+    );
   }
   for (const count of [
     releaseFacts.counts.learningPaths,
@@ -74,6 +78,40 @@ test("renders canonical versions, counts, providers, licenses, and project links
   ]) {
     assert.ok(html.includes(url));
   }
+  assert.deepEqual(releaseFacts.learnerDataPolicy, {
+    schemaVersion: defaultLearnerDataPolicy.schemaVersion,
+    policyId: defaultLearnerDataPolicy.policyId,
+    policyVersion: defaultLearnerDataPolicy.policyVersion,
+    accountBackedRecords: defaultLearnerDataPolicy.accountBackedRecords,
+    hostedRecordStore: defaultLearnerDataPolicy.adapters.hostedRecordStore,
+    referenceRecordStore:
+      defaultLearnerDataPolicy.adapters.referenceRecordStore,
+  });
+});
+
+test("renders the learner-data disclosure and machine-readable policy", async () => {
+  const [page, endpoint] = await Promise.all([
+    render("/learner-data"),
+    render("/learner-data/policy"),
+  ]);
+  const html = await page.text();
+
+  assert.equal(page.status, 200);
+  assert.match(html, /Your learning data, without fine print/);
+  assert.match(html, /Private to this browser/);
+  assert.match(html, /Account-backed records/);
+  assert.match(html, /Not enabled/);
+  assert.match(html, /email address is never your account key/i);
+  assert.match(html, /Consent and choice/);
+  assert.match(html, /Retention and recovery/);
+  assert.match(html, /Export and deletion/);
+  assert.match(html, /Visibility is not permission/);
+  assert.ok(html.includes(defaultLearnerDataPolicy.policyVersion));
+  assert.ok(html.includes("/learner-data/policy"));
+
+  assert.equal(endpoint.status, 200);
+  assert.match(endpoint.headers.get("content-type") ?? "", /application\/json/);
+  assert.deepEqual(await endpoint.json(), defaultLearnerDataPolicy);
 });
 
 test("renders academy and field-guide indexes", async () => {
@@ -388,7 +426,14 @@ test("renders the complete reliable-agent capstone calibration and evidence map"
 });
 
 test("all rendered internal navigation links resolve", async () => {
-  const entryRoutes = ["/", "/learn", "/resources", "/profile", "/about"];
+  const entryRoutes = [
+    "/",
+    "/learn",
+    "/resources",
+    "/profile",
+    "/learner-data",
+    "/about",
+  ];
   const internalLinks = new Set(entryRoutes);
 
   for (const route of entryRoutes) {
@@ -475,6 +520,7 @@ test("keeps labelled relationships valid on learner-journey pages", async () => 
     "/learn/providers-in-practice/plan-cross-provider-migration",
     "/learn/providers-in-practice/execute-cross-provider-cutover",
     "/profile",
+    "/learner-data",
   ];
 
   for (const route of routes) {

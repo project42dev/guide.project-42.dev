@@ -10,6 +10,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/resources",
     "/diagrams",
     "/profile",
+    "/learner-data",
     "/about",
     ...starterCatalog.paths.map((path) => `/learn/${path.id}`),
     ...starterCatalog.paths.flatMap((path) =>

@@ -1,6 +1,10 @@
 import assert from "node:assert/strict";
 import { readFile, writeFile } from "node:fs/promises";
-import { starterCatalog } from "@project42/platform";
+import {
+  defaultLearnerDataPolicy,
+  starterCatalog,
+  validateLearnerDataPolicy,
+} from "@project42/platform";
 import { assertReleaseFactsMatch } from "./release-facts-validation.mjs";
 
 const root = new URL("../", import.meta.url);
@@ -65,6 +69,10 @@ assert.deepEqual(
   "Provider coverage changed; review and update project metadata intentionally.",
 );
 assert.equal(new Set(providers.map((provider) => provider.id)).size, providers.length);
+assert.deepEqual(validateLearnerDataPolicy(defaultLearnerDataPolicy), {
+  valid: true,
+  errors: [],
+});
 
 const facts = {
   $schemaVersion: 1,
@@ -87,6 +95,14 @@ const facts = {
     ).length,
   },
   providers,
+  learnerDataPolicy: {
+    schemaVersion: defaultLearnerDataPolicy.schemaVersion,
+    policyId: defaultLearnerDataPolicy.policyId,
+    policyVersion: defaultLearnerDataPolicy.policyVersion,
+    accountBackedRecords: defaultLearnerDataPolicy.accountBackedRecords,
+    hostedRecordStore: defaultLearnerDataPolicy.adapters.hostedRecordStore,
+    referenceRecordStore: defaultLearnerDataPolicy.adapters.referenceRecordStore,
+  },
   homepage: projectMetadata.homepage,
   repositories: projectMetadata.repositories,
   licenses: projectMetadata.licenses,

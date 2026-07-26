@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { ProfileDashboard } from "../components/ProfileDashboard";
 
 export const metadata: Metadata = {
@@ -16,6 +17,9 @@ export default function ProfilePage() {
           Track completed modules, knowledge-check scores, and badges. This first
           release keeps the record privately in your browser.
         </p>
+        <Link className="text-link" href="/learner-data">
+          How Project 42 protects learner data →
+        </Link>
       </header>
       <ProfileDashboard />
     </main>

@@ -19,6 +19,7 @@ export function SiteFooter() {
           <Link href="/resources">Field guide</Link>
           <Link href="/diagrams">Visual guides</Link>
           <Link href="/profile">Your transcript</Link>
+          <Link href="/learner-data">Learner data</Link>
         </div>
         <div>
           <strong>Project</strong>

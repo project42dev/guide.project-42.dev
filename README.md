@@ -26,7 +26,9 @@ criterion-level evidence mapping, failed-submission revision, a 100-point rubric
 and the Reliable Agent Operator badge. Profiles preserve attempts, capstone
 revisions, evidence links, badges, and portable JSON/CSV exports in device-local
 storage. Account-backed cross-device learning records remain active implementation
-work.
+work. The accepted lifecycle, consent, retention, export, deletion, recovery,
+authorization, and hosted/self-host storage contract is now published as an
+accessible learner-data page and machine-readable policy.
 
 The current site also includes eight accessible visual guides for learning evidence,
 grounded research, prompting, provider selection, safe tools, bounded agents,
@@ -38,8 +40,8 @@ accessibility, and security contract.
 
 ## Current release facts
 
-- Site release `0.16.1`
-- Platform package `0.37.0`
+- Site release `0.17.0`
+- Platform package `0.38.0`
 - Content release `0.30.0`
 - 6 learning paths, 55 assessed modules, 49 evidence activities, and 257 reviewed questions
 - 50 practical resources and 4 provider scopes
