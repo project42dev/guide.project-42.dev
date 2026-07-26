@@ -83,6 +83,10 @@ export default function AboutPage() {
             <dt>Curriculum content</dt>
             <dd>v{siteFacts.contentVersion}</dd>
           </div>
+          <div>
+            <dt>Learner-data policy</dt>
+            <dd>{siteFacts.learnerDataPolicy.policyVersion}</dd>
+          </div>
         </dl>
 
         <dl className="catalog-fact-grid" aria-label="Current curriculum totals">

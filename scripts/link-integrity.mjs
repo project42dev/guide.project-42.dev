@@ -16,6 +16,7 @@ const defaultStaticRoot = path.join(projectRoot, "dist", "client");
 const defaultWorkerPath = path.join(projectRoot, "dist", "server", "index.js");
 const ignoredProtocols = new Set(["mailto:", "tel:"]);
 const dynamicEndpointPaths = new Set([
+  "/learner-data/policy",
   "/manifest.webmanifest",
   "/robots.txt",
   "/sitemap.xml",
@@ -55,6 +56,7 @@ export function buildRouteInventory(
     "/about",
     "/diagrams",
     "/learn",
+    "/learner-data",
     "/profile",
     "/resources",
   ]);
@@ -72,7 +74,12 @@ export function buildRouteInventory(
   }
   return {
     htmlRoutes: [...htmlRoutes].sort(),
-    endpointRoutes: ["/manifest.webmanifest", "/robots.txt", "/sitemap.xml"],
+    endpointRoutes: [
+      "/learner-data/policy",
+      "/manifest.webmanifest",
+      "/robots.txt",
+      "/sitemap.xml",
+    ],
   };
 }
 

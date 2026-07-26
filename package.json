@@ -1,6 +1,6 @@
 {
   "name": "project-42-site",
-  "version": "0.16.1",
+  "version": "0.17.0",
   "description": "The hosted Project 42 provider-neutral AI learning experience.",
   "private": true,
   "license": "Apache-2.0",
@@ -36,7 +36,7 @@
     "lint": "eslint . --ignore-pattern dist --ignore-pattern .next"
   },
   "dependencies": {
-    "@project42/platform": "github:project42dev/project42-platform#v0.37.0",
+    "@project42/platform": "github:project42dev/project42-platform#v0.38.0",
     "next": "16.2.11",
     "react": "19.2.8",
     "react-dom": "19.2.8"
@@ -69,7 +69,7 @@
   },
   "type": "module",
   "allowScripts": {
-    "github:project42dev/project42-platform#v0.37.0": true,
+    "github:project42dev/project42-platform#v0.38.0": true,
     "puppeteer": false
   }
 }

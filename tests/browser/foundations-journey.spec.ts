@@ -251,6 +251,7 @@ test("critical learner states pass automated accessibility checks", async ({
     "/learn/reliable-agent-workflows",
     "/learn/reliable-agent-workflows/reliable-agent-capstone",
     "/profile",
+    "/learner-data",
   ]) {
     await page.goto(route);
     await expect(page.locator("main")).toBeVisible();
