@@ -40,7 +40,7 @@ accessibility, and security contract.
 
 ## Current release facts
 
-- Site release `0.17.0`
+- Site release `0.17.1`
 - Platform package `0.38.0`
 - Content release `0.30.0`
 - 6 learning paths, 55 assessed modules, 49 evidence activities, and 257 reviewed questions
@@ -60,8 +60,14 @@ drift.
 
 ## Deployment
 
-The application builds to a Cloudflare Worker-compatible output through vinext and the
-Sites build adapter. Production configuration and learner secrets never belong in git.
+The canonical public instance deploys from this repository to GitHub Pages and is
+served at <https://project-42.dev>. Cloudflare manages DNS only.
+
+`npm run pages:build` produces the complete static artifact in `dist/pages`. The
+GitHub Pages workflow validates the application and exported artifact before deploying
+the exact merged `main` commit. OpenAI Sites is not a production or custom-domain
+target for this repository. Production configuration and learner secrets never belong
+in git.
 
 The platform dependency uses a reviewed release tag and the lockfile resolves that
 tag to an exact commit. npm `allowScripts` permits only that release dependency to
