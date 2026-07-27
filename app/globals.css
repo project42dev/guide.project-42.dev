@@ -3160,6 +3160,55 @@ a {
   color: inherit;
 }
 
+.content-use-notice {
+  align-items: center;
+  background: #fff2d8;
+  border: 1px solid #d8b566;
+  border-radius: var(--radius-small);
+  color: #5e3d00;
+  display: grid;
+  gap: 1rem 2rem;
+  grid-template-columns: minmax(190px, 0.65fr) minmax(0, 1.35fr);
+  margin: 0 0 3rem;
+  padding: 1.25rem 1.4rem;
+}
+
+.content-use-notice .eyebrow {
+  color: inherit;
+}
+
+.content-use-notice h2 {
+  font-size: 1.15rem;
+  margin: 0.35rem 0 0;
+}
+
+.content-use-notice p {
+  line-height: 1.65;
+  margin: 0;
+}
+
+.content-use-notice > a {
+  font-size: 0.78rem;
+  font-weight: 800;
+  grid-column: 2;
+}
+
+@media (forced-colors: active) {
+  .content-use-notice {
+    border: 1px solid CanvasText;
+  }
+}
+
+@media (max-width: 760px) {
+  .content-use-notice {
+    grid-template-columns: 1fr;
+  }
+
+  .content-use-notice > a {
+    grid-column: 1;
+  }
+}
+
 @media (max-width: 960px) {
   .header-inner {
     gap: 1rem;

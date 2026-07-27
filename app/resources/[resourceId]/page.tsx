@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getResource, starterCatalog } from "@project42/platform";
 import { LessonSections } from "../../components/LessonSections";
+import { ContentUseNotice } from "../../components/ContentUseNotice";
 import { ProviderPills } from "../../components/ProviderPills";
 import {
   displayEditorialValue,
@@ -91,6 +92,7 @@ export default async function ResourcePage({ params }: ResourcePageProps) {
           </dd>
         </div>
       </dl>
+      <ContentUseNotice artifact="resource" />
       <div className="resource-body">
         <LessonSections sections={resource.sections} />
         <aside className="source-panel">

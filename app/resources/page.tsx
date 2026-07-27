@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { starterCatalog } from "@project42/platform";
 import { ResourceExplorer } from "../components/ResourceExplorer";
+import { ContentUseNotice } from "../components/ContentUseNotice";
 
 export const metadata: Metadata = {
   title: "AI field guide",
@@ -20,6 +21,7 @@ export default function ResourcesPage() {
           full course.
         </p>
       </header>
+      <ContentUseNotice artifact="resource" />
       <ResourceExplorer asOf={asOf} resources={starterCatalog.resources} />
     </main>
   );

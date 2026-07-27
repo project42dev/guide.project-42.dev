@@ -42,6 +42,12 @@ test("renders every governed resource with metadata and provenance", async () =>
     assert.ok(html.includes(resource.title), resource.id);
     assert.ok(html.includes(resource.summary), resource.id);
     assert.ok(html.includes(resource.lastVerified), resource.id);
+    assert.match(html, /Helpful evidence, not a guarantee/, resource.id);
+    assert.match(
+      html,
+      /https:\/\/project-42\.dev\/legal-transparency/,
+      resource.id,
+    );
     for (const source of resource.sources) {
       assert.ok(html.includes(source.url), `${resource.id}: ${source.url}`);
     }
@@ -59,6 +65,18 @@ test("renders the resource index and every visual guide", async () => {
     const response = await render(`/diagrams/${diagram.id}`);
     assert.equal(response.status, 200, diagram.id);
     assert.ok((await response.text()).includes(diagram.title), diagram.id);
+  }
+});
+
+test("links every global footer to canonical Legal & Transparency", async () => {
+  for (const route of ["/", "/resources", "/diagrams"]) {
+    const response = await render(route);
+    assert.equal(response.status, 200, route);
+    assert.match(
+      await response.text(),
+      /https:\/\/project-42\.dev\/legal-transparency/,
+      route,
+    );
   }
 });
 

@@ -35,8 +35,8 @@ accessibility, and security contract.
 
 ## Current release facts
 
-- Site release `0.6.1`
-- Platform package `0.45.0`
+- Site release `0.6.2`
+- Platform package `0.49.0`
 - Content release `0.36.0`
 - 83 Field Guide resources
 - 83 practical resources and 4 provider scopes
