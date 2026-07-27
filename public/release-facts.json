@@ -1,14 +1,14 @@
 {
   "$schemaVersion": 1,
-  "siteVersion": "0.3.0",
-  "platformVersion": "0.41.0",
-  "contentVersion": "0.32.0",
+  "siteVersion": "0.4.0",
+  "platformVersion": "0.42.0",
+  "contentVersion": "0.33.0",
   "counts": {
     "learningPaths": 0,
     "assessedModules": 0,
     "evidenceActivities": 0,
     "reviewedQuestions": 0,
-    "resources": 65,
+    "resources": 70,
     "providerScopes": 4,
     "providerImplementations": 3
   },
