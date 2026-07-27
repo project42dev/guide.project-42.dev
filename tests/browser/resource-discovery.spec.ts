@@ -42,14 +42,14 @@ test("combines resource filters, resets cleanly, and exposes provenance", async 
   page,
 }) => {
   test.setTimeout(120_000);
-  expect(starterCatalog.resources).toHaveLength(50);
+  expect(starterCatalog.resources).toHaveLength(53);
   await context.grantPermissions(["clipboard-read", "clipboard-write"]);
 
   await page.goto("/resources");
   const cards = page.locator(".resource-card");
-  await expect(cards).toHaveCount(50);
+  await expect(cards).toHaveCount(53);
   await expect(page.getByRole("status")).toHaveText(
-    "Showing 50 of 50 resources",
+    "Showing 53 of 53 resources",
   );
   await expectNoAccessibilityViolations(page);
 
@@ -62,7 +62,7 @@ test("combines resource filters, resets cleanly, and exposes provenance", async 
     page.locator('[data-resource-id="mcp-primitives-reference"]'),
   ).toBeVisible();
   await page.getByRole("button", { name: "Clear all filters" }).click();
-  await expect(cards).toHaveCount(50);
+  await expect(cards).toHaveCount(53);
 
   const topic = "Evaluation and safety";
   const provider: Provider = "provider-neutral";
@@ -97,7 +97,7 @@ test("combines resource filters, resets cleanly, and exposes provenance", async 
     .selectOption(freshness);
   await expect(cards).toHaveCount(expected.length);
   await expect(page.getByRole("status")).toHaveText(
-    `Showing ${expected.length} of 50 resources`,
+    `Showing ${expected.length} of 53 resources`,
   );
   for (const resource of expected) {
     await expect(
@@ -116,7 +116,7 @@ test("combines resource filters, resets cleanly, and exposes provenance", async 
     page.getByRole("button", { name: "Clear all filters" }),
   ).toHaveCount(1);
   await page.getByRole("button", { name: "Clear all filters" }).click();
-  await expect(cards).toHaveCount(50);
+  await expect(cards).toHaveCount(53);
   await expect(
     page.getByRole("combobox", { name: "Topic", exact: true }),
   ).toHaveValue("all");

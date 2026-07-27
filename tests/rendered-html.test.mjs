@@ -24,9 +24,9 @@ test("renders the Field Guide home and complete searchable catalog", async () =>
 
   assert.match(html, /Project 42 Field Guide/);
   assert.match(html, /Answers for the work in front of you/);
-  assert.equal(starterCatalog.resources.length, 50);
-  assert.equal((html.match(/data-resource-id=/g) ?? []).length, 50);
-  assert.match(html, /Showing 50 of 50 resources/);
+  assert.equal(starterCatalog.resources.length, 53);
+  assert.equal((html.match(/data-resource-id=/g) ?? []).length, 53);
+  assert.match(html, /Showing 53 of 53 resources/);
   assert.ok(html.includes(`Site v${releaseFacts.siteVersion}`));
   assert.ok(html.includes(`Platform v${releaseFacts.platformVersion}`));
   assert.ok(html.includes(`Content v${releaseFacts.contentVersion}`));
