@@ -35,11 +35,11 @@ accessibility, and security contract.
 
 ## Current release facts
 
-- Site release `0.2.0`
-- Platform package `0.40.0`
-- Content release `0.31.0`
-- 53 Field Guide resources
-- 53 practical resources and 4 provider scopes
+- Site release `0.3.0`
+- Platform package `0.41.0`
+- Content release `0.32.0`
+- 65 Field Guide resources
+- 65 practical resources and 4 provider scopes
 
 These facts are generated from `package.json` and the tagged platform catalog into
 [`public/release-facts.json`](public/release-facts.json). `npm run facts:check`
