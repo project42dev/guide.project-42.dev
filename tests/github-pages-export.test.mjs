@@ -32,9 +32,9 @@ test("publishes current release facts and Field Guide content", async () => {
   assert.match(normalizedHome, /Project 42 Field Guide/);
   assert.match(normalizedHome, /Answers for the work in front of you/);
   assert.ok(normalizedHome.includes(`Site v${releaseFacts.siteVersion}`));
-  assert.equal(releaseFacts.siteVersion, "0.4.0");
-  assert.equal(releaseFacts.platformVersion, "0.42.0");
-  assert.equal(releaseFacts.counts.resources, 70);
+  assert.equal(releaseFacts.siteVersion, "0.5.0");
+  assert.equal(releaseFacts.platformVersion, "0.45.0");
+  assert.equal(releaseFacts.counts.resources, 83);
   assert.equal(releaseFacts.counts.learningPaths, 0);
 });
 
