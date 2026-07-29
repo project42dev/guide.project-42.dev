@@ -3298,6 +3298,21 @@ a {
     --radius: 19px;
   }
 
+  .page-shell,
+  .page-shell > *,
+  .page-hero,
+  .page-hero > *,
+  .page-hero h1,
+  .resource-detail,
+  .resource-detail > *,
+  .resource-detail-hero,
+  .resource-detail-hero > *,
+  .resource-detail-hero h1 {
+    max-width: 100%;
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
   .header-inner {
     min-height: 66px;
   }
@@ -3978,6 +3993,21 @@ a {
     grid-template-columns: 1fr;
   }
 
+  .diagram-detail,
+  .diagram-detail > *,
+  .diagram-detail-hero,
+  .diagram-detail-hero > *,
+  .diagram-detail-hero h1,
+  .diagram-source-card,
+  .diagram-explanation-grid,
+  .diagram-explanation-grid > *,
+  .diagram-explanation-grid h2,
+  .diagram-canvas {
+    max-width: 100%;
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
   .diagram-library-note {
     text-align: left;
   }
@@ -3987,13 +4017,18 @@ a {
   }
 
   .diagram-source-card {
-    max-width: 280px;
+    width: 100%;
   }
 
   .diagram-canvas {
     justify-content: flex-start;
     min-height: 300px;
     padding: 1rem;
+  }
+
+  .diagram-viewer-trigger {
+    min-width: 620px;
+    width: 620px;
   }
 
   .diagram-canvas img {
