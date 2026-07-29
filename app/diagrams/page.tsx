@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { ContentUseNotice } from "../components/ContentUseNotice";
 import { diagramCatalog } from "../lib/diagrams";
 
 export const metadata: Metadata = {
@@ -20,6 +21,8 @@ export default function DiagramIndexPage() {
           visual includes a plain-language explanation and editable Mermaid source.
         </p>
       </header>
+
+      <ContentUseNotice artifact="visual guide" />
 
       <section aria-labelledby="diagram-library-title">
         <div className="section-heading section-heading-inline">

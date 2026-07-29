@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { DiagramViewer } from "../../components/DiagramViewer";
+import { ContentUseNotice } from "../../components/ContentUseNotice";
 import { diagramCatalog, getDiagram } from "../../lib/diagrams";
 
 interface DiagramPageProps {
@@ -69,6 +70,8 @@ export default async function DiagramPage({ params }: DiagramPageProps) {
         </div>
         <figcaption>{diagram.caption}</figcaption>
       </figure>
+
+      <ContentUseNotice artifact="visual guide" />
 
       <div className="diagram-explanation-grid">
         <section aria-labelledby="diagram-explanation">
