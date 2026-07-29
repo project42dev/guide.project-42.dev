@@ -46,7 +46,6 @@ test("rejects private data and private operational references", (t) => {
       "private Azure DevOps URL",
       "https://" + "dev." + "azure.com/example/private",
     ],
-    ["private work-item reference", "AB" + "#1234"],
     ["private operations repository name", "project42dev-" + "ops"],
     ["email address", "owner" + "@example.invalid"],
     [
@@ -72,17 +71,32 @@ test("rejects private data and private operational references", (t) => {
   }
 });
 
-test("scans README for private material", (t) => {
+test("allows bare work-item traceability without private planning material", (t) => {
   const fixture = createFixture(t);
   fs.appendFileSync(
     path.join(fixture, "README.md"),
-    "\nInternal reference: " + "AB" + "#1234\n",
+    "\nRelease traceability: " + "AB" + "#1234\n",
+    "utf8",
+  );
+
+  const result = assertRepositoryGovernance(fixture);
+  assert.equal(result.documentCount, 3);
+  assert.deepEqual(result.errors, []);
+});
+
+test("scans README for private tracker URLs", (t) => {
+  const fixture = createFixture(t);
+  fs.appendFileSync(
+    path.join(fixture, "README.md"),
+    "\nInternal tracker: https://" +
+      "dev." +
+      "azure.com/example/private/_workitems/edit/1234\n",
     "utf8",
   );
 
   assert.match(
     errorText(() => assertRepositoryGovernance(fixture)),
-    /README\.md contains private work-item reference/u,
+    /README\.md contains private Azure DevOps URL/u,
   );
 });
 

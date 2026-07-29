@@ -38,10 +38,6 @@ const PRIVATE_MATERIAL_PATTERNS = [
     pattern: /https?:\/\/(?:dev\.azure\.com|[a-z0-9.-]+\.visualstudio\.com)\//i,
   },
   {
-    label: "private work-item reference",
-    pattern: /\bAB#\d+\b/i,
-  },
-  {
     label: "private operations repository name",
     pattern: new RegExp("\\bproject42dev-" + "ops\\b", "i"),
   },

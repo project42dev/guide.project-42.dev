@@ -84,10 +84,13 @@ Keep each pull request focused and explain:
   and
 - any public GitHub issue that provides context.
 
-Do not place private planning links, private work-item references, personal
-information, credentials, or operational identifiers in a public branch,
-commit body, pull-request description, screenshot, fixture, or test output.
-Maintainers may add internal traceability through approved private mechanisms.
+Project 42 maintainers include the applicable bare `AB#<id>` reference in
+substantive commit messages and release evidence. A bare work-item reference is
+traceability, not permission to copy private planning material into a public
+repository. Do not place private tracker URLs, private planning or PMO content,
+personal information, credentials, or operational identifiers in a public
+branch, pull-request description, screenshot, fixture, or test output.
+External contributors may link a related public GitHub issue instead.
 
 Reviewers verify repository ownership, public and private boundaries, stable
 URLs, platform compatibility, provenance and freshness behavior, tests,
