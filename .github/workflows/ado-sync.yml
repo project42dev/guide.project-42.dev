@@ -23,8 +23,7 @@ on:
   issues:
     types: [opened, edited, closed, reopened]
 
-permissions:
-  issues: write
+permissions: {}
 
 concurrency:
   group: ado-intake-${{ github.repository_id }}-${{ github.event.issue.number }}
@@ -37,6 +36,8 @@ jobs:
     # feedback loop. Task, untyped, and bot-managed roadmap issues are intentionally ignored.
     if: ${{ github.event.sender.login != 'azure-boards[bot]' && !contains(github.event.issue.labels.*.name, 'ado-managed') && (github.event.issue.type.name == 'Bug' || github.event.issue.type.name == 'Feature') }}
     runs-on: ubuntu-latest
+    permissions:
+      issues: write
     steps:
       - name: Read linked ADO work item
         id: linked
