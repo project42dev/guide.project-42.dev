@@ -9,7 +9,7 @@ import {
 } from "../scripts/workflow-governance.mjs";
 
 const checkoutSha = "3d3c42e5aac5ba805825da76410c181273ba90b1";
-const uploadSha = "7b1f4a764d45c48632c6b24a0339c27f5614fb0b";
+const uploadSha = "fc324d3547104276b827a68afc52ff2a11cc49c9";
 const workflows = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
   "../.github/workflows",
