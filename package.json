@@ -22,6 +22,7 @@
     "diagrams:check": "node --test tests/diagram-integrity.test.mjs",
     "facts:generate": "node scripts/generate-release-facts.mjs",
     "facts:check": "node --test tests/release-facts-line-endings.test.mjs && node scripts/generate-release-facts.mjs --check",
+    "workflows:check": "node --test tests/workflow-governance.test.mjs && node scripts/workflow-governance.mjs .github/workflows",
     "dev": "cross-env WRANGLER_LOG_PATH=.wrangler/wrangler.log vinext dev",
     "prebuild": "npm run facts:check",
     "build": "cross-env WRANGLER_LOG_PATH=.wrangler/wrangler.log vinext build",
@@ -36,7 +37,7 @@
     "test:browser": "playwright test",
     "test:pages": "playwright test --config playwright.pages.config.ts",
     "test:pages:artifact": "node --test tests/github-pages-export.test.mjs",
-    "check": "npm run facts:check && npm run brand:check && npm run diagrams:check && npm run lint && npm run typecheck && npm test && npm run pages:export && npm run test:pages:artifact && npm run test:pages",
+    "check": "npm run workflows:check && npm run facts:check && npm run brand:check && npm run diagrams:check && npm run lint && npm run typecheck && npm test && npm run pages:export && npm run test:pages:artifact && npm run test:pages",
     "typecheck": "tsc --noEmit",
     "lint": "eslint . --ignore-pattern dist --ignore-pattern .next"
   },
