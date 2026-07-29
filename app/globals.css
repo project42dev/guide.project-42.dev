@@ -121,6 +121,7 @@ a {
   font-weight: 650;
   gap: 0.7rem;
   letter-spacing: -0.02em;
+  min-height: 44px;
   text-decoration: none;
 }
 
@@ -168,7 +169,9 @@ a {
   display: inline-flex;
   font-size: 0.88rem;
   font-weight: 720;
+  justify-content: center;
   min-height: 44px;
+  min-width: 44px;
   text-decoration: none;
 }
 
@@ -1739,7 +1742,8 @@ a {
   color: inherit;
   cursor: pointer;
   font: inherit;
-  min-height: 32px;
+  min-height: 44px;
+  min-width: 44px;
   padding: 0.25rem 0.7rem;
 }
 
@@ -2073,6 +2077,8 @@ a {
   cursor: pointer;
   font-size: 0.72rem;
   font-weight: 820;
+  min-height: 44px;
+  min-width: 44px;
   padding: 0.5rem;
   text-decoration: underline;
   text-underline-offset: 0.2em;
@@ -2197,8 +2203,12 @@ a {
 }
 
 .resource-foot a {
+  align-items: center;
+  display: inline-flex;
   font-size: 0.76rem;
   font-weight: 850;
+  min-height: 44px;
+  min-width: 44px;
 }
 
 .empty-state {
@@ -3141,8 +3151,11 @@ a {
 }
 
 .footer-grid a {
+  align-items: center;
   color: #cbd2df;
+  display: flex;
   font-size: 0.78rem;
+  min-height: 44px;
   text-decoration: none;
 }
 
@@ -3290,7 +3303,10 @@ a {
   }
 
   .site-header nav {
+    flex-wrap: wrap;
     gap: 1.2rem;
+    overflow-x: visible;
+    row-gap: 0.25rem;
   }
 
   .header-action {
@@ -3433,6 +3449,13 @@ a {
     grid-template-columns: 1fr;
   }
 
+  .resource-controls input,
+  .resource-controls select {
+    max-width: 100%;
+    min-width: 0;
+    width: 100%;
+  }
+
   .resource-results-summary {
     align-items: flex-start;
     flex-direction: column;
@@ -3448,8 +3471,41 @@ a {
     grid-template-columns: 1fr;
   }
 
+  .resource-card,
+  .resource-card > *,
+  .resource-meta {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .resource-meta {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
   .resource-detail-facts div:last-child {
     grid-column: auto;
+  }
+
+  .resource-detail-hero,
+  .resource-detail-hero > *,
+  .resource-body,
+  .lesson-sections,
+  .lesson-block,
+  .lesson-block > div {
+    max-width: 100%;
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .code-example {
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  .code-label,
+  .code-tools {
+    flex-wrap: wrap;
   }
 
   .profile-identity form {
@@ -3656,8 +3712,11 @@ a {
 }
 
 .diagram-source-card a {
+  align-items: center;
+  display: flex;
   font-size: 0.72rem;
   font-weight: 780;
+  min-height: 44px;
 }
 
 .diagram-figure {
@@ -3773,8 +3832,8 @@ a {
   font-size: 0.72rem;
   font-weight: 850;
   justify-content: center;
-  min-height: 42px;
-  min-width: 42px;
+  min-height: 44px;
+  min-width: 44px;
   padding: 0.45rem 0.75rem;
 }
 
@@ -3832,6 +3891,12 @@ a {
   font-size: 0.76rem;
   line-height: 1.55;
   padding: 0.85rem 0.4rem 0;
+}
+
+.diagram-next a {
+  align-items: center;
+  display: inline-flex;
+  min-height: 44px;
 }
 
 .diagram-explanation-grid {

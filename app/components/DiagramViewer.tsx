@@ -168,7 +168,13 @@ export function DiagramViewer({
             controls, plus and minus keys, or zero to reset. Press Escape to
             close.
           </p>
-          <div className="diagram-viewer-viewport" tabIndex={0}>
+          <div
+            aria-describedby="diagram-viewer-help"
+            aria-label={`${title} zoomable image`}
+            className="diagram-viewer-viewport"
+            role="region"
+            tabIndex={0}
+          >
             <div
               className="diagram-viewer-stage"
               style={{ width: `${zoom}%` }}
