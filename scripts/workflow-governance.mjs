@@ -288,7 +288,12 @@ export function auditWorkflowText(name, source) {
         const justified =
           (scope === "pages" && /\bactions\/deploy-pages@/i.test(jobText)) ||
           (scope === "id-token" &&
-            /\bactions\/deploy-pages@/i.test(jobText)) ||
+            (/\bactions\/deploy-pages@/i.test(jobText) ||
+              /\bactions\/attest@/i.test(jobText))) ||
+          (scope === "attestations" &&
+            /\bactions\/attest@/i.test(jobText)) ||
+          (scope === "artifact-metadata" &&
+            /\bactions\/attest@/i.test(jobText)) ||
           (scope === "issues" && validIssueWrite(text, jobText)) ||
           (scope === "contents" && validContentsWrite(jobText)) ||
           (scope === "packages" && validPackagesWrite(jobText));
