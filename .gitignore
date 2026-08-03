@@ -43,3 +43,7 @@ next-env.d.ts
 /.wrangler/
 /outputs/
 /work/
+
+# claude code local state (machine-local telemetry, never committed)
+.claude/settings.local.json
+.claude/logs/
