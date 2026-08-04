@@ -32,6 +32,18 @@ const worker = {
   async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
     const url = new URL(request.url);
 
+    // /resources was the Field Guide's route when it lived under
+    // project-42.dev. On its own subdomain the guide IS the root, so the two
+    // rendered the same explorer over the same catalog and the header sent you
+    // from one to the other: a second hop to a page you were already on, and
+    // the copy people actually landed on was the one missing the content-use
+    // notice. The root wins and this redirects rather than 404s, because the
+    // old path is in sitemaps, links, and bookmarks. Exact match only: every
+    // /resources/<id> detail page is real and must pass straight through.
+    if (url.pathname === "/resources" || url.pathname === "/resources/") {
+      return Response.redirect(new URL("/", url).toString(), 308);
+    }
+
     if (url.pathname === "/_vinext/image") {
       const allowedWidths = [...DEFAULT_DEVICE_SIZES, ...DEFAULT_IMAGE_SIZES];
       return handleImageOptimization(request, {

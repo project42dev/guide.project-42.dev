@@ -5,8 +5,9 @@ import { diagramCatalog } from "./lib/diagrams";
 export default function sitemap(): MetadataRoute.Sitemap {
   const base = "https://guide.project-42.dev";
   return [
+    // No "/resources": it redirects to the root now, and a sitemap that lists
+    // a redirect asks a crawler to index a page that does not exist.
     "",
-    "/resources",
     "/diagrams",
     ...starterCatalog.resources.map((resource) => `/resources/${resource.id}`),
     ...diagramCatalog.map((diagram) => `/diagrams/${diagram.id}`),

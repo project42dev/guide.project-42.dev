@@ -16,7 +16,7 @@ export function SiteFooter() {
         <div>
           <strong>Explore</strong>
           <a href="https://learn.project-42.dev">Learning paths</a>
-          <Link href="/resources">Field guide</Link>
+          <Link href="/">Field guide</Link>
           <Link href="/diagrams">Visual guides</Link>
           <a href="https://learn.project-42.dev/profile">Your transcript</a>
           <a href="https://learn.project-42.dev/learner-data">Learner data</a>

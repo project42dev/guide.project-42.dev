@@ -3,7 +3,6 @@ import { expect, test, type Page } from "@playwright/test";
 
 const routes = [
   "/",
-  "/resources",
   "/resources/human-controlled-ai-release-gate",
   "/diagrams",
   "/diagrams/safe-agent-loop",
@@ -153,7 +152,7 @@ test("skip navigation moves keyboard focus directly to page content", async ({
 test("resource discovery and opening work with keyboard input alone", async ({
   page,
 }) => {
-  await page.goto("/resources");
+  await page.goto("/");
   const search = page.getByRole("searchbox", { name: "Search the field guide" });
   await search.focus();
   await page.keyboard.type("MCP primitives and lifecycle");

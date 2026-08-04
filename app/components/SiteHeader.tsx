@@ -13,12 +13,14 @@ export function SiteHeader() {
         </a>
         <nav aria-label="Primary navigation">
           <a href="https://learn.project-42.dev">Learn</a>
-          <Link href="/resources">Field Guide</Link>
+          {/* The guide IS this site's root. Pointing this at /resources sent
+              you to a second copy of the page you were already reading. */}
+          <Link href="/">Field Guide</Link>
           <Link href="/diagrams">Visual guides</Link>
           <a href="https://learn.project-42.dev/profile">My progress</a>
           <a href="https://project-42.dev/about">About</a>
         </nav>
-        <Link className="header-action" href="/resources">Open the guide</Link>
+        <Link className="header-action" href="/">Open the guide</Link>
       </div>
     </header>
   );

@@ -38,7 +38,7 @@ export default async function ResourcePage({ params }: ResourcePageProps) {
   return (
     <main className="resource-detail shell">
       <nav className="breadcrumbs" aria-label="Breadcrumb">
-        <Link href="/resources">Field guide</Link>
+        <Link href="/">Field guide</Link>
         <span>/</span>
         <span aria-current="page">{resource.title}</span>
       </nav>

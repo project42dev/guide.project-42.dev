@@ -4,7 +4,7 @@ import { expect, test } from "@playwright/test";
 test("keeps content limits, provenance, and reuse guidance visible", async ({
   page,
 }) => {
-  await page.goto("/resources");
+  await page.goto("/");
   const notice = page.getByRole("note");
   await expect(
     notice.getByRole("heading", { name: "Helpful evidence, not a guarantee" }),

@@ -30,6 +30,21 @@ function outputPathForRoute(route) {
   return path.join(outputRoot, route.replace(/^\/+/, ""), "index.html");
 }
 
+// A Worker redirect, expressed as something a static host can serve. noindex
+// keeps the stub itself out of search results while the canonical link hands
+// any accumulated authority to the page that replaced it.
+function redirectDocument(target) {
+  return (
+    `<!doctype html><html lang="en"><head><meta charset="utf-8">` +
+    `<meta http-equiv="refresh" content="0; url=${target}">` +
+    `<link rel="canonical" href="${target}">` +
+    `<meta name="robots" content="noindex">` +
+    `<title>Redirecting…</title></head><body>` +
+    `<p>This page has moved. <a href="${target}">Continue to ${target}</a></p>` +
+    `</body></html>\n`
+  );
+}
+
 function addStaticNavigation(html) {
   const navigation = `<script data-project42-static-navigation>
 document.addEventListener("click",function(event){
@@ -79,6 +94,20 @@ async function main() {
   const inventory = buildRouteInventory();
   for (const route of inventory.htmlRoutes) {
     const response = await fetchRoute(route);
+    // GitHub Pages serves files, not a Worker, so a route the Worker redirects
+    // has to be published as a redirect document or the old URL 404s on Pages
+    // while working everywhere else. Following the redirect and publishing the
+    // target's HTML instead would put the same page at two URLs again, which
+    // is the duplication the redirect exists to remove.
+    if (response.status >= 300 && response.status < 400) {
+      const target = response.headers.get("location");
+      if (!target) {
+        throw new Error(`Cannot export ${route}: ${response.status} with no Location`);
+      }
+      const relativeTarget = new URL(target, `https://${canonicalDomain}`).pathname;
+      await writeRoute(route, redirectDocument(relativeTarget));
+      continue;
+    }
     if (!response.ok) {
       throw new Error(`Cannot export ${route}: HTTP ${response.status}`);
     }

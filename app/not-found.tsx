@@ -7,7 +7,7 @@ export default function NotFound() {
       <h1>This path has not been charted.</h1>
       <p>Search the Field Guide or continue to Project 42 Learn.</p>
       <div className="button-row">
-        <Link className="button button-primary" href="/resources">
+        <Link className="button button-primary" href="/">
           Field Guide
         </Link>
         <a className="button button-secondary" href="https://learn.project-42.dev">

@@ -45,7 +45,7 @@ test("combines resource filters, resets cleanly, and exposes provenance", async 
   expect(starterCatalog.resources).toHaveLength(83);
   await context.grantPermissions(["clipboard-read", "clipboard-write"]);
 
-  await page.goto("/resources");
+  await page.goto("/");
   const cards = page.locator(".resource-card");
   await expect(cards).toHaveCount(83);
   await expect(page.getByRole("status")).toHaveText(

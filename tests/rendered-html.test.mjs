@@ -54,11 +54,37 @@ test("renders every governed resource with metadata and provenance", async () =>
   }
 });
 
-test("renders the resource index and every visual guide", async () => {
-  const resources = await render("/resources");
-  assert.equal(resources.status, 200);
-  assert.match(await resources.text(), /Answers for the work in front of you/);
+// The guide is this site's root, so there is exactly one guide index. /resources
+// was a second copy of it, reached by clicking "Field Guide" while already on
+// the Field Guide, and the copy people landed on first was the one without the
+// content-use notice. The old path still resolves, because it is in sitemaps
+// and bookmarks, but it resolves to the one page rather than to a twin.
+test("sends the old resource index to the root instead of a second copy", async () => {
+  const moved = await render("/resources");
+  assert.equal(moved.status, 308);
+  assert.equal(new URL(moved.headers.get("location")).pathname, "/");
 
+  const home = await render("/");
+  assert.equal(home.status, 200);
+  const html = await home.text();
+  assert.match(html, /Answers for the work in front of you/);
+  assert.match(
+    html,
+    /Helpful evidence, not a guarantee/,
+    "the content-use notice belongs on the page people actually land on",
+  );
+});
+
+test("keeps every resource detail page reachable under /resources", async () => {
+  // The redirect is an exact match on the index. A prefix match would take out
+  // all 83 detail pages, and they are the reason the path exists.
+  const [first] = starterCatalog.resources;
+  const detail = await render(`/resources/${first.id}`);
+  assert.equal(detail.status, 200);
+  assert.match(await detail.text(), new RegExp(first.title.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
+});
+
+test("renders every visual guide", async () => {
   const diagrams = await render("/diagrams");
   assert.equal(diagrams.status, 200);
   for (const diagram of diagramConfig.diagrams) {
@@ -69,7 +95,7 @@ test("renders the resource index and every visual guide", async () => {
 });
 
 test("links every global footer to canonical Legal & Transparency", async () => {
-  for (const route of ["/", "/resources", "/diagrams"]) {
+  for (const route of ["/", "/diagrams"]) {
     const response = await render(route);
     assert.equal(response.status, 200, route);
     assert.match(
