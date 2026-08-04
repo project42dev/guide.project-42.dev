@@ -68,6 +68,16 @@ test("discovers and reads accessible source-first visual guides", async ({
   expect(source.status()).toBe(200);
   expect(await source.text()).toContain("accTitle: The learning evidence loop");
 
+  // Scan from the top of the page, not from wherever the viewer interaction
+  // left it. Closing the dialog returns focus to its trigger, and the browser
+  // scrolls that into view, so the page-wide scan was running at an incidental
+  // offset. axe's target-size rule then reports whatever the sticky header
+  // happens to be covering at that offset as "partially obscured", which makes
+  // the result depend on font metrics rather than on the markup: this passed on
+  // Windows and failed on the Linux runner with the header unchanged in height.
+  // Every other page-wide scan in this suite runs at scroll 0; this one now
+  // matches. The dialog itself is still scanned above, scoped to .diagram-viewer.
+  await page.evaluate(() => window.scrollTo(0, 0));
   const accessibility = await new AxeBuilder({ page })
     .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa"])
     .analyze();
