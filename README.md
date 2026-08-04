@@ -49,10 +49,10 @@ under the [Apache License 2.0](LICENSE).
 ## Current release facts
 
 - Site release `0.6.2`
-- Platform package `0.49.0`
-- Content release `0.36.0`
-- 83 Field Guide resources
-- 83 practical resources and 4 provider scopes
+- Platform package `0.72.0`
+- Content release `0.42.0`
+- 91 Field Guide resources
+- 91 practical resources and 4 provider scopes
 
 These facts are generated from `package.json` and the tagged platform catalog into
 [`public/release-facts.json`](public/release-facts.json). `npm run facts:check`

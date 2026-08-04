@@ -13,7 +13,7 @@ async function render(pathname) {
       headers: { accept: "text/html" },
     }),
     { ASSETS: { fetch: async () => new Response("Not found", { status: 404 }) } },
-    { waitUntil() {}, passThroughOnException() {} },
+    { waitUntil() { }, passThroughOnException() { } },
   );
 }
 
@@ -24,9 +24,9 @@ test("renders the Field Guide home and complete searchable catalog", async () =>
 
   assert.match(html, /Project 42 Field Guide/);
   assert.match(html, /Answers for the work in front of you/);
-  assert.equal(starterCatalog.resources.length, 83);
-  assert.equal((html.match(/data-resource-id=/g) ?? []).length, 83);
-  assert.match(html, /Showing 83 of 83 resources/);
+  assert.equal(starterCatalog.resources.length, 91);
+  assert.equal((html.match(/data-resource-id=/g) ?? []).length, 91);
+  assert.match(html, /Showing 91 of 91 resources/);
   assert.ok(html.includes(`Site v${releaseFacts.siteVersion}`));
   assert.ok(html.includes(`Platform v${releaseFacts.platformVersion}`));
   assert.ok(html.includes(`Content v${releaseFacts.contentVersion}`));

@@ -194,7 +194,7 @@ test("resource discovery and opening work with keyboard input alone", async ({
   const search = page.getByRole("searchbox", { name: "Search the field guide" });
   await search.focus();
   await page.keyboard.type("MCP primitives and lifecycle");
-  await expect(page.getByRole("status")).toHaveText("Showing 1 of 83 resources");
+  await expect(page.getByRole("status")).toHaveText("Showing 1 of 91 resources");
 
   await page.keyboard.press("Tab");
   await expect(
