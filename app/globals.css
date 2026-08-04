@@ -319,6 +319,9 @@ a {
 }
 
 .profile-trigger {
+  /* The photo fills the circle, so clip it and drop the button padding. */
+  overflow: hidden;
+  padding: 0;
   border: 1px solid var(--line);
   border-radius: 50%;
   color: var(--ink);
@@ -335,6 +338,19 @@ a {
   height: 22px;
   width: 22px;
 }
+.profile-photo {
+  border-radius: 50%;
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+}
+
+.profile-initials {
+  font-size: 0.82rem;
+  font-weight: 850;
+  letter-spacing: 0.02em;
+}
+
 
 .header-action {
   align-items: center;
@@ -906,6 +922,13 @@ a {
 .page-hero h1 {
   font-size: clamp(3.2rem, 7vw, 6.3rem);
   max-width: 980px;
+}
+
+/* page-hero h1 sets a tight line-height with margin 0, which reads well for a
+   one-line headline. Any headline that wraps put its second-line descenders
+   into the lede underneath. */
+.page-hero h1 + p {
+  margin-top: 1.5rem;
 }
 
 .page-hero > p:last-child,
