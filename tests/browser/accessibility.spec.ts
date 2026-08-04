@@ -52,6 +52,9 @@ async function expectMinimumTargets(page: Page) {
     .locator(
       [
         ".site-header a",
+        ".header-menu-trigger",
+        ".header-menu-list a",
+        ".header-menu-footer button",
         ".button",
         ".resource-controls input",
         ".resource-controls select",
@@ -68,6 +71,18 @@ async function expectMinimumTargets(page: Page) {
     .evaluateAll((elements) =>
       elements
         .filter((element) => {
+          // An ancestor with display:none does NOT change this element's own
+          // computed display, so the style check below passed anything hidden
+          // by a wrapper and reported it as a 0x0 target. checkVisibility walks
+          // ancestors and honours the hidden attribute, which is what "is this
+          // actually a target the user can hit" means.
+          if (typeof element.checkVisibility === "function") {
+            return element.checkVisibility({
+              contentVisibilityAuto: true,
+              opacityProperty: true,
+              visibilityProperty: true,
+            });
+          }
           const style = getComputedStyle(element);
           return style.display !== "none" && style.visibility !== "hidden";
         })
@@ -133,6 +148,29 @@ for (const route of routes) {
     await expectNoHorizontalPageOverflow(page);
   });
 }
+
+// The header menus hide their contents until opened, so a sweep of the closed
+// page never measures them. Opening each one is the only way this check covers
+// the links it now lists.
+test("header menus open, meet the target floor, and close on Escape", async ({
+  page,
+}) => {
+  await page.goto("/");
+
+  for (const trigger of ["About", "Your account"]) {
+    const button = page.getByRole("button", { name: trigger, exact: trigger === "About" });
+    await button.click();
+    await expect(button).toHaveAttribute("aria-expanded", "true");
+    await expectMinimumTargets(page);
+    const violations = await new AxeBuilder({ page }).withTags(axeTags).analyze();
+    expect(violations.violations).toEqual([]);
+    await page.keyboard.press("Escape");
+    await expect(button).toHaveAttribute("aria-expanded", "false");
+    // Escape has to hand focus back, or a keyboard user is dropped at the top
+    // of the document with no idea where they are.
+    await expect(button).toBeFocused();
+  }
+});
 
 test("skip navigation moves keyboard focus directly to page content", async ({
   page,
