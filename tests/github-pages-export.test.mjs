@@ -39,7 +39,7 @@ test("publishes current release facts and Field Guide content", async () => {
   assert.ok(normalizedHome.includes(`Site v${releaseFacts.siteVersion}`));
   assert.equal(releaseFacts.siteVersion, application.version);
   assert.equal(releaseFacts.platformVersion, installedPlatform.version);
-  assert.equal(releaseFacts.counts.resources, 83);
+  assert.equal(releaseFacts.counts.resources, 91);
   assert.equal(releaseFacts.counts.learningPaths, 0);
 });
 
