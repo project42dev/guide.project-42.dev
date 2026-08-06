@@ -172,6 +172,16 @@ test("header menus open, meet the target floor, and close on Escape", async ({
   }
 });
 
+test("profile menu offers the shared sign-in destination", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Your account" }).click();
+
+  await expect(page.getByRole("link", { name: "Sign in", exact: true })).toHaveAttribute(
+    "href",
+    "https://learn.project-42.dev/account",
+  );
+});
+
 test("skip navigation moves keyboard focus directly to page content", async ({
   page,
 }) => {

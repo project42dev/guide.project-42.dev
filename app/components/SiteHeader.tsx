@@ -27,7 +27,7 @@ function ProfileIcon() {
 // Primary navigation is four items: Learn, Field Guide, Visual guides, About.
 // The learner's own things live behind the profile icon on the right. This site
 // has no session of its own, so those are absolute links to Learn, which owns
-// the account and the record, and there is no sign in or out to offer here.
+// the account, sign-in flow, and learning record.
 export function SiteHeader() {
   return (
     <header className="site-header">
@@ -84,6 +84,9 @@ export function SiteHeader() {
             triggerClassName="profile-trigger"
           >
             <ul className="header-menu-list">
+              <li>
+                <a href={`${LEARN}/account`}>Sign in</a>
+              </li>
               <li>
                 <a href={`${LEARN}/profile`}>My progress</a>
               </li>
