@@ -292,7 +292,7 @@ async function generateArtifacts(config, records) {
       await writeFile(temporarySvg, record.svg, "utf8");
       await rename(temporarySvg, record.svgPath);
     } catch (error) {
-      await unlink(temporarySvg).catch(() => {});
+      await unlink(temporarySvg).catch(() => { });
       throw error;
     }
   }
@@ -315,7 +315,7 @@ async function main() {
   const result = await runDiagramIntegrity();
   console.log(
     `${checkOnly ? "Diagram integrity passed" : "Generated diagram artifacts"}: ` +
-      `${result.diagramCount} diagrams with ${result.renderer}.`,
+    `${result.diagramCount} diagrams with ${result.renderer}.`,
   );
 }
 
