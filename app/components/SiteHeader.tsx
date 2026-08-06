@@ -96,9 +96,6 @@ export function SiteHeader() {
               <li>
                 <a href={`${LEARN}/learner-data`}>Learner data</a>
               </li>
-              <li>
-                <a href={`${LEARN}/import-progress`}>Import previous progress</a>
-              </li>
             </ul>
           </HeaderMenu>
         </div>
