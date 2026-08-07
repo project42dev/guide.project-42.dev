@@ -14,7 +14,7 @@ concurrency:
 jobs:
   build:
     if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
-    runs-on: ubuntu-24.04
+    runs-on: [self-hosted, linux, x64, hcs]
     permissions:
       contents: read
     steps:
@@ -38,7 +38,7 @@ jobs:
   deploy:
     if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
     needs: build
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, linux, x64, hcs]
     permissions:
       pages: write
       id-token: write
