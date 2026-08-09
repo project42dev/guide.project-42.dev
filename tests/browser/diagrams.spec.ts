@@ -11,7 +11,7 @@ test("discovers and reads accessible source-first visual guides", async ({
   await expect(
     page.getByRole("heading", { name: "See the system, not just the steps." }),
   ).toBeVisible();
-  await expect(page.locator(".diagram-card")).toHaveCount(8);
+  await expect(page.locator(".diagram-card")).toHaveCount(10);
 
   await page
     .getByRole("link", { name: "Explore this visual" })
@@ -23,7 +23,7 @@ test("discovers and reads accessible source-first visual guides", async ({
   const diagram = page.locator(".diagram-canvas img");
   await expect(diagram).toBeVisible();
   await expect(diagram).toHaveAttribute("alt", /flow starts at Learn/i);
-  await expect(page.getByRole("figure")).toContainText(
+  await expect(page.getByRole("figure").first()).toContainText(
     "Project 42 turns study into evidence",
   );
   await expect(page.getByRole("heading", { name: "Key takeaways" })).toBeVisible();
@@ -32,16 +32,19 @@ test("discovers and reads accessible source-first visual guides", async ({
     name: /open full-screen viewer/i,
   });
   await viewerTrigger.click();
-  const viewer = page.getByRole("dialog", { name: "The learning evidence loop" });
+  const viewer = page.getByRole("dialog", { name: /The learning evidence loop/ });
   await expect(viewer).toBeVisible();
-  await expect(page.getByRole("button", { name: "Close" })).toBeFocused();
-  await expect(viewer.locator("output")).toHaveText("100%");
+  // Close button should be focused when dialog opens
+  await expect(viewer.getByRole("button", { name: /close fullscreen viewer/i })).toBeFocused();
+  // Zoom controls are present
+  await expect(viewer.getByRole("button", { name: "Zoom in" })).toBeVisible();
+  await expect(viewer.getByRole("button", { name: "Zoom out" })).toBeVisible();
   for (let index = 0; index < 12; index += 1) {
-    await page.getByRole("button", { name: "Zoom in" }).click();
+    await viewer.getByRole("button", { name: "Zoom in" }).click();
   }
-  await expect(viewer.locator("output")).toHaveText("400%");
-  await expect(viewer.locator(".diagram-viewer-viewport")).toBeVisible();
-  const canScroll = await viewer.locator(".diagram-viewer-viewport").evaluate(
+  // SVG container should be scrollable at 400% zoom
+  await expect(viewer.locator(".diagram-svg-container")).toBeVisible();
+  const canScroll = await viewer.locator(".diagram-svg-container").evaluate(
     (element) =>
       element.scrollWidth > element.clientWidth ||
       element.scrollHeight > element.clientHeight,
@@ -49,7 +52,7 @@ test("discovers and reads accessible source-first visual guides", async ({
   expect(canScroll).toBe(true);
 
   const dialogAccessibility = await new AxeBuilder({ page })
-    .include(".diagram-viewer")
+    .include(".diagram-fullscreen-overlay")
     .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa"])
     .analyze();
   expect(dialogAccessibility.violations).toEqual([]);

@@ -46,6 +46,7 @@
   },
   "dependencies": {
     "@project42/platform": "github:project42dev/project42-platform#v0.72.0",
+    "framer-motion": "^13.0.0",
     "next": "16.2.11",
     "react": "19.2.8",
     "react-dom": "19.2.8"

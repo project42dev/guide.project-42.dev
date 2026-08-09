@@ -338,6 +338,7 @@ a {
   height: 22px;
   width: 22px;
 }
+
 .profile-photo {
   border-radius: 50%;
   height: 100%;
@@ -596,7 +597,7 @@ a {
   padding: 1.25rem 1.5rem;
 }
 
-.progress-snapshot > div:first-child {
+.progress-snapshot>div:first-child {
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
@@ -669,7 +670,7 @@ a {
   margin: 0;
 }
 
-.section-heading > p:last-child {
+.section-heading>p:last-child {
   color: var(--ink-soft);
   font-size: 1rem;
   line-height: 1.7;
@@ -714,7 +715,7 @@ a {
   margin: 5rem 0 1rem;
 }
 
-.pillar-card > p {
+.pillar-card>p {
   font-size: 1rem;
   line-height: 1.65;
   max-width: 500px;
@@ -892,7 +893,7 @@ a {
   text-align: center;
 }
 
-.cta > .eyebrow {
+.cta>.eyebrow {
   color: var(--navy);
 }
 
@@ -900,7 +901,7 @@ a {
   max-width: 850px;
 }
 
-.cta > p:not(.eyebrow) {
+.cta>p:not(.eyebrow) {
   color: #38441d;
   line-height: 1.6;
   margin-bottom: 2rem;
@@ -927,13 +928,13 @@ a {
 /* page-hero h1 sets a tight line-height with margin 0, which reads well for a
    one-line headline. Any headline that wraps put its second-line descenders
    into the lede underneath. */
-.page-hero h1 + p {
+.page-hero h1+p {
   margin-top: 1.5rem;
 }
 
-.page-hero > p:last-child,
-.path-hero > div > p,
-.resource-detail-hero > div > p {
+.page-hero>p:last-child,
+.path-hero>div>p,
+.resource-detail-hero>div>p {
   color: var(--ink-soft);
   font-size: clamp(1rem, 2vw, 1.25rem);
   line-height: 1.65;
@@ -1132,7 +1133,7 @@ a {
   font-size: 1.25rem;
 }
 
-.module-copy > span:last-child {
+.module-copy>span:last-child {
   color: var(--ink-soft);
   font-size: 0.83rem;
 }
@@ -1178,7 +1179,7 @@ a {
   font-size: clamp(3rem, 7vw, 6rem);
 }
 
-.lesson-hero > p {
+.lesson-hero>p {
   color: var(--ink-soft);
   font-size: 1.13rem;
   line-height: 1.65;
@@ -1294,7 +1295,7 @@ a {
   margin: 0.25rem 0 0;
 }
 
-.comparison-heading > span {
+.comparison-heading>span {
   border: 1px solid var(--navy);
   border-radius: 999px;
   flex: 0 0 auto;
@@ -1446,11 +1447,9 @@ a {
   border: 1px solid color-mix(in srgb, var(--orange) 42%, var(--line));
   border-radius: var(--radius);
   background:
-    linear-gradient(
-      145deg,
+    linear-gradient(145deg,
       color-mix(in srgb, var(--orange) 10%, transparent),
-      color-mix(in srgb, white 96%, transparent)
-    );
+      color-mix(in srgb, white 96%, transparent));
 }
 
 .learning-activity h2 {
@@ -1509,10 +1508,10 @@ a {
   margin: 0.25rem 0 0.8rem;
 }
 
-.capstone-submission > p,
+.capstone-submission>p,
 .capstone-review-note p,
-.capstone-artifacts > p,
-.capstone-rubric > p {
+.capstone-artifacts>p,
+.capstone-rubric>p {
   color: var(--ink-soft);
   line-height: 1.65;
 }
@@ -1556,7 +1555,7 @@ a {
   margin: 0;
 }
 
-.capstone-exemplars > p:not(.eyebrow) {
+.capstone-exemplars>p:not(.eyebrow) {
   color: var(--ink-soft);
   font-size: 0.78rem;
   line-height: 1.55;
@@ -1607,13 +1606,13 @@ a {
   border-bottom: 1px solid var(--line);
 }
 
-.capstone-exemplar > p,
-.capstone-exemplar > h4,
-.capstone-exemplar > ul {
+.capstone-exemplar>p,
+.capstone-exemplar>h4,
+.capstone-exemplar>ul {
   margin-inline: 1rem;
 }
 
-.capstone-exemplar > p,
+.capstone-exemplar>p,
 .exemplar-artifacts p,
 .exemplar-score-list span {
   color: var(--ink-soft);
@@ -1682,8 +1681,8 @@ a {
   padding: 0 0.5rem;
 }
 
-.capstone-artifacts > p,
-.capstone-rubric > p {
+.capstone-artifacts>p,
+.capstone-rubric>p {
   font-size: 0.76rem;
   margin: 0;
 }
@@ -1728,7 +1727,7 @@ a {
   line-height: 1.5;
 }
 
-.rubric-row div > strong,
+.rubric-row div>strong,
 .rubric-row label span {
   font-size: 0.68rem;
   text-transform: uppercase;
@@ -1763,13 +1762,13 @@ a {
   padding: 0 0.35rem;
 }
 
-.criterion-evidence-map > p {
+.criterion-evidence-map>p {
   color: var(--ink-soft);
   font-size: 0.7rem;
   margin: 0 0 0.65rem;
 }
 
-.criterion-evidence-map > div {
+.criterion-evidence-map>div {
   display: grid;
   gap: 0.45rem;
 }
@@ -1982,7 +1981,7 @@ a {
   top: 110px;
 }
 
-.lesson-rail > div {
+.lesson-rail>div {
   align-items: center;
   border-bottom: 1px solid var(--line);
   display: flex;
@@ -1995,7 +1994,7 @@ a {
   font-size: 0.68rem;
 }
 
-.lesson-rail > div strong {
+.lesson-rail>div strong {
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 0.75rem;
 }
@@ -2044,7 +2043,7 @@ a {
   color: var(--lime);
 }
 
-.knowledge-check > p {
+.knowledge-check>p {
   color: #b9c2d3;
   line-height: 1.6;
 }
@@ -2170,13 +2169,13 @@ a {
   padding: 1rem;
 }
 
-.check-result > div:first-child {
+.check-result>div:first-child {
   align-items: center;
   display: flex;
   gap: 1rem;
 }
 
-.check-result > div:first-child > span {
+.check-result>div:first-child>span {
   color: var(--lime);
   font-family: Georgia, "Times New Roman", serif;
   font-size: 2.3rem;
@@ -2199,7 +2198,7 @@ a {
   color: var(--navy);
 }
 
-.result-retry > div:first-child > span {
+.result-retry>div:first-child>span {
   color: var(--orange);
 }
 
@@ -2217,7 +2216,7 @@ a {
   min-width: 0;
 }
 
-.resource-controls label > span {
+.resource-controls label>span {
   color: #606979;
   font-size: 0.69rem;
   font-weight: 800;
@@ -2296,7 +2295,7 @@ a {
   margin: 3rem 0 0.7rem;
 }
 
-.resource-card > p {
+.resource-card>p {
   color: var(--ink-soft);
   line-height: 1.55;
 }
@@ -2370,7 +2369,7 @@ a {
   padding-top: 1rem;
 }
 
-.resource-foot > div {
+.resource-foot>div {
   align-items: flex-start;
   display: flex;
   flex-direction: column;
@@ -2430,7 +2429,7 @@ a {
   margin: 1rem 0 0.4rem;
 }
 
-.verification-card small + small {
+.verification-card small+small {
   margin-top: 0.35rem;
 }
 
@@ -2530,7 +2529,7 @@ a {
 
 .profile-identity .eyebrow,
 .profile-identity h2,
-.profile-identity > p {
+.profile-identity>p {
   grid-column: 1;
 }
 
@@ -2540,7 +2539,7 @@ a {
   margin: 0;
 }
 
-.profile-identity > p {
+.profile-identity>p {
   color: var(--ink-soft);
   line-height: 1.55;
   margin: 0;
@@ -2552,7 +2551,7 @@ a {
   grid-row: 1 / span 3;
 }
 
-.profile-identity form > label {
+.profile-identity form>label {
   color: #606979;
   display: block;
   font-size: 0.68rem;
@@ -2633,7 +2632,7 @@ a {
   margin: 0.3rem 0 0;
 }
 
-.transcript-list > article > strong {
+.transcript-list>article>strong {
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 0.73rem;
   text-align: right;
@@ -2686,7 +2685,7 @@ a {
   max-width: 250px;
 }
 
-.profile-transfer > small {
+.profile-transfer>small {
   color: #606979;
   font-size: 0.65rem;
   text-align: right;
@@ -2908,7 +2907,7 @@ a {
   margin-top: 0.45rem;
 }
 
-.release-facts-heading > p {
+.release-facts-heading>p {
   color: #cbd2df;
   line-height: 1.7;
   margin: 0;
@@ -3023,7 +3022,7 @@ a {
   font-size: clamp(2.2rem, 5vw, 4rem);
 }
 
-.open-source-banner > div > p:last-child {
+.open-source-banner>div>p:last-child {
   color: #25565d;
   line-height: 1.6;
   max-width: 700px;
@@ -3117,7 +3116,7 @@ a {
   margin: 0.45rem 0 1rem;
 }
 
-.policy-section-heading > p:last-child {
+.policy-section-heading>p:last-child {
   color: var(--ink-soft);
   line-height: 1.7;
 }
@@ -3235,7 +3234,7 @@ a {
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
-.policy-control-grid article > strong {
+.policy-control-grid article>strong {
   color: var(--cyan-deep);
   font-family: Georgia, "Times New Roman", serif;
   font-size: clamp(1.8rem, 3vw, 2.6rem);
@@ -3288,7 +3287,7 @@ a {
   max-width: 900px;
 }
 
-.not-found > p:not(.eyebrow) {
+.not-found>p:not(.eyebrow) {
   color: var(--ink-soft);
   font-size: 1.1rem;
   margin-bottom: 2rem;
@@ -3310,13 +3309,13 @@ a {
   margin-bottom: 1rem;
 }
 
-.footer-grid > div:first-child p {
+.footer-grid>div:first-child p {
   color: #aeb7c9;
   line-height: 1.6;
   max-width: 380px;
 }
 
-.footer-grid > div:not(:first-child) {
+.footer-grid>div:not(:first-child) {
   display: flex;
   flex-direction: column;
   gap: 0.65rem;
@@ -3380,7 +3379,7 @@ a {
   margin: 0;
 }
 
-.content-use-notice > a {
+.content-use-notice>a {
   font-size: 0.78rem;
   font-weight: 800;
   grid-column: 2;
@@ -3397,7 +3396,7 @@ a {
     grid-template-columns: 1fr;
   }
 
-  .content-use-notice > a {
+  .content-use-notice>a {
     grid-column: 1;
   }
 }
@@ -3479,14 +3478,14 @@ a {
   }
 
   .page-shell,
-  .page-shell > *,
+  .page-shell>*,
   .page-hero,
-  .page-hero > *,
+  .page-hero>*,
   .page-hero h1,
   .resource-detail,
-  .resource-detail > *,
+  .resource-detail>*,
   .resource-detail-hero,
-  .resource-detail-hero > *,
+  .resource-detail-hero>*,
   .resource-detail-hero h1 {
     max-width: 100%;
     min-width: 0;
@@ -3579,7 +3578,7 @@ a {
     justify-content: flex-start;
   }
 
-  .profile-transfer > small {
+  .profile-transfer>small {
     text-align: left;
   }
 
@@ -3667,7 +3666,7 @@ a {
   }
 
   .resource-card,
-  .resource-card > *,
+  .resource-card>*,
   .resource-meta {
     min-width: 0;
     overflow-wrap: anywhere;
@@ -3683,11 +3682,11 @@ a {
   }
 
   .resource-detail-hero,
-  .resource-detail-hero > *,
+  .resource-detail-hero>*,
   .resource-body,
   .lesson-sections,
   .lesson-block,
-  .lesson-block > div {
+  .lesson-block>div {
     max-width: 100%;
     min-width: 0;
     overflow-wrap: anywhere;
@@ -3770,7 +3769,7 @@ a {
   padding-bottom: 4rem;
 }
 
-.diagram-index-hero > p:last-child {
+.diagram-index-hero>p:last-child {
   color: var(--ink-soft);
   font-size: 1.12rem;
   line-height: 1.7;
@@ -3843,13 +3842,13 @@ a {
   margin: 1.5rem 0 0.55rem;
 }
 
-.diagram-card > p {
+.diagram-card>p {
   color: var(--ink-soft);
   line-height: 1.6;
   margin: 0;
 }
 
-.diagram-card > a {
+.diagram-card>a {
   font-size: 0.78rem;
   font-weight: 850;
   margin-top: auto;
@@ -3876,7 +3875,7 @@ a {
   max-width: 980px;
 }
 
-.diagram-detail-hero > div:first-child > p:last-child {
+.diagram-detail-hero>div:first-child>p:last-child {
   color: var(--ink-soft);
   font-size: 1.08rem;
   line-height: 1.65;
@@ -4135,6 +4134,7 @@ a {
 }
 
 @media (forced-colors: active) {
+
   .diagram-card,
   .diagram-card-preview,
   .diagram-source-card,
@@ -4167,6 +4167,7 @@ a {
 }
 
 @media (max-width: 760px) {
+
   .diagram-grid,
   .diagram-detail-hero,
   .diagram-explanation-grid {
@@ -4174,13 +4175,13 @@ a {
   }
 
   .diagram-detail,
-  .diagram-detail > *,
+  .diagram-detail>*,
   .diagram-detail-hero,
-  .diagram-detail-hero > *,
+  .diagram-detail-hero>*,
   .diagram-detail-hero h1,
   .diagram-source-card,
   .diagram-explanation-grid,
-  .diagram-explanation-grid > *,
+  .diagram-explanation-grid>*,
   .diagram-explanation-grid h2,
   .diagram-canvas {
     max-width: 100%;
@@ -4229,5 +4230,416 @@ a {
   .diagram-viewer-controls button,
   .diagram-viewer-controls output {
     min-height: 44px;
+  }
+}
+
+/* =============================================
+   InteractiveDiagram — step-through visual guides
+   ============================================= */
+
+.interactive-diagram {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  width: 100%;
+}
+
+/* Step indicator */
+.diagram-step-indicator {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+.diagram-step-header {
+  align-items: center;
+  display: flex;
+  gap: 0.5rem;
+  justify-content: space-between;
+}
+
+.step-badge {
+  background: var(--violet);
+  border-radius: var(--radius-small);
+  color: #fff;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  padding: 0.25rem 0.75rem;
+}
+
+.step-badge.overview {
+  background: var(--slate-600);
+}
+
+/* Progress bar */
+.diagram-progress-track {
+  background: var(--slate-200);
+  border-radius: 999px;
+  height: 4px;
+  overflow: hidden;
+  width: 100%;
+}
+
+.diagram-progress-fill {
+  background: var(--violet);
+  border-radius: 999px;
+  height: 100%;
+  width: 0%;
+}
+
+/* Auto-play button (in header) */
+.diagram-autoplay-btn {
+  align-items: center;
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-small);
+  color: var(--slate-500);
+  cursor: pointer;
+  display: inline-flex;
+  font-size: 0.75rem;
+  height: 28px;
+  justify-content: center;
+  padding: 0;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  width: 28px;
+}
+
+.diagram-autoplay-btn:hover {
+  background: var(--slate-100);
+  color: var(--slate-700);
+  border-color: var(--slate-400);
+}
+
+.diagram-autoplay-btn.active {
+  background: var(--violet);
+  border-color: var(--violet);
+  color: #fff;
+}
+
+.diagram-autoplay-btn:focus-visible {
+  outline: 2px solid var(--violet);
+  outline-offset: 2px;
+}
+
+/* SVG container */
+.diagram-svg-container {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  overflow: auto;
+}
+
+.diagram-svg {
+  display: block;
+  height: auto;
+  max-width: none;
+}
+
+.diagram-svg.no-transition {
+  transition: none;
+}
+
+/* Step description */
+.diagram-step-description {
+  background: var(--slate-50);
+  border-left: 4px solid var(--violet);
+  border-radius: 0 var(--radius-small) var(--radius-small) 0;
+  min-height: 3.5rem;
+  overflow: hidden;
+  padding: 1rem 1.25rem;
+  position: relative;
+}
+
+.step-overview-text {
+  color: var(--slate-500);
+  font-style: italic;
+  margin: 0;
+}
+
+.step-text {
+  color: var(--slate-800);
+  line-height: 1.65;
+  margin: 0;
+}
+
+/* Controls toolbar */
+.diagram-controls {
+  align-items: center;
+  border-top: 1px solid var(--line);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: space-between;
+  padding-top: 1rem;
+}
+
+.diagram-step-nav {
+  align-items: center;
+  display: flex;
+  gap: 0.75rem;
+}
+
+.diagram-step-dots {
+  align-items: center;
+  display: flex;
+  gap: 0.375rem;
+}
+
+.step-dot {
+  background: var(--slate-300);
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+  height: 24px;
+  padding: 0;
+  transition: background 0.2s ease, transform 0.2s ease;
+  width: 24px;
+}
+
+.step-dot:hover {
+  background: var(--slate-500);
+  transform: scale(1.2);
+}
+
+.step-dot.active {
+  background: var(--violet);
+  transform: scale(1.3);
+}
+
+.step-dot:focus-visible {
+  outline: 2px solid var(--violet);
+  outline-offset: 2px;
+}
+
+.diagram-zoom-controls {
+  align-items: center;
+  display: flex;
+  gap: 0.25rem;
+}
+
+/* Buttons */
+.diagram-btn {
+  align-items: center;
+  background: var(--slate-100);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-small);
+  color: var(--slate-700);
+  cursor: pointer;
+  display: inline-flex;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  gap: 0.25rem;
+  justify-content: center;
+  min-height: 36px;
+  padding: 0.375rem 0.75rem;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.diagram-btn:hover:not(:disabled) {
+  background: var(--slate-200);
+  color: var(--slate-900);
+}
+
+.diagram-btn:focus-visible {
+  outline: 2px solid var(--violet);
+  outline-offset: 2px;
+}
+
+.diagram-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+.diagram-btn-icon {
+  font-size: 1rem;
+  min-width: 36px;
+  padding: 0.25rem;
+}
+
+.diagram-btn-icon.autoplay-active {
+  background: var(--violet);
+  border-color: var(--violet);
+  color: #fff;
+}
+
+.diagram-btn-icon.autoplay-active:hover:not(:disabled) {
+  background: var(--violet);
+  color: #fff;
+  opacity: 0.85;
+}
+
+.diagram-btn-zoom {
+  font-variant-numeric: tabular-nums;
+  min-width: 56px;
+}
+
+/* Fullscreen overlay */
+.diagram-fullscreen-overlay {
+  align-items: center;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  flex-direction: column;
+  inset: 0;
+  justify-content: center;
+  padding: 2rem;
+  position: fixed;
+  z-index: 1000;
+}
+
+.diagram-fullscreen-header {
+  align-items: center;
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  max-width: 1400px;
+  width: 100%;
+}
+
+.diagram-fullscreen-title {
+  color: #fff;
+  flex: 1;
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.diagram-category-badge {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: var(--radius-small);
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 0.25rem 0.625rem;
+  text-transform: uppercase;
+}
+
+.diagram-fullscreen-close {
+  align-items: center;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--radius-small);
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  font-size: 1.125rem;
+  height: 40px;
+  justify-content: center;
+  transition: background 0.15s ease;
+  width: 40px;
+}
+
+.diagram-fullscreen-close:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.diagram-fullscreen-close:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+
+/* Fullscreen diagram adjustments */
+.diagram-fullscreen-overlay .interactive-diagram {
+  max-height: calc(100vh - 8rem);
+  max-width: 1400px;
+  width: 100%;
+}
+
+.diagram-fullscreen-overlay .diagram-svg-container {
+  background: #fff;
+  max-height: calc(100vh - 20rem);
+}
+
+.diagram-fullscreen-overlay .diagram-step-description {
+  background: rgba(255, 255, 255, 0.08);
+  border-left-color: var(--violet-400);
+}
+
+.diagram-fullscreen-overlay .step-text {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.diagram-fullscreen-overlay .step-overview-text {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.diagram-fullscreen-overlay .diagram-controls {
+  border-top-color: rgba(255, 255, 255, 0.15);
+}
+
+.diagram-fullscreen-overlay .diagram-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.diagram-fullscreen-overlay .diagram-btn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+}
+
+.diagram-fullscreen-overlay .diagram-btn-icon.autoplay-active {
+  background: var(--violet);
+  border-color: var(--violet);
+  color: #fff;
+}
+
+.diagram-fullscreen-overlay .step-dot {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.diagram-fullscreen-overlay .step-dot:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.diagram-fullscreen-overlay .step-dot.active {
+  background: var(--violet-400);
+}
+
+.diagram-fullscreen-overlay .diagram-progress-track {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.diagram-fullscreen-overlay .diagram-progress-fill {
+  background: var(--violet-400);
+}
+
+.diagram-fullscreen-overlay .diagram-autoplay-btn {
+  border-color: rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.diagram-fullscreen-overlay .diagram-autoplay-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.diagram-fullscreen-overlay .diagram-autoplay-btn.active {
+  background: var(--violet-400);
+  border-color: var(--violet-400);
+  color: #fff;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .diagram-controls {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .diagram-step-nav {
+    width: 100%;
+  }
+
+  .diagram-zoom-controls {
+    width: 100%;
+  }
+
+  .diagram-fullscreen-overlay {
+    padding: 1rem;
+  }
+
+  .diagram-fullscreen-header {
+    flex-wrap: wrap;
   }
 }

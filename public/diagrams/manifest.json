@@ -7,21 +7,21 @@
       "source": "learning-evidence-loop.mmd",
       "sourceSha256": "bb7320b9964e2fac205eb30ebda50d9078a9abdfda571e41c7775f9b7088c63c",
       "svg": "learning-evidence-loop.svg",
-      "svgSha256": "ae0dfc25956a1b562dbac755a07f3fdfabbe9e6a62c8f86fab1e2b69fa886924"
+      "svgSha256": "4ffed1b3555a161e47231b1b27676eae5a3d2437e9615e371d16098fd478b5aa"
     },
     {
       "id": "grounded-answer-workflow",
       "source": "grounded-answer-workflow.mmd",
       "sourceSha256": "695373c14bff83c3868c7a5de4bf01ac7526fbf638add2cbc194e95913f7a65f",
       "svg": "grounded-answer-workflow.svg",
-      "svgSha256": "448b36541fba5bdb384a4c9b963a43f28474de8ecad48b382b06d7858932912c"
+      "svgSha256": "99006b6b202c7954561f509f2508ad646fcaddec67ca37f2101ae3cfa78f6640"
     },
     {
       "id": "safe-agent-loop",
       "source": "safe-agent-loop.mmd",
       "sourceSha256": "3b1a5b83b184a9ff4ce362ef7d253f7f13bb7ee9fc3d668c686bac7e0fe6728d",
       "svg": "safe-agent-loop.svg",
-      "svgSha256": "59d15bf9dc286b7df84ca623111aa5dbc7d35a83e5f634d6da52cb1851054e4e"
+      "svgSha256": "85f9cbc4648e180e2ed89ca5288268803cd9f0af05e1853379cb499605a16ae4"
     },
     {
       "id": "prompt-contract",
@@ -42,7 +42,7 @@
       "source": "tool-trust-boundaries.mmd",
       "sourceSha256": "a3401e369dcd11f479b6cc04f3580e3d44b0c08542fca9596f2858013c1887be",
       "svg": "tool-trust-boundaries.svg",
-      "svgSha256": "f7846efc98383ef00016c2f1fc7906a3449e94632cce84c0316edcb18f6ebd0a"
+      "svgSha256": "e29ecfe401798685c94198bc12369f2f76e6c044424340df0106441931a7674f"
     },
     {
       "id": "multi-agent-handoff",
@@ -57,6 +57,20 @@
       "sourceSha256": "e2ffa6894a362a2ce0e76506c9c94ea7afed095938a59619967ef41436eb3485",
       "svg": "content-freshness-release.svg",
       "svgSha256": "23a9acabafb75820b1565d3fb5bb69e901f0f3d473c7aec51808170f900107f1"
+    },
+    {
+      "id": "agent-orchestration",
+      "source": "agent-orchestration.mmd",
+      "sourceSha256": "c44fcba43ca4c1b90cbafe1a6941c03a3bf829292f01d89fff15ee7d324642a8",
+      "svg": "agent-orchestration.svg",
+      "svgSha256": "255ed96f23f5c8f44c11062faa2714c67701ea8f73de1e3df9d263ec942b6212"
+    },
+    {
+      "id": "cost-and-capacity-management",
+      "source": "cost-and-capacity-management.mmd",
+      "sourceSha256": "a50cf355bd46f30b6d1f02d67c348f2e8272106f33a5c979e25fc61b80a84738",
+      "svg": "cost-and-capacity-management.svg",
+      "svgSha256": "94bb8b6a6fe3788ae9c9317921a492805c0a34341ab67e3cb61ff00748a8fc24"
     }
   ]
 }

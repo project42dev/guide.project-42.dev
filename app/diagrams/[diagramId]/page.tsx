@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { DiagramViewer } from "../../components/DiagramViewer";
+import { InteractiveDiagramClient } from "../../components/InteractiveDiagramClient";
 import { ContentUseNotice } from "../../components/ContentUseNotice";
 import { diagramCatalog, getDiagram } from "../../lib/diagrams";
+import { getDiagramSteps } from "../../lib/diagramSteps";
 
 interface DiagramPageProps {
   params: Promise<{ diagramId: string }>;
@@ -27,6 +28,8 @@ export default async function DiagramPage({ params }: DiagramPageProps) {
   const { diagramId } = await params;
   const diagram = getDiagram(diagramId);
   if (!diagram) notFound();
+
+  const steps = getDiagramSteps(diagramId);
 
   return (
     <main className="diagram-detail shell">
@@ -60,10 +63,12 @@ export default async function DiagramPage({ params }: DiagramPageProps) {
 
       <figure className="diagram-figure">
         <div className="diagram-canvas">
-          <DiagramViewer
+          <InteractiveDiagramClient
             alt={diagram.altText}
+            category={diagram.category}
             height={900}
             src={`/diagrams/${diagram.id}.svg`}
+            steps={steps}
             title={diagram.title}
             width={1440}
           />

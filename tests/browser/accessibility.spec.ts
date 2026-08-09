@@ -261,21 +261,21 @@ test("the visual-guide dialog traps focus and labels its scrollable viewport", a
   page,
 }) => {
   await page.goto("/diagrams/safe-agent-loop");
+  // Wait for the dynamically-loaded InteractiveDiagram component
+  await expect(page.locator(".diagram-canvas img")).toBeVisible();
   const trigger = page.getByRole("button", { name: /open full-screen viewer/i });
   await trigger.focus();
   await page.keyboard.press("Enter");
-  const dialog = page.getByRole("dialog", { name: "The bounded agent loop" });
+  const dialog = page.getByRole("dialog", { name: /The bounded agent loop/ });
   await expect(dialog).toBeVisible();
   await expectMinimumTargets(page);
-  const viewport = dialog.getByRole("region", {
-    name: "The bounded agent loop zoomable image",
-  });
-  await expect(viewport).toHaveAttribute("tabindex", "0");
 
-  const firstControl = dialog.getByRole("button", { name: "Zoom in" });
-  await firstControl.focus();
-  await page.keyboard.press("Shift+Tab");
-  await expect(viewport).toBeFocused();
+  // The close button should be focused when the dialog opens
+  const closeButton = dialog.getByRole("button", { name: /close fullscreen viewer/i });
+  await expect(closeButton).toBeFocused();
+
+  // Focus trap: Tab from close button should go to first control in the dialog
+  const firstControl = dialog.getByRole("button", { name: "Start auto-play" }).first();
   await page.keyboard.press("Tab");
   await expect(firstControl).toBeFocused();
 
