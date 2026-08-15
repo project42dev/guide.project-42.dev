@@ -44,7 +44,6 @@ export function SiteHeader() {
               you to a second copy of the page you were already reading. */}
           <Link href="/">Field Guide</Link>
           <Link href="/diagrams">Visual guides</Link>
-          <Link href="/orchard">Orchard</Link>
           <HeaderMenu
             label={
               <>
