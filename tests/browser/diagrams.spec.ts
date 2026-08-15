@@ -11,7 +11,7 @@ test("discovers and reads accessible source-first visual guides", async ({
   await expect(
     page.getByRole("heading", { name: "See the system, not just the steps." }),
   ).toBeVisible();
-  await expect(page.locator(".diagram-card")).toHaveCount(10);
+  await expect(page.locator(".diagram-card")).toHaveCount(11);
 
   await page
     .getByRole("link", { name: "Explore this visual" })
@@ -85,6 +85,59 @@ test("discovers and reads accessible source-first visual guides", async ({
     .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa"])
     .analyze();
   expect(accessibility.violations).toEqual([]);
+});
+
+test("makes Orchard lifecycle steps clickable, in the step list and in the diagram", async ({
+  page,
+}) => {
+  await page.goto("/diagrams/orchard-lifecycle");
+  await expect(
+    page.getByRole("heading", { name: "The Orchard content lifecycle" }),
+  ).toBeVisible();
+
+  // This diagram opts into inline, clickable SVG regions; diagrams without
+  // any highlightClass steps keep rendering as a plain <img>.
+  await expect(page.locator(".diagram-svg-inline svg")).toBeVisible();
+
+  // Clicking a step in the labeled step list jumps straight to it.
+  await page
+    .locator(".diagram-step-list-item")
+    .filter({ hasText: "Gate 1: the owner approves on the comment" })
+    .click();
+  await expect(page.locator(".step-badge")).toHaveText(
+    "Step 7 of 19: Gate 1: the owner approves on the comment",
+  );
+
+  // Documentation links for the active step are rendered and point at the
+  // public Orchard repository, never at the private ops repository.
+  const links = page.locator(".diagram-step-links a");
+  await expect(links.first()).toBeVisible();
+  const hrefs = await links.evaluateAll((anchors) =>
+    anchors.map((a) => a.getAttribute("href") ?? ""),
+  );
+  expect(hrefs.length).toBeGreaterThan(0);
+  for (const href of hrefs) {
+    expect(href).toContain("github.com/project42dev/orchard");
+    expect(href).not.toContain("project42dev-ops");
+  }
+
+  // Clicking a region of the SVG itself jumps to its step.
+  const kickoffRegion = page.locator('[aria-label^="Jump to step 1:"]');
+  await expect(kickoffRegion).toBeVisible();
+  await kickoffRegion.click();
+  await expect(page.locator(".step-badge")).toHaveText(
+    "Step 1 of 19: Discovery kicks off",
+  );
+
+  // The same region is keyboard-operable, with a visible focus state.
+  await kickoffRegion.focus();
+  await expect(kickoffRegion).toBeFocused();
+  const gate1Region = page.locator('[aria-label^="Jump to step 7:"]').first();
+  await gate1Region.focus();
+  await page.keyboard.press("Enter");
+  await expect(page.locator(".step-badge")).toHaveText(
+    "Step 7 of 19: Gate 1: the owner approves on the comment",
+  );
 });
 
 test("keeps diagram pages readable at a narrow viewport", async ({ page }) => {

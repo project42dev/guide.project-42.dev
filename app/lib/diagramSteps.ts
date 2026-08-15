@@ -375,6 +375,297 @@ export const diagramStepData: DiagramStepData[] = [
             },
         ],
     },
+    {
+        diagramId: "orchard-lifecycle",
+        steps: [
+            {
+                step: 1,
+                label: "Discovery kicks off",
+                description:
+                    "The discovery track runs monthly, on the 1st, at 06:00 UTC. This is one of three ways a topic can enter Orchard's queue, alongside the currency track and a designed request-intake path; all three converge on the same first approval.",
+                highlightClass: "kickoff",
+                links: [
+                    {
+                        label: "Discovery track, in the owner's mandate",
+                        href: "https://github.com/project42dev/orchard/blob/main/docs/lifecycle.md#discovery-track",
+                        kind: "design",
+                    },
+                ],
+            },
+            {
+                step: 2,
+                label: "Read the approved-source list",
+                description:
+                    "A discovery agent runs against a versioned list of approved sources only. A full run is not considered complete until at least 50 distinct approved and enabled sources have been attempted, which is how Track 1 avoids being satisfied by a handful of easy sources.",
+                highlightClass: "sources",
+                links: [
+                    {
+                        label: "Track 1, approved-source discovery",
+                        href: "https://github.com/project42dev/orchard/blob/main/docs/workflow-orchestration.md#track-1",
+                        kind: "runbook",
+                    },
+                ],
+            },
+            {
+                step: 3,
+                label: "Store discovered content",
+                description:
+                    "Everything the discovery pass finds is written to the content database as a candidate. Candidates are derived data, not authoritative; they can be rebuilt from a fresh run at any time and losing them costs nothing.",
+                highlightClass: "storeDiscovered",
+                links: [
+                    {
+                        label: "What the content database carries",
+                        href: "https://github.com/project42dev/orchard/blob/main/docs/lifecycle.md#what-the-content-database-carries",
+                        kind: "reference",
+                    },
+                ],
+            },
+            {
+                step: 4,
+                label: "Score the discovered content",
+                description:
+                    "Every candidate is scored on breadth of demand, depth of demand, the supply gap in our own corpus, and surface spread. Scoring only orders the queue a human reads; nothing is excluded for scoring low, and there is no cutoff.",
+                highlightClass: "score",
+                links: [
+                    {
+                        label: "How a candidate is scored",
+                        href: "https://github.com/project42dev/orchard/blob/main/content/README.md#what-the-score-is-made-of",
+                        kind: "reference",
+                    },
+                ],
+            },
+            {
+                step: 5,
+                label: "Store the scores",
+                description:
+                    "Scored candidates are written back to the content database alongside the evidence the score was built from, so the reasoning behind the ranking survives the run that produced it.",
+                highlightClass: "storeScores",
+                links: [
+                    {
+                        label: "What the content database carries",
+                        href: "https://github.com/project42dev/orchard/blob/main/docs/lifecycle.md#what-the-content-database-carries",
+                        kind: "reference",
+                    },
+                ],
+            },
+            {
+                step: 6,
+                label: "Raise a GitHub issue with everything discovered",
+                description:
+                    "A GitHub issue and an alert list everything discovered in the run along with its scoring, in one place the owner can review and act on without opening the database directly.",
+                highlightClass: "issue1",
+                links: [
+                    {
+                        label: "Discovery track, in the owner's mandate",
+                        href: "https://github.com/project42dev/orchard/blob/main/docs/lifecycle.md#discovery-track",
+                        kind: "design",
+                    },
+                ],
+            },
+            {
+                step: 7,
+                label: "Gate 1: the owner approves on the comment",
+                description:
+                    "Nothing reaches a model before this approval. The owner approves on the issue comment; a denial leaves the item with no delivery authority. This is the first of Orchard's two gates, and it is the one every intake path shares.",
+                highlightClass: "gate1",
+                links: [
+                    {
+                        label: "Current authoritative lifecycle",
+                        href: "https://github.com/project42dev/orchard/blob/main/docs/lifecycle.md#current-authoritative-lifecycle",
+                        kind: "design",
+                    },
+                    {
+                        label: "Gate capture trust boundary",
+                        href: "https://github.com/project42dev/orchard/blob/main/docs/workflow-orchestration.md#gate-capture-trust-boundary",
+                        kind: "runbook",
+                    },
+                ],
+            },
+            {
+                step: 8,
+                label: "Approved content moves to the approved list",
+                description:
+                    "Approved items move to an approved list, and each one gets a work item for tracking. One standing epic covers a surface family, one story covers one selected content item, and the story carries the work-item id that joins the two systems.",
+                highlightClass: "approvedTracker",
+                links: [
+                    {
+                        label: "The work-tracker model",
+                        href: "https://github.com/project42dev/orchard/blob/main/docs/lifecycle.md#the-work-tracker-model",
+                        kind: "reference",
+                    },
+                ],
+            },
+            {
+                step: 9,
+                label: "Orchestration runs the authoring ensemble",
+                description:
+                    "Research, authoring, and review agents run in order against the approved item. Six roles are designed; four are running today. Each role runs as a separate call against a different vendor family wherever roles check each other's work.",
+                highlightClass: "orchestration",
+                links: [
+                    {
+                        label: "The authoring ensemble: six roles designed, four running",
+                        href: "https://github.com/project42dev/orchard/blob/main/docs/lifecycle.md#the-authoring-ensemble-six-roles-designed-four-running",
+                        kind: "design",
+                    },
+                ],
+            },
+            {
+                step: 10,
+                label: "Store the written content",
+                description:
+                    "The ensemble's output, brand-new content or a correction to an existing item, is stored ahead of owner review. Content files stay the source of truth; the database is compiled from them.",
+                highlightClass: "storeWritten",
+                links: [
+                    {
+                        label: "The content database",
+                        href: "https://github.com/project42dev/orchard/blob/main/README.md#the-content-database",
+                        kind: "reference",
+                    },
+                ],
+            },
+            {
+                step: 11,
+                label: "A second GitHub issue for owner review",
+                description:
+                    "A second GitHub issue carries the work-item link and either the written content or a link to it, so the owner can review the actual output before it goes anywhere near the central content store.",
+                highlightClass: "issue2",
+                links: [
+                    {
+                        label: "Current authoritative lifecycle",
+                        href: "https://github.com/project42dev/orchard/blob/main/docs/lifecycle.md#current-authoritative-lifecycle",
+                        kind: "design",
+                    },
+                ],
+            },
+            {
+                step: 12,
+                label: "Gate 2: approve or deny the exact artifact",
+                description:
+                    "This is the second gate, and it binds to the exact artifact digest, not just the item. Editing the artifact after this point invalidates approvals written before the edit. A denial carries a reason and the work returns for rework; an approval moves the content toward the central content store.",
+                highlightClass: "gate2",
+                links: [
+                    {
+                        label: "Current authoritative lifecycle",
+                        href: "https://github.com/project42dev/orchard/blob/main/docs/lifecycle.md#current-authoritative-lifecycle",
+                        kind: "design",
+                    },
+                    {
+                        label: "Gate capture trust boundary",
+                        href: "https://github.com/project42dev/orchard/blob/main/docs/workflow-orchestration.md#gate-capture-trust-boundary",
+                        kind: "runbook",
+                    },
+                ],
+            },
+            {
+                step: 13,
+                label: "Commit and push",
+                description:
+                    "Approved content is committed and pushed to the central content store: brand-new content becomes a new course, and content extending an existing course is added to it.",
+                highlightClass: "commitPush",
+                links: [
+                    {
+                        label: "The provenance arrow",
+                        href: "https://github.com/project42dev/orchard/blob/main/docs/lifecycle.md#the-provenance-arrow",
+                        kind: "design",
+                    },
+                ],
+            },
+            {
+                step: 14,
+                label: "Verify the new content is live",
+                description:
+                    "The intended last step of the discovery track is verifying that the newly published content is actually reachable. This step is designed and implemented as a script, but it is not yet wired to any phase or workflow, so nothing invokes it automatically today.",
+                highlightClass: "verifyLive",
+                links: [
+                    {
+                        label: "Known gaps against this mandate",
+                        href: "https://github.com/project42dev/orchard/blob/main/docs/lifecycle.md#known-gaps-against-this-mandate",
+                        kind: "reference",
+                    },
+                ],
+            },
+            {
+                step: 15,
+                label: "Currency track: inspect existing content",
+                description:
+                    "Instead of discovering new content, the currency track inspects what Orchard already has, using the same approved-source list. An online search input is an owner requirement that is not yet designed. This runs monthly, on the 15th, at 06:00 UTC, and it is the one currency step that actually runs today.",
+                highlightClass: "currencyInspect",
+                links: [
+                    {
+                        label: "Currency track, in the owner's mandate",
+                        href: "https://github.com/project42dev/orchard/blob/main/docs/lifecycle.md#currency-track",
+                        kind: "design",
+                    },
+                    {
+                        label: "Track 2, canonical inspection",
+                        href: "https://github.com/project42dev/orchard/blob/main/docs/workflow-orchestration.md#track-2",
+                        kind: "runbook",
+                    },
+                ],
+            },
+            {
+                step: 16,
+                label: "Record updates and removals",
+                description:
+                    "New updates the inspection finds are recorded, as is stale content that should be removed. This recording step runs today; nothing yet carries the findings on to review, authoring, or publication.",
+                highlightClass: "currencyRecord",
+                links: [
+                    {
+                        label: "Currency track, in the owner's mandate",
+                        href: "https://github.com/project42dev/orchard/blob/main/docs/lifecycle.md#currency-track",
+                        kind: "design",
+                    },
+                ],
+            },
+            {
+                step: 17,
+                label: "The same approval path, once wired",
+                description:
+                    "The currency track is designed to rejoin the discovery track from the shared GitHub issue onward: the same Gate 1, the same research and authoring agents, a second issue for the written updates and deletions, and the same Gate 2 before commit and push. Today, only inspecting and recording findings actually run; impact assessment, authoring, and publication for currency findings do not exist yet.",
+                highlightClass: "gate1",
+                links: [
+                    {
+                        label: "What is built, and what is not",
+                        href: "https://github.com/project42dev/orchard/blob/main/docs/lifecycle.md#what-is-built-and-what-is-not",
+                        kind: "reference",
+                    },
+                ],
+            },
+            {
+                step: 18,
+                label: "Request intake: a labeled GitHub issue",
+                description:
+                    "Designed, not built. Anyone would be able to propose a topic through an issue form or by applying a content-request label to an ordinary issue. The request would be matched against the existing corpus and open candidates to avoid duplicating work already underway.",
+                highlightClass: "requestIntake",
+                links: [
+                    {
+                        label: "Request intake, in the owner's mandate",
+                        href: "https://github.com/project42dev/orchard/blob/main/docs/lifecycle.md#request-intake",
+                        kind: "design",
+                    },
+                ],
+            },
+            {
+                step: 19,
+                label: "The request joins the same queue and Gate 1",
+                description:
+                    "A surviving request would be written into the same discovery queue a discovered candidate uses, batched with discovered and currency items in the same Gate 1 manifest and issue. Only the owner's Gate 1 approval would move a requested item forward, and everything after Gate 1 would be identical regardless of where the item came from. No issue template or intake code exists yet.",
+                highlightClass: "gate1",
+                links: [
+                    {
+                        label: "Request intake, in the owner's mandate",
+                        href: "https://github.com/project42dev/orchard/blob/main/docs/lifecycle.md#request-intake",
+                        kind: "design",
+                    },
+                    {
+                        label: "Known gaps against this mandate",
+                        href: "https://github.com/project42dev/orchard/blob/main/docs/lifecycle.md#known-gaps-against-this-mandate",
+                        kind: "reference",
+                    },
+                ],
+            },
+        ],
+    },
 ];
 
 /** Lookup steps by diagram ID. Returns empty array for unknown IDs. */

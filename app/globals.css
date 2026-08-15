@@ -4340,13 +4340,41 @@ a {
   transition: none;
 }
 
+/* Inline SVG (only used by diagrams whose steps declare a highlightClass) */
+.diagram-svg-inline svg {
+  display: block;
+  height: auto;
+  width: 100%;
+}
+
+.diagram-svg-hotspot {
+  cursor: pointer;
+}
+
+.diagram-svg-hotspot .label-container {
+  transition: filter 0.15s ease, stroke 0.15s ease, stroke-width 0.15s ease;
+}
+
+.diagram-svg-hotspot:hover .label-container,
+.diagram-svg-hotspot:focus-visible .label-container,
+.diagram-svg-hotspot-active .label-container {
+  filter: drop-shadow(0 0 5px rgba(124, 58, 237, 0.4));
+  stroke: var(--violet) !important;
+  stroke-width: 3px !important;
+}
+
+.diagram-svg-hotspot:focus-visible {
+  outline: 3px solid var(--violet);
+  outline-offset: 3px;
+}
+
 /* Step description */
 .diagram-step-description {
   background: var(--slate-50);
   border-left: 4px solid var(--violet);
   border-radius: 0 var(--radius-small) var(--radius-small) 0;
   min-height: 3.5rem;
-  overflow: hidden;
+  overflow: visible;
   padding: 1rem 1.25rem;
   position: relative;
 }
@@ -4361,6 +4389,115 @@ a {
   color: var(--slate-800);
   line-height: 1.65;
   margin: 0;
+}
+
+/* Step documentation links, shown for the active step */
+.diagram-step-links {
+  border-top: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  list-style: none;
+  margin: 0.875rem 0 0;
+  padding: 0.875rem 0 0;
+}
+
+.diagram-step-links li {
+  align-items: baseline;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.diagram-step-links a {
+  color: var(--violet);
+  font-weight: 500;
+}
+
+.diagram-step-links a:hover {
+  text-decoration: underline;
+}
+
+.diagram-step-links a:focus-visible {
+  outline: 2px solid var(--violet);
+  outline-offset: 2px;
+}
+
+.diagram-step-link-kind {
+  background: var(--slate-200);
+  border-radius: var(--radius-small);
+  color: var(--slate-700);
+  flex-shrink: 0;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  padding: 0.1875rem 0.5rem;
+  text-transform: uppercase;
+}
+
+.diagram-step-link-kind-design {
+  background: rgba(169, 157, 247, 0.3);
+}
+
+.diagram-step-link-kind-runbook {
+  background: rgba(99, 215, 228, 0.3);
+}
+
+/* Step list: every step, clickable, for direct navigation */
+.diagram-step-list ol {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.diagram-step-list-item {
+  align-items: center;
+  background: var(--slate-100);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-small);
+  color: var(--slate-700);
+  cursor: pointer;
+  display: inline-flex;
+  font-size: 0.8125rem;
+  gap: 0.4375rem;
+  padding: 0.375rem 0.625rem;
+  text-align: left;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.diagram-step-list-item:hover {
+  background: var(--slate-200);
+  color: var(--slate-900);
+}
+
+.diagram-step-list-item:focus-visible {
+  outline: 2px solid var(--violet);
+  outline-offset: 2px;
+}
+
+.diagram-step-list-item.active {
+  background: var(--violet);
+  border-color: var(--violet);
+  color: #fff;
+}
+
+.diagram-step-list-number {
+  align-items: center;
+  background: rgba(0, 0, 0, 0.08);
+  border-radius: 50%;
+  display: inline-flex;
+  flex-shrink: 0;
+  font-weight: 600;
+  height: 20px;
+  justify-content: center;
+  width: 20px;
+}
+
+.diagram-step-list-item.active .diagram-step-list-number {
+  background: rgba(255, 255, 255, 0.25);
 }
 
 /* Controls toolbar */

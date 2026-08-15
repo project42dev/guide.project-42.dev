@@ -1,7 +1,17 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { memo, useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+
+/** A documentation link attached to a diagram step */
+export interface DiagramStepLink {
+    /** Link text */
+    label: string;
+    /** Destination URL */
+    href: string;
+    /** What kind of documentation this points to */
+    kind: "design" | "runbook" | "adr" | "reference";
+}
 
 export interface DiagramStep {
     /** 1-based step number */
@@ -10,9 +20,59 @@ export interface DiagramStep {
     label: string;
     /** Explanatory text for this step */
     description: string;
-    /** Optional CSS class to apply to the SVG highlight for this step */
+    /**
+     * Optional identifier that ties this step to a region of the SVG.
+     * Matched against the Mermaid node id embedded in the generated SVG
+     * (rendered as `...-flowchart-<highlightClass>-<index>`). When at
+     * least one step in a diagram declares this, the diagram renders the
+     * SVG inline and makes the matching region clickable and focusable.
+     */
     highlightClass?: string;
+    /** Optional links to design or operational documentation for this step */
+    links?: DiagramStepLink[];
 }
+
+const linkKindLabel: Record<DiagramStepLink["kind"], string> = {
+    design: "Design doc",
+    runbook: "Runbook",
+    adr: "ADR",
+    reference: "Reference",
+};
+
+function isExternalHref(href: string) {
+    return /^https?:\/\//i.test(href);
+}
+
+/**
+ * The inlined, clickable SVG. Isolated in its own memoized component so that
+ * step navigation (which changes props like the active step's label
+ * elsewhere in the tree) never touches this element's own props, and the
+ * injected markup, along with the click and keyboard handlers wired onto it,
+ * survives every step change untouched.
+ */
+const InlineDiagramSvg = memo(function InlineDiagramSvg({
+    className,
+    hostRef,
+    markup,
+}: {
+    className: string;
+    hostRef: React.RefObject<HTMLDivElement | null>;
+    markup: string;
+}) {
+    return (
+        // No role="img" here: this element has focusable, interactive
+        // descendants (the wired step regions), and role="img" requires
+        // browsers to flatten and ignore descendant semantics, which would
+        // make those regions unreachable to assistive technology. The
+        // embedded SVG carries its own <title>/<desc>, and the outer figure
+        // and live step indicator already give the overall diagram context.
+        <div
+            className={className}
+            dangerouslySetInnerHTML={{ __html: markup }}
+            ref={hostRef}
+        />
+    );
+});
 
 export interface InteractiveDiagramProps {
     /** Diagram title */
@@ -175,6 +235,118 @@ export function InteractiveDiagram({
     const canGoNext = currentStep < steps.length;
     const progressPercent = steps.length > 0 ? (currentStep / steps.length) * 100 : 0;
 
+    // A diagram opts into clickable SVG regions by giving at least one step
+    // a highlightClass. The 8 diagrams without any highlightClass keep
+    // rendering as a plain <img>, unchanged.
+    const hasHighlightableSteps = useMemo(
+        () => steps.some((step) => Boolean(step.highlightClass)),
+        [steps],
+    );
+    const svgHostRef = useRef<HTMLDivElement>(null);
+    const [fetchedSvgMarkup, setFetchedSvgMarkup] = useState<string | null>(null);
+    // Only ever inline the fetched markup when this diagram actually declares
+    // highlightable steps, so a stray fetch can never surface on a diagram
+    // that has not opted in.
+    const inlineSvgMarkup = hasHighlightableSteps ? fetchedSvgMarkup : null;
+
+    // Fetch and inline the SVG only when a step needs a clickable region.
+    // The markup comes from our own generated, sanitized diagram artifacts.
+    useEffect(() => {
+        if (!hasHighlightableSteps) return;
+        let cancelled = false;
+        fetch(src)
+            .then((response) => {
+                if (!response.ok) throw new Error(`Failed to load ${src}`);
+                return response.text();
+            })
+            .then((markup) => {
+                if (!cancelled) setFetchedSvgMarkup(markup);
+            })
+            .catch(() => {
+                if (!cancelled) setFetchedSvgMarkup(null);
+            });
+        return () => {
+            cancelled = true;
+        };
+    }, [src, hasHighlightableSteps]);
+
+    // Wire each highlightable step to its matching SVG region: clickable,
+    // keyboard-operable, and labeled for assistive technology.
+    useEffect(() => {
+        const host = svgHostRef.current;
+        if (!host || !inlineSvgMarkup) return;
+
+        const svgEl = host.querySelector("svg");
+        if (svgEl) {
+            svgEl.removeAttribute("width");
+            svgEl.removeAttribute("height");
+            svgEl.style.width = "100%";
+            svgEl.style.height = "auto";
+            svgEl.style.display = "block";
+        }
+
+        // Multiple steps can share one highlightClass when they describe the
+        // same shared region from different angles (for example, three
+        // intake paths all converging on one gate node). The region can only
+        // navigate to one place, so it targets the first step that claims it;
+        // every step, shared or not, is still reachable from the step list.
+        const canonicalStepByRegion = new Map<string, DiagramStep>();
+        for (const step of steps) {
+            if (!step.highlightClass || !/^[A-Za-z0-9_-]+$/.test(step.highlightClass)) continue;
+            if (!canonicalStepByRegion.has(step.highlightClass)) {
+                canonicalStepByRegion.set(step.highlightClass, step);
+            }
+        }
+
+        const cleanups: Array<() => void> = [];
+        for (const [highlightClass, step] of canonicalStepByRegion) {
+            const matches = host.querySelectorAll<SVGGElement>(
+                `[id*="flowchart-${highlightClass}-"]`,
+            );
+            matches.forEach((node) => {
+                node.classList.add("diagram-svg-hotspot");
+                node.setAttribute("tabindex", "0");
+                node.setAttribute("role", "button");
+                node.setAttribute("aria-label", `Jump to step ${step.step}: ${step.label}`);
+
+                const handleActivate = (event: Event) => {
+                    event.preventDefault();
+                    goToStep(step.step);
+                };
+                const handleKeyDown = (event: KeyboardEvent) => {
+                    if (event.key === "Enter" || event.key === " ") {
+                        event.preventDefault();
+                        goToStep(step.step);
+                    }
+                };
+                node.addEventListener("click", handleActivate);
+                node.addEventListener("keydown", handleKeyDown);
+                cleanups.push(() => {
+                    node.removeEventListener("click", handleActivate);
+                    node.removeEventListener("keydown", handleKeyDown);
+                });
+            });
+        }
+        return () => {
+            cleanups.forEach((cleanup) => cleanup());
+        };
+    }, [inlineSvgMarkup, steps, goToStep]);
+
+    // Reflect the current step as an active highlight on its SVG region.
+    useEffect(() => {
+        const host = svgHostRef.current;
+        if (!host || !inlineSvgMarkup) return;
+        host
+            .querySelectorAll(".diagram-svg-hotspot-active")
+            .forEach((node) => node.classList.remove("diagram-svg-hotspot-active"));
+        const highlightClass = activeStep?.highlightClass;
+        if (highlightClass && /^[A-Za-z0-9_-]+$/.test(highlightClass)) {
+            host
+                .querySelectorAll(`[id*="flowchart-${highlightClass}-"]`)
+                .forEach((node) => node.classList.add("diagram-svg-hotspot-active"));
+        }
+    }, [currentStep, inlineSvgMarkup, activeStep]);
+
     const diagramContent = (
         <div
             className="interactive-diagram"
@@ -215,7 +387,12 @@ export function InteractiveDiagram({
 
             {/* SVG with step-based highlights */}
             <motion.div
-                key={`svg-${currentStep}`}
+                // Diagrams with clickable regions keep one persistent instance so
+                // the wired click handlers and focus state survive step changes;
+                // the highlighted region itself is the step-change cue. Diagrams
+                // without clickable regions keep the original per-step remount,
+                // which replays the entrance transition as its step-change cue.
+                key={hasHighlightableSteps ? "svg-inline" : `svg-${currentStep}`}
                 className="diagram-svg-container"
                 tabIndex={0}
                 variants={reducedMotion ? {} : svgVariants}
@@ -227,15 +404,29 @@ export function InteractiveDiagram({
                     overflow: "auto",
                 }}
             >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                    alt={isOverview ? alt : `${alt} — ${activeStep!.label}`}
-                    className={`diagram-svg ${reducedMotion ? "no-transition" : ""}`}
-                    height={(height * zoom) / 100}
-                    src={src}
-                    style={{ width: `${(width * zoom) / 100}px`, height: "auto" }}
-                    width={(width * zoom) / 100}
-                />
+                {hasHighlightableSteps && inlineSvgMarkup ? (
+                    // This diagram is generated and safety-checked by our own build
+                    // pipeline (see scripts/generate-diagrams.mjs). Inlining it is what
+                    // lets an individual region become clickable and focusable. The
+                    // accessible name lives on the outer figure and the live step
+                    // indicator, not here, so step navigation never touches this
+                    // element's props and never disturbs the wired regions.
+                    <InlineDiagramSvg
+                        className={`diagram-svg diagram-svg-inline ${reducedMotion ? "no-transition" : ""}`}
+                        hostRef={svgHostRef}
+                        markup={inlineSvgMarkup}
+                    />
+                ) : (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                        alt={isOverview ? alt : `${alt}, ${activeStep!.label}`}
+                        className={`diagram-svg ${reducedMotion ? "no-transition" : ""}`}
+                        height={(height * zoom) / 100}
+                        src={src}
+                        style={{ width: `${(width * zoom) / 100}px`, height: "auto" }}
+                        width={(width * zoom) / 100}
+                    />
+                )}
             </motion.div>
 
             {/* Step description with animated transitions */}
@@ -251,7 +442,7 @@ export function InteractiveDiagram({
                             exit="exit"
                             transition={stepSpring}
                         >
-                            {steps.length} steps — use the controls below to walk through this diagram step by step.
+                            {steps.length} steps. Use the controls below, or click a step, to walk through this diagram.
                         </motion.p>
                     ) : (
                         <motion.p
@@ -267,7 +458,46 @@ export function InteractiveDiagram({
                         </motion.p>
                     )}
                 </AnimatePresence>
+                {!isOverview && activeStep!.links && activeStep!.links.length > 0 && (
+                    <ul aria-label={`Documentation for step ${activeStep!.step}`} className="diagram-step-links">
+                        {activeStep!.links.map((link) => (
+                            <li key={link.href}>
+                                <span className={`diagram-step-link-kind diagram-step-link-kind-${link.kind}`}>
+                                    {linkKindLabel[link.kind]}
+                                </span>
+                                <a
+                                    href={link.href}
+                                    rel={isExternalHref(link.href) ? "noreferrer" : undefined}
+                                    target={isExternalHref(link.href) ? "_blank" : undefined}
+                                >
+                                    {link.label} {isExternalHref(link.href) ? "↗" : "→"}
+                                </a>
+                            </li>
+                        ))}
+                    </ul>
+                )}
             </div>
+
+            {/* Step list: every step, clickable, for direct navigation */}
+            {steps.length > 1 && (
+                <nav aria-label={`${title} steps`} className="diagram-step-list">
+                    <ol>
+                        {steps.map((step) => (
+                            <li key={step.step}>
+                                <button
+                                    aria-current={currentStep === step.step ? "step" : undefined}
+                                    className={`diagram-step-list-item ${currentStep === step.step ? "active" : ""}`}
+                                    onClick={() => goToStep(step.step)}
+                                    type="button"
+                                >
+                                    <span className="diagram-step-list-number">{step.step}</span>
+                                    <span className="diagram-step-list-label">{step.label}</span>
+                                </button>
+                            </li>
+                        ))}
+                    </ol>
+                </nav>
+            )}
 
             {/* Controls */}
             <DiagramControls
