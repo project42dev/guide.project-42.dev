@@ -2,9 +2,17 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { InteractiveDiagramClient } from "../../components/InteractiveDiagramClient";
+import { OrchardLifecycleDiagramClient } from "../../components/OrchardLifecycleDiagramClient";
 import { ContentUseNotice } from "../../components/ContentUseNotice";
 import { diagramCatalog, getDiagram } from "../../lib/diagrams";
 import { getDiagramSteps } from "../../lib/diagramSteps";
+
+// The Orchard lifecycle diagram renders through a dedicated React component
+// (nodes and connectors are real DOM, not a build-time Mermaid SVG), so its
+// fullscreen and dark-mode behavior are correct rather than inherited from
+// the Mermaid-oriented InteractiveDiagram path. Every other catalog entry
+// keeps rendering through InteractiveDiagram unchanged.
+const REACT_DIAGRAM_IDS = new Set(["orchard-lifecycle"]);
 
 interface DiagramPageProps {
   params: Promise<{ diagramId: string }>;
@@ -63,15 +71,24 @@ export default async function DiagramPage({ params }: DiagramPageProps) {
 
       <figure className="diagram-figure">
         <div className="diagram-canvas">
-          <InteractiveDiagramClient
-            alt={diagram.altText}
-            category={diagram.category}
-            height={900}
-            src={`/diagrams/${diagram.id}.svg`}
-            steps={steps}
-            title={diagram.title}
-            width={1440}
-          />
+          {REACT_DIAGRAM_IDS.has(diagram.id) ? (
+            <OrchardLifecycleDiagramClient
+              alt={diagram.altText}
+              category={diagram.category}
+              steps={steps}
+              title={diagram.title}
+            />
+          ) : (
+            <InteractiveDiagramClient
+              alt={diagram.altText}
+              category={diagram.category}
+              height={900}
+              src={`/diagrams/${diagram.id}.svg`}
+              steps={steps}
+              title={diagram.title}
+              width={1440}
+            />
+          )}
         </div>
         <figcaption>{diagram.caption}</figcaption>
       </figure>

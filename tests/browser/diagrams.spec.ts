@@ -87,7 +87,7 @@ test("discovers and reads accessible source-first visual guides", async ({
   expect(accessibility.violations).toEqual([]);
 });
 
-test("makes Orchard lifecycle steps clickable, in the step list and in the diagram", async ({
+test("renders the Orchard lifecycle as a real React component, not a Mermaid SVG", async ({
   page,
 }) => {
   await page.goto("/diagrams/orchard-lifecycle");
@@ -95,22 +95,26 @@ test("makes Orchard lifecycle steps clickable, in the step list and in the diagr
     page.getByRole("heading", { name: "The Orchard content lifecycle" }),
   ).toBeVisible();
 
-  // This diagram opts into inline, clickable SVG regions; diagrams without
-  // any highlightClass steps keep rendering as a plain <img>.
-  await expect(page.locator(".diagram-svg-inline svg")).toBeVisible();
+  // The diagram is DOM the component owns: a figure with real <button>
+  // nodes, never an <img> or an injected Mermaid SVG.
+  const diagram = page.locator(".orchard-lifecycle-diagram");
+  await expect(diagram).toBeVisible();
+  await expect(page.locator(".orchard-lifecycle-diagram img")).toHaveCount(0);
+  await expect(page.locator(".orchard-lifecycle-diagram svg")).toHaveCount(1);
+  await expect(page.locator(".orchard-node")).toHaveCount(19);
 
   // Clicking a step in the labeled step list jumps straight to it.
   await page
-    .locator(".diagram-step-list-item")
+    .locator(".orchard-step-list-item")
     .filter({ hasText: "Gate 1: the owner approves on the comment" })
     .click();
-  await expect(page.locator(".step-badge")).toHaveText(
+  await expect(page.locator(".orchard-step-badge")).toHaveText(
     "Step 7 of 19: Gate 1: the owner approves on the comment",
   );
 
   // Documentation links for the active step are rendered and point at the
   // public Orchard repository, never at the private ops repository.
-  const links = page.locator(".diagram-step-links a");
+  const links = page.locator(".orchard-step-links a");
   await expect(links.first()).toBeVisible();
   const hrefs = await links.evaluateAll((anchors) =>
     anchors.map((a) => a.getAttribute("href") ?? ""),
@@ -121,23 +125,86 @@ test("makes Orchard lifecycle steps clickable, in the step list and in the diagr
     expect(href).not.toContain("project42dev-ops");
   }
 
-  // Clicking a region of the SVG itself jumps to its step.
-  const kickoffRegion = page.locator('[aria-label^="Jump to step 1:"]');
-  await expect(kickoffRegion).toBeVisible();
-  await kickoffRegion.click();
-  await expect(page.locator(".step-badge")).toHaveText(
+  // Clicking a node in the diagram itself jumps to its step.
+  const kickoffNode = page.getByRole("button", { name: "Step 1: Discovery kicks off" });
+  await expect(kickoffNode).toBeVisible();
+  await kickoffNode.click();
+  await expect(page.locator(".orchard-step-badge")).toHaveText(
     "Step 1 of 19: Discovery kicks off",
   );
 
-  // The same region is keyboard-operable, with a visible focus state.
-  await kickoffRegion.focus();
-  await expect(kickoffRegion).toBeFocused();
-  const gate1Region = page.locator('[aria-label^="Jump to step 7:"]').first();
-  await gate1Region.focus();
+  // The same node is keyboard-operable (a real <button>), with a visible
+  // focus state and the correct aria-current once selected.
+  await kickoffNode.focus();
+  await expect(kickoffNode).toBeFocused();
+  const gate1Node = page.getByRole("button", { name: /^Step 7: Gate 1/ });
+  await gate1Node.focus();
   await page.keyboard.press("Enter");
-  await expect(page.locator(".step-badge")).toHaveText(
+  await expect(page.locator(".orchard-step-badge")).toHaveText(
     "Step 7 of 19: Gate 1: the owner approves on the comment",
   );
+  await expect(gate1Node).toHaveAttribute("aria-current", "step");
+
+  // Steps 7, 17, and 19 all share the Gate 1 node; the step list still
+  // reaches every one of them directly even though the node itself only
+  // jumps to the canonical step.
+  await page
+    .locator(".orchard-step-list-item")
+    .filter({ hasText: "The request joins the same queue and Gate 1" })
+    .click();
+  await expect(page.locator(".orchard-step-badge")).toHaveText(
+    "Step 19 of 19: The request joins the same queue and Gate 1",
+  );
+  await expect(gate1Node).toHaveAttribute("aria-current", "step");
+
+  // Designed-but-not-built work is marked dashed and with an explicit text
+  // badge, never by colour alone.
+  await expect(page.getByText("Designed, not built").first()).toBeVisible();
+});
+
+test("Orchard lifecycle fullscreen opens, escapes, and returns focus", async ({ page }) => {
+  await page.goto("/diagrams/orchard-lifecycle");
+
+  const trigger = page.getByRole("button", { name: "Open full-screen viewer" });
+  await trigger.click();
+
+  const expanded = page.locator(".orchard-lifecycle-diagram.orchard-expanded");
+  await expect(expanded).toBeVisible();
+  const exitButton = page.getByRole("button", { name: "Exit fullscreen viewer" });
+  await expect(exitButton).toBeVisible();
+  await expect(exitButton).toBeFocused();
+
+  // The diagram stays fully interactive while expanded.
+  await expect(expanded.getByRole("button", { name: "Step 1: Discovery kicks off" })).toBeVisible();
+
+  const isNativeFullscreen = await page.evaluate(() => Boolean(document.fullscreenElement));
+
+  const accessibility = await new AxeBuilder({ page })
+    .include(".orchard-lifecycle-diagram")
+    .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa"])
+    .analyze();
+  expect(accessibility.violations).toEqual([]);
+
+  await page.keyboard.press("Escape");
+  await expect(page.locator(".orchard-lifecycle-diagram.orchard-expanded")).toHaveCount(0);
+  if (isNativeFullscreen) {
+    await expect
+      .poll(() => page.evaluate(() => Boolean(document.fullscreenElement)))
+      .toBe(false);
+  }
+  await expect(trigger).toBeFocused();
+});
+
+test("Orchard lifecycle is legible with the OS in dark mode", async ({ page }) => {
+  await page.emulateMedia({ colorScheme: "dark" });
+  await page.goto("/diagrams/orchard-lifecycle");
+  await expect(page.locator(".orchard-lifecycle-diagram")).toBeVisible();
+
+  const accessibility = await new AxeBuilder({ page })
+    .include(".orchard-lifecycle-diagram")
+    .withTags(["wcag2aa"])
+    .analyze();
+  expect(accessibility.violations).toEqual([]);
 });
 
 test("keeps diagram pages readable at a narrow viewport", async ({ page }) => {
