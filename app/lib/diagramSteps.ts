@@ -386,9 +386,9 @@ export const diagramStepData: DiagramStepData[] = [
                 highlightClass: "kickoff",
                 links: [
                     {
-                        label: "Discovery track, in the owner's mandate",
-                        href: "https://github.com/project42dev/orchard/blob/main/docs/lifecycle.md#discovery-track",
-                        kind: "design",
+                        label: "Track 1 discovery: job, schedule, and script",
+                        href: "https://github.com/project42dev/project42-platform/blob/main/docs/orchard/lifecycle-steps.md#step-1-survey-the-approved-sources-discovery",
+                        kind: "reference",
                     },
                 ],
             },
@@ -400,9 +400,9 @@ export const diagramStepData: DiagramStepData[] = [
                 highlightClass: "sources",
                 links: [
                     {
-                        label: "Track 1, approved-source discovery",
-                        href: "https://github.com/project42dev/orchard/blob/main/docs/workflow-orchestration.md#track-1",
-                        kind: "runbook",
+                        label: "Track 1, approved-source discovery: job, schedule, and script",
+                        href: "https://github.com/project42dev/project42-platform/blob/main/docs/orchard/lifecycle-steps.md#step-1-survey-the-approved-sources-discovery",
+                        kind: "reference",
                     },
                 ],
             },
@@ -414,8 +414,8 @@ export const diagramStepData: DiagramStepData[] = [
                 highlightClass: "storeDiscovered",
                 links: [
                     {
-                        label: "What the content database carries",
-                        href: "https://github.com/project42dev/orchard/blob/main/docs/lifecycle.md#what-the-content-database-carries",
+                        label: "Persisting candidates: table and state transitions",
+                        href: "https://github.com/project42dev/project42-platform/blob/main/docs/orchard/lifecycle-steps.md#step-4-persist-candidates-as-held-work",
                         kind: "reference",
                     },
                 ],
@@ -428,8 +428,8 @@ export const diagramStepData: DiagramStepData[] = [
                 highlightClass: "score",
                 links: [
                     {
-                        label: "How a candidate is scored",
-                        href: "https://github.com/project42dev/orchard/blob/main/content/README.md#what-the-score-is-made-of",
+                        label: "How a candidate is scored, in the per-step design",
+                        href: "https://github.com/project42dev/project42-platform/blob/main/docs/orchard/lifecycle-steps.md#step-3-propose-candidates",
                         kind: "reference",
                     },
                 ],
@@ -442,8 +442,8 @@ export const diagramStepData: DiagramStepData[] = [
                 highlightClass: "storeScores",
                 links: [
                     {
-                        label: "What the content database carries",
-                        href: "https://github.com/project42dev/orchard/blob/main/docs/lifecycle.md#what-the-content-database-carries",
+                        label: "Persisting candidates: table and state transitions",
+                        href: "https://github.com/project42dev/project42-platform/blob/main/docs/orchard/lifecycle-steps.md#step-4-persist-candidates-as-held-work",
                         kind: "reference",
                     },
                 ],
@@ -456,9 +456,9 @@ export const diagramStepData: DiagramStepData[] = [
                 highlightClass: "issue1",
                 links: [
                     {
-                        label: "Discovery track, in the owner's mandate",
-                        href: "https://github.com/project42dev/orchard/blob/main/docs/lifecycle.md#discovery-track",
-                        kind: "design",
+                        label: "Announcing the gate: job, script, and manifest",
+                        href: "https://github.com/project42dev/project42-platform/blob/main/docs/orchard/lifecycle-steps.md#step-5-announce-the-gate",
+                        kind: "reference",
                     },
                 ],
             },
@@ -470,14 +470,14 @@ export const diagramStepData: DiagramStepData[] = [
                 highlightClass: "gate1",
                 links: [
                     {
-                        label: "Current authoritative lifecycle",
-                        href: "https://github.com/project42dev/orchard/blob/main/docs/lifecycle.md#current-authoritative-lifecycle",
-                        kind: "design",
+                        label: "Applying the owner's decision: job and script",
+                        href: "https://github.com/project42dev/project42-platform/blob/main/docs/orchard/lifecycle-steps.md#step-6-apply-the-owners-decision",
+                        kind: "reference",
                     },
                     {
-                        label: "Gate capture trust boundary",
-                        href: "https://github.com/project42dev/orchard/blob/main/docs/workflow-orchestration.md#gate-capture-trust-boundary",
-                        kind: "runbook",
+                        label: "The protected adapter and trust anchor",
+                        href: "https://github.com/project42dev/project42-platform/blob/main/docs/orchard/lifecycle-steps.md#step-6-apply-the-owners-decision",
+                        kind: "reference",
                     },
                 ],
             },
@@ -489,8 +489,8 @@ export const diagramStepData: DiagramStepData[] = [
                 highlightClass: "approvedTracker",
                 links: [
                     {
-                        label: "The work-tracker model",
-                        href: "https://github.com/project42dev/orchard/blob/main/docs/lifecycle.md#the-work-tracker-model",
+                        label: "Creating the tracker work item: fields and idempotence",
+                        href: "https://github.com/project42dev/project42-platform/blob/main/docs/orchard/lifecycle-steps.md#step-8-create-the-tracker-work-item",
                         kind: "reference",
                     },
                 ],
@@ -503,9 +503,9 @@ export const diagramStepData: DiagramStepData[] = [
                 highlightClass: "orchestration",
                 links: [
                     {
-                        label: "The authoring ensemble: six roles designed, four running",
-                        href: "https://github.com/project42dev/orchard/blob/main/docs/lifecycle.md#the-authoring-ensemble-six-roles-designed-four-running",
-                        kind: "design",
+                        label: "Authoring: status in the deployed system",
+                        href: "https://github.com/project42dev/project42-platform/blob/main/docs/orchard/lifecycle-steps.md#step-10-authoring",
+                        kind: "reference",
                     },
                 ],
             },
@@ -517,8 +517,8 @@ export const diagramStepData: DiagramStepData[] = [
                 highlightClass: "storeWritten",
                 links: [
                     {
-                        label: "The content database",
-                        href: "https://github.com/project42dev/orchard/blob/main/README.md#the-content-database",
+                        label: "Ingesting the authored proposal: artifact binding",
+                        href: "https://github.com/project42dev/project42-platform/blob/main/docs/orchard/lifecycle-steps.md#step-11-ingest-the-authored-proposal",
                         kind: "reference",
                     },
                 ],
@@ -531,9 +531,9 @@ export const diagramStepData: DiagramStepData[] = [
                 highlightClass: "issue2",
                 links: [
                     {
-                        label: "Current authoritative lifecycle",
-                        href: "https://github.com/project42dev/orchard/blob/main/docs/lifecycle.md#current-authoritative-lifecycle",
-                        kind: "design",
+                        label: "Announcing the gate: job, script, and manifest",
+                        href: "https://github.com/project42dev/project42-platform/blob/main/docs/orchard/lifecycle-steps.md#step-5-announce-the-gate",
+                        kind: "reference",
                     },
                 ],
             },
@@ -545,14 +545,14 @@ export const diagramStepData: DiagramStepData[] = [
                 highlightClass: "gate2",
                 links: [
                     {
-                        label: "Current authoritative lifecycle",
-                        href: "https://github.com/project42dev/orchard/blob/main/docs/lifecycle.md#current-authoritative-lifecycle",
-                        kind: "design",
+                        label: "Gate 2, publication approval: status and design rule",
+                        href: "https://github.com/project42dev/project42-platform/blob/main/docs/orchard/lifecycle-steps.md#step-12-gate-2-publication-approval",
+                        kind: "reference",
                     },
                     {
-                        label: "Gate capture trust boundary",
-                        href: "https://github.com/project42dev/orchard/blob/main/docs/workflow-orchestration.md#gate-capture-trust-boundary",
-                        kind: "runbook",
+                        label: "The protected adapter and trust anchor",
+                        href: "https://github.com/project42dev/project42-platform/blob/main/docs/orchard/lifecycle-steps.md#step-12-gate-2-publication-approval",
+                        kind: "reference",
                     },
                 ],
             },
@@ -564,9 +564,9 @@ export const diagramStepData: DiagramStepData[] = [
                 highlightClass: "commitPush",
                 links: [
                     {
-                        label: "The provenance arrow",
-                        href: "https://github.com/project42dev/orchard/blob/main/docs/lifecycle.md#the-provenance-arrow",
-                        kind: "design",
+                        label: "Publishing: job, script, and status",
+                        href: "https://github.com/project42dev/project42-platform/blob/main/docs/orchard/lifecycle-steps.md#step-13-publish",
+                        kind: "reference",
                     },
                 ],
             },
@@ -578,8 +578,8 @@ export const diagramStepData: DiagramStepData[] = [
                 highlightClass: "verifyLive",
                 links: [
                     {
-                        label: "Known gaps against this mandate",
-                        href: "https://github.com/project42dev/orchard/blob/main/docs/lifecycle.md#known-gaps-against-this-mandate",
+                        label: "Verifying published content is live: status",
+                        href: "https://github.com/project42dev/project42-platform/blob/main/docs/orchard/lifecycle-steps.md#step-14-verify-the-published-content-is-live",
                         kind: "reference",
                     },
                 ],
@@ -592,14 +592,14 @@ export const diagramStepData: DiagramStepData[] = [
                 highlightClass: "currencyInspect",
                 links: [
                     {
-                        label: "Currency track, in the owner's mandate",
-                        href: "https://github.com/project42dev/orchard/blob/main/docs/lifecycle.md#currency-track",
-                        kind: "design",
+                        label: "Inspecting the canonical corpus: job, schedule, and script",
+                        href: "https://github.com/project42dev/project42-platform/blob/main/docs/orchard/lifecycle-steps.md#step-2-inspect-the-canonical-corpus-currency",
+                        kind: "reference",
                     },
                     {
-                        label: "Track 2, canonical inspection",
-                        href: "https://github.com/project42dev/orchard/blob/main/docs/workflow-orchestration.md#track-2",
-                        kind: "runbook",
+                        label: "Track 2, canonical inspection: status on the current estate",
+                        href: "https://github.com/project42dev/project42-platform/blob/main/docs/orchard/lifecycle-steps.md#step-2-inspect-the-canonical-corpus-currency",
+                        kind: "reference",
                     },
                 ],
             },
@@ -611,9 +611,9 @@ export const diagramStepData: DiagramStepData[] = [
                 highlightClass: "currencyRecord",
                 links: [
                     {
-                        label: "Currency track, in the owner's mandate",
-                        href: "https://github.com/project42dev/orchard/blob/main/docs/lifecycle.md#currency-track",
-                        kind: "design",
+                        label: "What currency writes, and the structural defect",
+                        href: "https://github.com/project42dev/project42-platform/blob/main/docs/orchard/lifecycle-steps.md#step-2-inspect-the-canonical-corpus-currency",
+                        kind: "reference",
                     },
                 ],
             },
@@ -625,8 +625,8 @@ export const diagramStepData: DiagramStepData[] = [
                 highlightClass: "gate1",
                 links: [
                     {
-                        label: "What is built, and what is not",
-                        href: "https://github.com/project42dev/orchard/blob/main/docs/lifecycle.md#what-is-built-and-what-is-not",
+                        label: "Summary of what actually runs",
+                        href: "https://github.com/project42dev/project42-platform/blob/main/docs/orchard/lifecycle-steps.md#summary-of-what-actually-runs",
                         kind: "reference",
                     },
                 ],
@@ -640,7 +640,7 @@ export const diagramStepData: DiagramStepData[] = [
                 links: [
                     {
                         label: "Request intake, in the owner's mandate",
-                        href: "https://github.com/project42dev/orchard/blob/main/docs/lifecycle.md#request-intake",
+                        href: "https://github.com/project42dev/project42-platform/blob/main/docs/orchard/lifecycle.md#request-intake",
                         kind: "design",
                     },
                 ],
@@ -654,12 +654,12 @@ export const diagramStepData: DiagramStepData[] = [
                 links: [
                     {
                         label: "Request intake, in the owner's mandate",
-                        href: "https://github.com/project42dev/orchard/blob/main/docs/lifecycle.md#request-intake",
+                        href: "https://github.com/project42dev/project42-platform/blob/main/docs/orchard/lifecycle.md#request-intake",
                         kind: "design",
                     },
                     {
                         label: "Known gaps against this mandate",
-                        href: "https://github.com/project42dev/orchard/blob/main/docs/lifecycle.md#known-gaps-against-this-mandate",
+                        href: "https://github.com/project42dev/project42-platform/blob/main/docs/orchard/lifecycle.md#known-gaps-against-this-mandate",
                         kind: "reference",
                     },
                 ],
