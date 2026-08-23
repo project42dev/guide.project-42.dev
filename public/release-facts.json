@@ -1,7 +1,11 @@
 {
   "$schemaVersion": 1,
   "siteVersion": "0.6.2",
+<<<<<<< HEAD
   "platformVersion": "0.98.0",
+=======
+  "platformVersion": "0.99.0",
+>>>>>>> 97f5027f89ccadd56208c1005e80d15758c08d03
   "contentVersion": "0.42.0",
   "counts": {
     "learningPaths": 13,
