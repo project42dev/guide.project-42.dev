@@ -49,11 +49,7 @@ under the [Apache License 2.0](LICENSE).
 ## Current release facts
 
 - Site release `0.6.2`
-<<<<<<< HEAD
 - Platform package `0.98.0`
-=======
-- Platform package `0.99.0`
->>>>>>> 97f5027f89ccadd56208c1005e80d15758c08d03
 - Content release `0.42.0`
 - 91 Field Guide resources
 - 91 practical resources and 4 provider scopes

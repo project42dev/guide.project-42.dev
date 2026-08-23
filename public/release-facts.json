@@ -1,17 +1,13 @@
 {
   "$schemaVersion": 1,
   "siteVersion": "0.6.2",
-<<<<<<< HEAD
   "platformVersion": "0.98.0",
-=======
-  "platformVersion": "0.99.0",
->>>>>>> 97f5027f89ccadd56208c1005e80d15758c08d03
   "contentVersion": "0.42.0",
   "counts": {
-    "learningPaths": 13,
-    "assessedModules": 92,
-    "evidenceActivities": 89,
-    "reviewedQuestions": 384,
+    "learningPaths": 0,
+    "assessedModules": 0,
+    "evidenceActivities": 0,
+    "reviewedQuestions": 0,
     "resources": 91,
     "providerScopes": 4,
     "providerImplementations": 3
@@ -38,14 +34,6 @@
       "description": "Gemini products and cross-provider comparisons."
     }
   ],
-  "learnerDataPolicy": {
-    "schemaVersion": 1,
-    "policyId": "project42-learner-data",
-    "policyVersion": "2026-07-27",
-    "accountBackedRecords": "available",
-    "hostedRecordStore": "cloudflare-d1",
-    "referenceRecordStore": "postgresql"
-  },
   "homepage": "https://guide.project-42.dev",
   "repositories": {
     "site": "https://github.com/project42dev/guide.project-42.dev",
