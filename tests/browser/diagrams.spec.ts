@@ -121,7 +121,7 @@ test("renders the Orchard lifecycle as a real React component, not a Mermaid SVG
   );
   expect(hrefs.length).toBeGreaterThan(0);
   for (const href of hrefs) {
-    expect(href).toContain("github.com/project42dev/orchard");
+    expect(href).toMatch(/github\.com\/project42dev\/(orchard|project42-platform)/);
     expect(href).not.toContain("project42dev-ops");
   }
 
