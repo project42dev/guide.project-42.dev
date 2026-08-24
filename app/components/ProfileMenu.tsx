@@ -66,13 +66,33 @@ export function ProfileMenu() {
     };
   }, []);
 
+  const handleSignIn = () => {
+    const returnTo = typeof window !== "undefined" ? window.location.href : "https://guide.project-42.dev";
+    window.location.replace(`${API_ORIGIN}/v1/auth/start?return_to=${encodeURIComponent(returnTo)}`);
+  };
+
+  const handleSignOut = async () => {
+    try {
+      const returnTo = typeof window !== "undefined" ? window.location.href : "https://guide.project-42.dev";
+      await fetch(`${API_ORIGIN}/v1/auth/signout?return_to=${encodeURIComponent(returnTo)}`, {
+        method: "POST",
+        credentials: "include",
+      });
+    } finally {
+      setAccount(null);
+      if (typeof window !== "undefined") {
+        window.location.reload();
+      }
+    }
+  };
+
   const signedIn = Boolean(account);
   const displayName = account?.displayName || account?.primaryEmail || "Learner";
   const initials = initialsFor(displayName);
 
   return (
     <HeaderMenu
-      accessibleLabel="Your account"
+      accessibleLabel={signedIn && account ? `Your account, ${displayName}` : "Your account"}
       align="end"
       label={
         signedIn && initials ? (
@@ -116,13 +136,26 @@ export function ProfileMenu() {
             </li>
             {account?.roles?.includes("owner") && (
               <li>
-                <Link href="/admin">Admin Console</Link>
+                <a href="https://admin.project-42.dev/admin">Admin Console</a>
               </li>
             )}
             <li style={{ borderTop: "1px solid rgba(255,255,255,0.08)", marginTop: "4px" }}>
-              <a href={`${LEARN}/account`} style={{ color: "#ef4444" }}>
+              <button
+                onClick={() => void handleSignOut()}
+                style={{
+                  background: "none",
+                  border: "none",
+                  color: "#ef4444",
+                  cursor: "pointer",
+                  font: "inherit",
+                  padding: "0.5rem 1rem",
+                  textAlign: "left",
+                  width: "100%",
+                }}
+                type="button"
+              >
                 Sign out
-              </a>
+              </button>
             </li>
           </>
         ) : (
