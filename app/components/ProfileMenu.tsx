@@ -38,8 +38,43 @@ function initialsFor(name: string): string {
   return words.slice(0, 2).map((w) => w[0]).join("").toUpperCase();
 }
 
+const authCacheKey = "project42.auth-cache.v1";
+
+function readCachedAccount(): UserAccount | null {
+  if (typeof window === "undefined") return null;
+  try {
+    const raw = localStorage.getItem(authCacheKey);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    if (parsed && parsed.account && parsed.account.id) {
+      if (Date.now() - (parsed.savedAt || 0) < 7 * 86400 * 1000) {
+        return parsed.account;
+      }
+    }
+    return null;
+  } catch {
+    return null;
+  }
+}
+
+function writeCachedAccount(account: UserAccount | null) {
+  if (typeof window === "undefined") return;
+  try {
+    if (account) {
+      localStorage.setItem(
+        authCacheKey,
+        JSON.stringify({ account, savedAt: Date.now() }),
+      );
+    } else {
+      localStorage.removeItem(authCacheKey);
+    }
+  } catch {
+    // Best-effort
+  }
+}
+
 export function ProfileMenu() {
-  const [account, setAccount] = useState<UserAccount | null>(null);
+  const [account, setAccount] = useState<UserAccount | null>(() => readCachedAccount());
 
   useEffect(() => {
     let cancelled = false;
@@ -54,10 +89,16 @@ export function ProfileMenu() {
           const data = await res.json();
           if (!cancelled && data.account) {
             setAccount(data.account);
+            writeCachedAccount(data.account);
+          }
+        } else if (res.status === 401) {
+          if (!cancelled) {
+            setAccount(null);
+            writeCachedAccount(null);
           }
         }
       } catch {
-        // Fallback: unauthenticated
+        // Fallback: keep cached state if offline
       }
     }
     checkSession();
@@ -73,6 +114,7 @@ export function ProfileMenu() {
 
   const handleSignOut = async () => {
     try {
+      writeCachedAccount(null);
       const returnTo = typeof window !== "undefined" ? window.location.href : "https://guide.project-42.dev";
       await fetch(`${API_ORIGIN}/v1/auth/signout?return_to=${encodeURIComponent(returnTo)}`, {
         method: "POST",
