@@ -22,7 +22,7 @@ test("exports every governed Field Guide route for GitHub Pages", async () => {
   }
 });
 
-test("publishes current release facts and Field Guide content", async () => {
+test("preserves Field Guide deep links as unified-portal redirects", async () => {
   const [home, releaseFacts, application, installedPlatform] = await Promise.all([
     readFile(path.join(outputRoot, "index.html"), "utf8"),
     readFile(path.join(outputRoot, "release-facts.json"), "utf8").then(JSON.parse),
@@ -33,10 +33,9 @@ test("publishes current release facts and Field Guide content", async () => {
     ).then(JSON.parse),
   ]);
 
-  const normalizedHome = home.replaceAll("<!-- -->", "");
-  assert.match(normalizedHome, /Project 42 Field Guide/);
-  assert.match(normalizedHome, /Answers for the work in front of you/);
-  assert.ok(normalizedHome.includes(`Site v${releaseFacts.siteVersion}`));
+  assert.match(home, /https:\/\/project-42\.dev\/guide\//);
+  const resource = await readFile(path.join(outputRoot, "resources", starterCatalog.resources[0].id, "index.html"), "utf8");
+  assert.match(resource, new RegExp(`https://project-42.dev/guide/resources/${starterCatalog.resources[0].id}/`));
   assert.equal(releaseFacts.siteVersion, application.version);
   assert.equal(releaseFacts.platformVersion, installedPlatform.version);
   assert.equal(releaseFacts.counts.resources, 91);

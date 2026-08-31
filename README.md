@@ -1,8 +1,9 @@
 # Project 42 Field Guide
 
-The dedicated practical-reference experience at
-[guide.project-42.dev](https://guide.project-42.dev): free, provider-neutral AI
-guides, workflows, commands, comparisons, checklists, and troubleshooting help.
+The source and compatibility deployment for Project 42 Field Guide content. Canonical
+resources and diagrams now render under
+[project-42.dev/guide](https://project-42.dev/guide); the legacy Guide host emits
+path-preserving redirects into that route tree.
 
 ## Develop
 
@@ -61,16 +62,19 @@ drift.
 
 ## Repositories
 
-- `project-42.dev` — public landing experience and brand
-- `learn.project-42.dev` — self-paced learning experience
-- `guide.project-42.dev` — this Field Guide application
+- `project-42.dev` — canonical unified public portal
+- `learn.project-42.dev` — legacy Learn redirect host
+- `guide.project-42.dev` — this legacy Field Guide redirect source
+- `gallery.project-42.dev` — public unauthenticated theme gallery
+- `admin.project-42.dev` — role-protected operational portal
 - `project42-platform` — reusable Apache-2.0 platform and CC BY 4.0 curriculum
 - `project42dev.github.io` — transitional public site
 
 ## Deployment
 
-The canonical public instance deploys from this repository to GitHub Pages and is
-served at <https://guide.project-42.dev>. Cloudflare manages DNS only.
+This repository's Pages artifact supports the legacy `guide.project-42.dev` host and
+redirects each route to its canonical `/guide` route at <https://project-42.dev>.
+Cloudflare manages DNS only.
 
 `npm run pages:build` produces the complete static artifact in `dist/pages`. The
 GitHub Pages workflow validates the application and exported artifact before deploying

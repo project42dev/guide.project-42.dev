@@ -48,6 +48,18 @@ test("extracts internal, external, ignored, and invalid references with IDs", ()
   );
 });
 
+test("does not live-check governed routes from the coordinated apex release", () => {
+  const result = extractDocumentLinks(
+    '<a href="https://project-42.dev/support">Support</a><a href="https://example.com">External</a>',
+    "/",
+    "https://guide.project-42.dev",
+  );
+  assert.deepEqual(
+    result.references.map((reference) => reference.kind),
+    ["coordinated", "external"],
+  );
+});
+
 test("accepts valid internal routes, fragments, and assets", async () => {
   const documents = new Map([
     [

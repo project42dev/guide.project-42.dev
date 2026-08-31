@@ -2,10 +2,8 @@ import Link from "next/link";
 import { BrandMark } from "./BrandMark";
 import { HeaderMenu, MenuChevron } from "./HeaderMenu";
 import { ProfileMenu } from "./ProfileMenu";
-import { siteFacts } from "../lib/siteFacts";
 
-const LEARN = "https://learn.project-42.dev";
-const supportHref = `${siteFacts.repositories.site}/blob/main/SUPPORT.md`;
+const LEARN = "https://project-42.dev/learn";
 
 export function SiteHeader() {
   return (

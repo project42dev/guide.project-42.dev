@@ -149,36 +149,29 @@ for (const route of routes) {
   });
 }
 
-// The header menus hide their contents until opened, so a sweep of the closed
-// page never measures them. Opening each one is the only way this check covers
-// the links it now lists.
-test("header menus open, meet the target floor, and close on Escape", async ({
+// The About menu hides its contents until opened, so a sweep of the closed page
+// never measures its links.
+test("the header menu opens, meets the target floor, and closes on Escape", async ({
   page,
 }) => {
   await page.goto("/");
 
-  for (const trigger of ["About", "Your account"]) {
-    const button = page.getByRole("button", { name: trigger, exact: trigger === "About" });
-    await button.click();
-    await expect(button).toHaveAttribute("aria-expanded", "true");
-    await expectMinimumTargets(page);
-    const violations = await new AxeBuilder({ page }).withTags(axeTags).analyze();
-    expect(violations.violations).toEqual([]);
-    await page.keyboard.press("Escape");
-    await expect(button).toHaveAttribute("aria-expanded", "false");
-    // Escape has to hand focus back, or a keyboard user is dropped at the top
-    // of the document with no idea where they are.
-    await expect(button).toBeFocused();
-  }
+  const button = page.getByRole("button", { name: "About", exact: true });
+  await button.click();
+  await expect(button).toHaveAttribute("aria-expanded", "true");
+  await expectMinimumTargets(page);
+  const violations = await new AxeBuilder({ page }).withTags(axeTags).analyze();
+  expect(violations.violations).toEqual([]);
+  await page.keyboard.press("Escape");
+  await expect(button).toHaveAttribute("aria-expanded", "false");
+  await expect(button).toBeFocused();
 });
 
-test("profile menu offers the shared sign-in destination", async ({ page }) => {
+test("header offers the canonical unified profile destination", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("button", { name: "Your account" }).click();
-
-  await expect(page.getByRole("link", { name: "Sign in", exact: true })).toHaveAttribute(
+  await expect(page.getByRole("link", { name: "Open your Project 42 profile" })).toHaveAttribute(
     "href",
-    "https://learn.project-42.dev/account",
+    "https://project-42.dev/profile",
   );
 });
 
