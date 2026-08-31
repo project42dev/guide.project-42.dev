@@ -43,7 +43,14 @@ const authCacheKey = "project42.auth-cache.v1";
 function readCachedAccount(): UserAccount | null {
   if (typeof window === "undefined") return null;
   try {
-    const raw = localStorage.getItem(authCacheKey);
+    let raw = localStorage.getItem(authCacheKey);
+    if (!raw) {
+      const match = document.cookie.match(/(?:^|;\s*)project42\.auth\.v1=([^;]+)/);
+      if (match) {
+        raw = decodeURIComponent(match[1]);
+        try { localStorage.setItem(authCacheKey, raw); } catch {}
+      }
+    }
     if (!raw) return null;
     const parsed = JSON.parse(raw);
     if (parsed && parsed.account && parsed.account.id) {
@@ -60,13 +67,18 @@ function readCachedAccount(): UserAccount | null {
 function writeCachedAccount(account: UserAccount | null) {
   if (typeof window === "undefined") return;
   try {
+    const isDev =
+      window.location.hostname === "localhost" ||
+      window.location.hostname.endsWith(".localhost");
+    const domainAttr = isDev ? "" : "; domain=.project-42.dev";
+
     if (account) {
-      localStorage.setItem(
-        authCacheKey,
-        JSON.stringify({ account, savedAt: Date.now() }),
-      );
+      const data = JSON.stringify({ account, savedAt: Date.now() });
+      localStorage.setItem(authCacheKey, data);
+      document.cookie = `project42.auth.v1=${encodeURIComponent(data)}${domainAttr}; path=/; max-age=604800; SameSite=Lax; Secure`;
     } else {
       localStorage.removeItem(authCacheKey);
+      document.cookie = `project42.auth.v1=; max-age=0${domainAttr}; path=/; SameSite=Lax; Secure`;
     }
   } catch {
     // Best-effort
@@ -92,9 +104,9 @@ export function ProfileMenu() {
             writeCachedAccount(data.account);
           }
         } else if (res.status === 401) {
-          if (!cancelled) {
-            setAccount(null);
-            writeCachedAccount(null);
+          const existing = readCachedAccount();
+          if (!existing) {
+            if (!cancelled) setAccount(null);
           }
         }
       } catch {
