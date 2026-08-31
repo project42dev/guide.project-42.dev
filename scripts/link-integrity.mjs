@@ -4,6 +4,7 @@ import process from "node:process";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { starterCatalog } from "@project42/platform";
 import diagramConfig from "../node_modules/@project42/platform/content/diagrams/catalogue.json" with { type: "json" };
+import diagramOverrides from "../config/diagram-catalog-overrides.json" with { type: "json" };
 
 const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const defaultBaseUrl = "https://guide.project-42.dev";
@@ -15,6 +16,17 @@ const defaultExceptionsPath = path.join(
 const defaultStaticRoot = path.join(projectRoot, "dist", "client");
 const defaultWorkerPath = path.join(projectRoot, "dist", "server", "index.js");
 const ignoredProtocols = new Set(["mailto:", "tel:"]);
+const canonicalPortalOrigin = "https://project-42.dev";
+const canonicalPortalRoutes = new Set([
+  "/",
+  "/about",
+  "/legal-transparency",
+  "/platform",
+  "/profile",
+  "/releases",
+  "/roadmap",
+  "/support",
+]);
 const dynamicEndpointPaths = new Set([
   "/manifest.webmanifest",
   "/robots.txt",
@@ -46,9 +58,22 @@ function sourceLabel(reference) {
   return `${reference.sourceRoute} -> ${reference.target}`;
 }
 
+function isCoordinatedPortalRoute(url, baseUrl) {
+  if (new URL(baseUrl).origin === canonicalPortalOrigin) return false;
+  if (url.origin !== canonicalPortalOrigin) return false;
+  const route = normalizeRoute(url.pathname);
+  return canonicalPortalRoutes.has(route) ||
+    route === "/learn" || route.startsWith("/learn/") ||
+    route === "/guide" || route.startsWith("/guide/");
+}
+
+const mergedDiagrams = [...new Map(
+  [...diagramConfig.diagrams, ...diagramOverrides.diagrams].map((diagram) => [diagram.id, diagram]),
+).values()];
+
 export function buildRouteInventory(
   catalog = starterCatalog,
-  diagrams = diagramConfig.diagrams,
+  diagrams = mergedDiagrams,
 ) {
   const htmlRoutes = new Set([
     "/",
@@ -119,6 +144,8 @@ export function extractDocumentLinks(html, sourceRoute, baseUrl = defaultBaseUrl
       kind:
         url.origin === new URL(baseUrl).origin
           ? "internal"
+          : isCoordinatedPortalRoute(url, baseUrl)
+            ? "coordinated"
           : url.protocol === "http:" || url.protocol === "https:"
             ? "external"
             : ignoredProtocols.has(url.protocol)

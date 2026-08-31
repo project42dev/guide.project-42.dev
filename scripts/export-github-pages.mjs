@@ -9,6 +9,7 @@ const clientRoot = path.join(projectRoot, "dist", "client");
 const workerPath = path.join(projectRoot, "dist", "server", "index.js");
 const outputRoot = path.join(projectRoot, "dist", "pages");
 const canonicalDomain = "guide.project-42.dev";
+const publicOrigin = "https://project-42.dev";
 
 const endpointFiles = new Map([
   ["/manifest.webmanifest", "manifest.webmanifest"],
@@ -43,6 +44,18 @@ function redirectDocument(target) {
     `<p>This page has moved. <a href="${target}">Continue to ${target}</a></p>` +
     `</body></html>\n`
   );
+}
+
+function unifiedTarget(route) {
+  if (route === "/") return `${publicOrigin}/guide/`;
+  if (route === "/diagrams") return `${publicOrigin}/guide/diagrams/`;
+  if (route.startsWith("/diagrams/")) {
+    return `${publicOrigin}/guide/diagrams/${route.slice("/diagrams/".length)}/`;
+  }
+  if (route.startsWith("/resources/")) {
+    return `${publicOrigin}/guide/resources/${route.slice("/resources/".length)}/`;
+  }
+  return `${publicOrigin}/guide${route}/`;
 }
 
 function addStaticNavigation(html) {
@@ -93,6 +106,10 @@ async function main() {
 
   const inventory = buildRouteInventory();
   for (const route of inventory.htmlRoutes) {
+    if (canonicalDomain === "guide.project-42.dev") {
+      await writeRoute(route, redirectDocument(unifiedTarget(route)));
+      continue;
+    }
     const response = await fetchRoute(route);
     // GitHub Pages serves files, not a Worker, so a route the Worker redirects
     // has to be published as a redirect document or the old URL 404s on Pages

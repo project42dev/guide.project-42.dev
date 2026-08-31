@@ -2,12 +2,17 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
 import diagramConfig from "../node_modules/@project42/platform/content/diagrams/catalogue.json" with { type: "json" };
+import diagramOverrides from "../config/diagram-catalog-overrides.json" with { type: "json" };
 import {
   runDiagramIntegrity,
   validateDiagramConfig,
   validateGeneratedSvg,
   validateMermaidSource,
 } from "../scripts/generate-diagrams.mjs";
+
+diagramConfig.diagrams = [...new Map(
+  [...diagramConfig.diagrams, ...diagramOverrides.diagrams].map((diagram) => [diagram.id, diagram]),
+).values()];
 
 test("publishes a substantial, uniquely identified diagram catalog", () => {
   const diagrams = validateDiagramConfig(diagramConfig);

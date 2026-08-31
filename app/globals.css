@@ -677,7 +677,7 @@ a {
 }
 
 .map-node span {
-  color: #606979;
+  color: var(--ink-soft);
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 0.63rem;
 }
@@ -716,7 +716,7 @@ a {
 }
 
 .snapshot-kicker {
-  color: #606979;
+  color: var(--ink-soft);
   font-size: 0.68rem;
   font-weight: 800;
   letter-spacing: 0.09em;
@@ -1089,7 +1089,7 @@ a {
 }
 
 .learning-path-row small {
-  color: #606979;
+  color: var(--ink-soft);
 }
 
 .learning-path-modules {
@@ -1104,7 +1104,7 @@ a {
 
 .breadcrumbs {
   align-items: center;
-  color: #606979;
+  color: var(--ink-soft);
   display: flex;
   flex-wrap: wrap;
   font-size: 0.76rem;
@@ -1225,7 +1225,7 @@ a {
 }
 
 .module-index {
-  color: #606979;
+  color: var(--ink-soft);
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 0.8rem;
 }
@@ -1236,7 +1236,7 @@ a {
 }
 
 .module-copy small {
-  color: #606979;
+  color: var(--ink-soft);
   font-size: 0.65rem;
   text-transform: uppercase;
 }
@@ -1251,7 +1251,7 @@ a {
 }
 
 .module-state {
-  color: #606979;
+  color: var(--ink-soft);
   font-size: 0.75rem;
   font-weight: 820;
 }
@@ -1279,7 +1279,7 @@ a {
 }
 
 .lesson-kicker {
-  color: #606979;
+  color: var(--ink-soft);
   font-size: 0.72rem;
   font-weight: 800;
   letter-spacing: 0.08em;
@@ -1316,16 +1316,19 @@ a {
 .provider-pill-anthropic {
   background: #fff0e8;
   border-color: #e6ad8f;
+  color: #334155;
 }
 
 .provider-pill-openai {
   background: #e5f8fa;
   border-color: #8ecbd1;
+  color: #334155;
 }
 
 .provider-pill-google {
   background: #efecff;
   border-color: #b8afe7;
+  color: #334155;
 }
 
 .objectives {
@@ -1367,7 +1370,7 @@ a {
 }
 
 .lesson-block-index {
-  color: #606979;
+  color: var(--ink-soft);
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 0.68rem;
   padding-top: 0.45rem;
@@ -2084,7 +2087,7 @@ a {
 }
 
 .sources li span {
-  color: #606979;
+  color: var(--ink-soft);
   font-size: 0.68rem;
 }
 
@@ -2102,7 +2105,7 @@ a {
 }
 
 .lesson-rail small {
-  color: #606979;
+  color: var(--ink-soft);
   font-size: 0.68rem;
 }
 
@@ -2138,7 +2141,7 @@ a {
 }
 
 .lesson-rail a span {
-  color: #606979;
+  color: var(--ink-soft);
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 0.62rem;
 }
@@ -2329,7 +2332,7 @@ a {
 }
 
 .resource-controls label>span {
-  color: #606979;
+  color: var(--ink-soft);
   font-size: 0.69rem;
   font-weight: 800;
   letter-spacing: 0.07em;
@@ -2348,7 +2351,7 @@ a {
 }
 
 .results-count {
-  color: #606979;
+  color: var(--ink-soft);
   font-size: 0.72rem;
   margin: 0;
 }
@@ -2392,7 +2395,7 @@ a {
 }
 
 .resource-meta {
-  color: #606979;
+  color: var(--ink-soft);
   display: flex;
   font-size: 0.65rem;
   font-weight: 780;
@@ -2431,7 +2434,7 @@ a {
 
 .resource-card-facts dt,
 .resource-detail-facts dt {
-  color: #606979;
+  color: var(--ink-soft);
   font-size: 0.62rem;
   font-weight: 800;
   letter-spacing: 0.06em;
@@ -2489,7 +2492,7 @@ a {
 }
 
 .resource-foot small {
-  color: #606979;
+  color: var(--ink-soft);
   font-size: 0.63rem;
 }
 
@@ -2588,12 +2591,12 @@ a {
 }
 
 .source-panel span {
-  color: #606979;
+  color: var(--ink-soft);
   font-size: 0.67rem;
 }
 
 .source-panel small {
-  color: #606979;
+  color: var(--ink-soft);
   font-size: 0.62rem;
 }
 
@@ -2664,7 +2667,7 @@ a {
 }
 
 .profile-identity form>label {
-  color: #606979;
+  color: var(--ink-soft);
   display: block;
   font-size: 0.68rem;
   font-weight: 800;
@@ -2739,7 +2742,7 @@ a {
 }
 
 .transcript-list p {
-  color: #606979;
+  color: var(--ink-soft);
   font-size: 0.73rem;
   margin: 0.3rem 0 0;
 }
@@ -2798,7 +2801,7 @@ a {
 }
 
 .profile-transfer>small {
-  color: #606979;
+  color: var(--ink-soft);
   font-size: 0.65rem;
   text-align: right;
 }
@@ -2856,7 +2859,7 @@ a {
 
 .attempt-table thead th {
   background: var(--paper-strong);
-  color: #606979;
+  color: var(--ink-soft);
   font-size: 0.64rem;
   letter-spacing: 0.05em;
   text-transform: uppercase;
@@ -2918,7 +2921,7 @@ a {
 }
 
 .badge-grid small {
-  color: #606979;
+  color: var(--ink-soft);
   font-size: 0.65rem;
 }
 
@@ -3916,7 +3919,7 @@ a {
 }
 
 .diagram-card-meta {
-  color: #606979;
+  color: var(--ink-soft);
   display: flex;
   font-size: 0.66rem;
   font-weight: 820;
@@ -4350,6 +4353,17 @@ a {
    ============================================= */
 
 .interactive-diagram {
+  --slate-50: #f8fafc;
+  --slate-100: #f1f5f9;
+  --slate-200: #e2e8f0;
+  --slate-300: #cbd5e1;
+  --slate-400: #94a3b8;
+  --slate-500: #64748b;
+  --slate-600: #475569;
+  --slate-700: #334155;
+  --slate-800: #1e293b;
+  --slate-900: #0f172a;
+  --violet-400: #a78bfa;
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
@@ -4971,6 +4985,34 @@ a {
     --orchard-list-item-border: #3a4670;
     --orchard-list-item-text: #dfe3f5;
   }
+}
+
+html[data-theme="06-galactic-guide"] .orchard-lifecycle-diagram {
+  --orchard-canvas-bg: var(--navy);
+  --orchard-canvas-border: var(--navy-2);
+  --orchard-node-bg: var(--navy-2);
+  --orchard-node-border: #3a4670;
+  --orchard-node-text: #f4f5fb;
+  --orchard-node-text-muted: #b9c0e0;
+  --orchard-node-shadow: 0 1px 3px rgba(0, 0, 0, 0.55);
+  --orchard-node-active-bg: var(--violet);
+  --orchard-node-active-border: #cabffb;
+  --orchard-node-active-text: #14172a;
+  --orchard-node-hover-border: var(--cyan);
+  --orchard-terminal-bg: rgba(255, 141, 141, 0.14);
+  --orchard-terminal-border: rgba(255, 141, 141, 0.5);
+  --orchard-terminal-text: #e7c9c9;
+  --orchard-edge: rgba(230, 233, 245, 0.55);
+  --orchard-edge-deny: #ff8b8b;
+  --orchard-edge-back: #f0b45f;
+  --orchard-pending-badge-bg: rgba(255, 141, 141, 0.18);
+  --orchard-pending-badge-text: #ffb3b3;
+  --orchard-badge-muted-bg: #4a5170;
+  --orchard-badge-muted-text: #f4f5fb;
+  --orchard-lane-title-text: #b9c0e0;
+  --orchard-list-item-bg: var(--navy-2);
+  --orchard-list-item-border: #3a4670;
+  --orchard-list-item-text: #dfe3f5;
 }
 
 .orchard-lifecycle-diagram :focus-visible {

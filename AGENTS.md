@@ -2,8 +2,8 @@
 
 ## Purpose
 
-This repository is the branded public Project 42 Field Guide published at
-`guide.project-42.dev`.
+This repository preserves Field Guide content and generates path-preserving redirects
+from `guide.project-42.dev` to canonical `/guide` routes on `project-42.dev`.
 
 ## Stack
 
@@ -24,7 +24,8 @@ npm test
 
 1. Public Field Guide contracts come from `project42-platform`; do not duplicate them here.
 2. Stable resource URLs are public contracts.
-3. Learning paths and learner progress belong in `learn.project-42.dev`.
+3. Learning paths, learner progress, and canonical Field Guide rendering belong on
+   the unified `project-42.dev` origin.
 4. No secrets, private PMO material, or production learner data.
 5. New interaction types require keyboard and reduced-motion review.
 6. Build, lint, and rendered-route tests must pass before release.

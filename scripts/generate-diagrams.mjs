@@ -16,6 +16,7 @@ import { fileURLToPath } from "node:url";
 const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const platformDiagrams = path.join(projectRoot, "node_modules", "@project42", "platform", "content", "diagrams");
 const configPath = path.join(platformDiagrams, "catalogue.json");
+const overridesPath = path.join(projectRoot, "config", "diagram-catalog-overrides.json");
 const sourceRoot = platformDiagrams;
 const publicRoot = path.join(projectRoot, "public", "diagrams");
 const manifestPath = path.join(publicRoot, "manifest.json");
@@ -153,11 +154,23 @@ export function validateGeneratedSvg(svg, diagram, sourceHash) {
 
 async function loadConfigAndSources() {
   const config = JSON.parse(await readFile(configPath, "utf8"));
+  const overrides = JSON.parse(await readFile(overridesPath, "utf8"));
+  config.diagrams = [...new Map(
+    [...config.diagrams, ...overrides.diagrams].map((diagram) => [diagram.id, diagram]),
+  ).values()];
   const diagrams = validateDiagramConfig(config);
   const records = [];
   for (const diagram of diagrams) {
-    const sourcePath = path.join(sourceRoot, diagram.source);
-    const source = validateMermaidSource(await readFile(sourcePath, "utf8"), diagram);
+    let sourcePath = path.join(sourceRoot, diagram.source);
+    let sourceText;
+    try {
+      sourceText = await readFile(sourcePath, "utf8");
+    } catch (error) {
+      if (error?.code !== "ENOENT") throw error;
+      sourcePath = path.join(publicRoot, diagram.source);
+      sourceText = await readFile(sourcePath, "utf8");
+    }
+    const source = validateMermaidSource(sourceText, diagram);
     records.push({
       diagram,
       source,
@@ -171,7 +184,11 @@ async function loadConfigAndSources() {
 }
 
 async function assertExactInventory(records) {
-  const expectedSources = new Set(records.map(({ diagram }) => diagram.source));
+  const expectedSources = new Set(
+    records
+      .filter(({ sourcePath }) => path.dirname(sourcePath) === sourceRoot)
+      .map(({ diagram }) => diagram.source),
+  );
   const sourceFiles = (await readdir(sourceRoot)).filter((name) => name.endsWith(".mmd"));
   assert.deepEqual(
     sourceFiles.sort(),
